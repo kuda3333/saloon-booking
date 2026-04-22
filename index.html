@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glam Studio — Book an Appointment</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf7f2;
+    --warm-white: #fff9f4;
+    --ink: #1a1209;
+    --gold: #b8860b;
+    --gold-light: #f5e9c8;
+    --gold-mid: #d4a017;
+    --rose: #c4795a;
+    --rose-light: #faeee8;
+    --muted: #8a7d6e;
+    --border: #e8dfd0;
+    --card: #ffffff;
+    --mono: 'DM Sans', sans-serif;
+    --serif: 'Cormorant Garamond', serif;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--mono);
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--ink);
+    padding: 40px 20px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(184,134,11,0.04) 40px,
+      rgba(184,134,11,0.04) 41px
+    );
+  }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-mid);
+    margin-bottom: 10px;
+  }
+  .hero-name {
+    font-family: var(--serif);
+    font-size: 42px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .hero-tagline {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 16px;
+    color: #bbb;
+    margin-bottom: 20px;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .hero-meta span {
+    font-size: 11px;
+    font-family: var(--mono);
+    color: #888;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .hero-meta span::before { content: '◆'; color: var(--gold-mid); font-size: 7px; }
+
+  /* MAIN */
+  main { max-width: 480px; margin: 0 auto; padding: 24px 16px 60px; }
+
+  /* STEP INDICATOR */
+  .steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 24px;
+  }
+  .step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+  .step-dot {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: var(--cream);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+  }
+  .step-dot.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .step-dot.done { background: var(--gold); color: #fff; border-color: var(--gold); }
+  .step-label { font-size: 9px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .step-line { width: 40px; height: 1.5px; background: var(--border); margin-bottom: 16px; transition: background 0.3s; }
+  .step-line.done { background: var(--gold); }
+
+  /* SECTION CARD */
+  .section {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 20px;
+    margin-bottom: 14px;
+    display: none;
+    animation: rise 0.35s ease;
+  }
+  .section.visible { display: block; }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-head {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .section-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+
+  /* LABELS & INPUTS */
+  label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 6px;
+    margin-top: 16px;
+  }
+  label:first-of-type { margin-top: 0; }
+
+  input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="time"], select, textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--warm-white);
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a7d6e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  input:focus, select:focus, textarea:focus { border-color: var(--gold); }
+  textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+  /* SERVICE CARDS */
+  .service-list { display: grid; gap: 8px; margin-top: 6px; }
+  .service-item {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--warm-white);
+    transition: all 0.2s;
+  }
+  .service-item:hover { border-color: var(--gold); }
+  .service-item.selected { border-color: var(--gold); background: var(--gold-light); }
+  .service-left .s-name { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .service-left .s-duration { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .service-right .s-price { font-family: var(--serif); font-size: 18px; color: var(--gold); font-weight: 600; }
+
+  /* TIME SLOTS */
+  .slots-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .slot {
+    padding: 10px 6px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    text-align: center;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    background: var(--warm-white);
+    transition: all 0.2s;
+  }
+  .slot:hover { border-color: var(--gold); color: var(--ink); }
+  .slot.selected { border-color: var(--gold); background: var(--gold-light); color: var(--ink); }
+  .slot.unavailable { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; }
+
+  /* SUMMARY BOX */
+  .summary-box {
+    background: var(--ink);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    margin-top: 16px;
+    color: #fff;
+  }
+  .summary-title { font-family: var(--serif); font-size: 16px; font-style: italic; color: #ccc; margin-bottom: 10px; }
+  .summary-row { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .summary-row:last-child { border-bottom: none; font-weight: 500; font-size: 14px; }
+  .summary-row .s-label { color: #aaa; }
+  .summary-row .s-val { color: #fff; }
+  .summary-row .s-val.gold { color: var(--gold-mid); }
+
+  /* BUTTONS */
+  .btn-primary {
+    width: 100%;
+    padding: 15px;
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 12px;
+    letter-spacing: 0.03em;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-primary:hover { background: var(--rose); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; transform: none; }
+  .btn-outline {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    color: var(--ink);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: all 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--ink); }
+
+  /* ERROR */
+  .err {
+    font-size: 12px;
+    color: var(--rose);
+    background: var(--rose-light);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    margin-top: 8px;
+    display: none;
+    border: 1px solid #f0c4b0;
+  }
+  .err.show { display: block; }
+
+  /* CONFIRMATION */
+  #confirm-screen { display: none; }
+  #confirm-screen.visible { display: block; }
+
+  .confirm-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    animation: rise 0.4s ease;
+    margin-bottom: 14px;
+  }
+  .confirm-header {
+    background: var(--ink);
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .confirm-icon {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin: 0 auto 12px;
+  }
+  .confirm-header h2 {
+    font-family: var(--serif);
+    font-size: 26px;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .confirm-header p { font-size: 12px; color: #aaa; }
+
+  .booking-ref {
+    text-align: center;
+    padding: 16px;
+    background: var(--gold-light);
+    border-bottom: 1px solid var(--border);
+  }
+  .ref-label { font-size: 10px; font-family: var(--mono); color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; }
+  .ref-code { font-family: var(--serif); font-size: 34px; font-weight: 600; color: var(--ink); letter-spacing: 3px; margin-top: 4px; }
+  .ref-hint { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  .confirm-body { padding: 18px 20px; }
+  .conf-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; gap: 12px; }
+  .conf-row:last-child { border-bottom: none; }
+  .c-label { color: var(--muted); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; flex-shrink: 0; }
+  .c-val { font-weight: 500; text-align: right; color: var(--ink); }
+  .c-val.gold { color: var(--gold); }
+
+  .whatsapp-btn {
+    width: 100%;
+    padding: 14px;
+    background: #25D366;
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+  }
+  .whatsapp-btn:hover { background: #1ebe5c; }
+
+  .footer-note {
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    padding: 20px 16px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">Book an appointment</div>
+  <div class="hero-name">Glam Studio</div>
+  <div class="hero-tagline">Hair · Nails · Beauty · Wellness</div>
+  <div class="hero-meta">
+    <span>Harare CBD</span>
+    <span>Mon – Sat, 8am – 6pm</span>
+    <span>+263 77 000 0000</span>
+  </div>
+</div>
+
+<main>
+  <!-- STEP INDICATOR -->
+  <div class="steps">
+    <div class="step-item">
+      <div class="step-dot active" id="sd1">1</div>
+      <div class="step-label">Service</div>
+    </div>
+    <div class="step-line" id="sl1"></div>
+    <div class="step-item">
+      <div class="step-dot" id="sd2">2</div>
+      <div class="step-label">Date & Time</div>
+    </div>
+    <div class="step-line" id="sl2"></div>
+    <div class="step-item">
+      <div class="step-dot" id="sd3">3</div>
+      <div class="step-label">Details</div>
+    </div>
+    <div class="step-line" id="sl3"></div>
+    <div class="step-item">
+      <div class="step-dot" id="sd4">4</div>
+      <div class="step-label">Confirm</div>
+    </div>
+  </div>
+
+  <!-- STEP 1: SERVICE -->
+  <div class="section visible" id="step1">
+    <div class="section-head">Choose your service</div>
+    <div class="section-sub">Select one service to book. Need multiple? Book separately.</div>
+
+    <div class="service-list" id="service-list">
+      <div class="service-item" onclick="selectService(this, 'Hair Relaxer', 45, 90)">
+        <div class="service-left"><div class="s-name">Hair Relaxer</div><div class="s-duration">90 mins</div></div>
+        <div class="service-right"><div class="s-price">$45</div></div>
+      </div>
+      <div class="service-item" onclick="selectService(this, 'Hair Braiding', 30, 120)">
+        <div class="service-left"><div class="s-name">Hair Braiding</div><div class="s-duration">120 mins</div></div>
+        <div class="service-right"><div class="s-price">$30</div></div>
+      </div>
+      <div class="service-item" onclick="selectService(this, 'Manicure & Pedicure', 25, 60)">
+        <div class="service-left"><div class="s-name">Manicure & Pedicure</div><div class="s-duration">60 mins</div></div>
+        <div class="service-right"><div class="s-price">$25</div></div>
+      </div>
+      <div class="service-item" onclick="selectService(this, 'Facial Treatment', 35, 75)">
+        <div class="service-left"><div class="s-name">Facial Treatment</div><div class="s-duration">75 mins</div></div>
+        <div class="service-right"><div class="s-price">$35</div></div>
+      </div>
+      <div class="service-item" onclick="selectService(this, 'Full Makeup', 50, 60)">
+        <div class="service-left"><div class="s-name">Full Makeup</div><div class="s-duration">60 mins</div></div>
+        <div class="service-right"><div class="s-price">$50</div></div>
+      </div>
+      <div class="service-item" onclick="selectService(this, 'Eyebrows & Lashes', 20, 45)">
+        <div class="service-left"><div class="s-name">Eyebrows & Lashes</div><div class="s-duration">45 mins</div></div>
+        <div class="service-right"><div class="s-price">$20</div></div>
+      </div>
+    </div>
+
+    <div class="err" id="err1">Please select a service to continue.</div>
+    <button class="btn-primary" onclick="goStep(2)">Continue →</button>
+  </div>
+
+  <!-- STEP 2: DATE & TIME -->
+  <div class="section" id="step2">
+    <div class="section-head">Pick a date & time</div>
+    <div class="section-sub">We're open Monday to Saturday, 8am – 6pm.</div>
+
+    <label>Preferred date</label>
+    <input type="date" id="book-date" oninput="updateSlots()">
+
+    <label>Available time slots</label>
+    <div class="slots-grid" id="slots-grid">
+      <div class="slot" onclick="selectSlot(this)">08:00</div>
+      <div class="slot" onclick="selectSlot(this)">09:00</div>
+      <div class="slot" onclick="selectSlot(this)">10:00</div>
+      <div class="slot" onclick="selectSlot(this)">11:00</div>
+      <div class="slot" onclick="selectSlot(this)">12:00</div>
+      <div class="slot" onclick="selectSlot(this)">13:00</div>
+      <div class="slot" onclick="selectSlot(this)">14:00</div>
+      <div class="slot" onclick="selectSlot(this)">15:00</div>
+      <div class="slot" onclick="selectSlot(this)">16:00</div>
+    </div>
+
+    <div class="err" id="err2">Please select a date and time slot.</div>
+    <button class="btn-primary" onclick="goStep(3)">Continue →</button>
+    <button class="btn-outline" onclick="goStep(1)">← Back</button>
+  </div>
+
+  <!-- STEP 3: DETAILS -->
+  <div class="section" id="step3">
+    <div class="section-head">Your details</div>
+    <div class="section-sub">We'll send your confirmation to these contacts.</div>
+
+    <label>Full name</label>
+    <input type="text" id="cust-name" placeholder="e.g. Tatenda Moyo">
+
+    <label>Phone number</label>
+    <input type="tel" id="cust-phone" placeholder="077x xxx xxx">
+
+    <label>Email address (optional)</label>
+    <input type="email" id="cust-email" placeholder="you@example.com">
+
+    <label>Special requests</label>
+    <textarea id="cust-notes" placeholder="Any allergies, preferences or special requests..."></textarea>
+
+    <div class="summary-box">
+      <div class="summary-title">Booking summary</div>
+      <div class="summary-row"><span class="s-label">Service</span><span class="s-val" id="sum-service">—</span></div>
+      <div class="summary-row"><span class="s-label">Date & Time</span><span class="s-val" id="sum-datetime">—</span></div>
+      <div class="summary-row"><span class="s-label">Duration</span><span class="s-val" id="sum-duration">—</span></div>
+      <div class="summary-row"><span class="s-label">Total</span><span class="s-val gold" id="sum-price">—</span></div>
+    </div>
+
+    <div class="err" id="err3">Please enter your name and phone number.</div>
+    <button class="btn-primary" onclick="goStep(4)">Confirm booking →</button>
+    <button class="btn-outline" onclick="goStep(2)">← Back</button>
+  </div>
+
+</main>
+
+<!-- CONFIRMATION -->
+<div id="confirm-screen">
+  <main>
+    <div class="confirm-card">
+      <div class="confirm-header">
+        <div class="confirm-icon">✦</div>
+        <h2>You're booked!</h2>
+        <p id="conf-submitted"></p>
+      </div>
+      <div class="booking-ref">
+        <div class="ref-label">Booking reference</div>
+        <div class="ref-code" id="ref-code"></div>
+        <div class="ref-hint">Show this when you arrive</div>
+      </div>
+      <div class="confirm-body">
+        <div class="conf-row"><span class="c-label">Service</span><span class="c-val" id="c-service"></span></div>
+        <div class="conf-row"><span class="c-label">Date & Time</span><span class="c-val" id="c-datetime"></span></div>
+        <div class="conf-row"><span class="c-label">Duration</span><span class="c-val" id="c-duration"></span></div>
+        <div class="conf-row"><span class="c-label">Name</span><span class="c-val" id="c-name"></span></div>
+        <div class="conf-row"><span class="c-label">Phone</span><span class="c-val" id="c-phone"></span></div>
+        <div class="conf-row"><span class="c-label">Notes</span><span class="c-val" id="c-notes"></span></div>
+        <div class="conf-row"><span class="c-label">Total</span><span class="c-val gold" id="c-price"></span></div>
+      </div>
+    </div>
+
+    <button class="whatsapp-btn" id="wa-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Send booking to WhatsApp
+    </button>
+    <button class="btn-outline" onclick="resetApp()" style="margin-top:8px">Book another appointment</button>
+  </main>
+</div>
+
+<div class="footer-note">Glam Studio · Harare CBD · Appointments required · Walk-ins subject to availability</div>
+
+<script>
+  let selService = '', selPrice = 0, selDuration = 0;
+  let selDate = '', selSlot = '';
+
+  // Set min date to today
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('book-date').min = today;
+  document.getElementById('book-date').value = today;
+
+  function selectService(el, name, price, duration) {
+    document.querySelectorAll('.service-item').forEach(i => i.classList.remove('selected'));
+    el.classList.add('selected');
+    selService = name; selPrice = price; selDuration = duration;
+  }
+
+  function selectSlot(el) {
+    if (el.classList.contains('unavailable')) return;
+    document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
+    el.classList.add('selected');
+    selSlot = el.textContent;
+  }
+
+  function updateSlots() {
+    selDate = document.getElementById('book-date').value;
+    const d = new Date(selDate);
+    const day = d.getDay();
+    const slots = document.querySelectorAll('.slot');
+    // Mark random slots unavailable for realism (Sun = all unavailable)
+    slots.forEach((s, i) => {
+      s.classList.remove('unavailable', 'selected');
+      if (day === 0) { s.classList.add('unavailable'); }
+      else if ([1, 4].includes(i) && day % 2 === 0) { s.classList.add('unavailable'); }
+    });
+    selSlot = '';
+  }
+
+  function updateSummary() {
+    const dateStr = selDate ? new Date(selDate + 'T00:00:00').toLocaleDateString('en-ZW', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+    document.getElementById('sum-service').textContent = selService || '—';
+    document.getElementById('sum-datetime').textContent = selDate && selSlot ? dateStr + ' at ' + selSlot : '—';
+    document.getElementById('sum-duration').textContent = selDuration ? selDuration + ' mins' : '—';
+    document.getElementById('sum-price').textContent = selPrice ? '$' + selPrice : '—';
+  }
+
+  function showErr(id, show) {
+    document.getElementById(id).classList.toggle('show', show);
+  }
+
+  function goStep(step) {
+    if (step === 2 && !selService) { showErr('err1', true); return; }
+    showErr('err1', false);
+    if (step === 3) {
+      selDate = document.getElementById('book-date').value;
+      if (!selDate || !selSlot) { showErr('err2', true); return; }
+      showErr('err2', false);
+      updateSummary();
+    }
+    if (step === 4) {
+      const name = document.getElementById('cust-name').value.trim();
+      const phone = document.getElementById('cust-phone').value.trim();
+      if (!name || phone.length < 9) { showErr('err3', true); return; }
+      showErr('err3', false);
+      confirm();
+      return;
+    }
+    ['step1','step2','step3'].forEach((id, i) => {
+      document.getElementById(id).classList.toggle('visible', i + 1 === step);
+    });
+    for (let i = 1; i <= 4; i++) {
+      const dot = document.getElementById('sd' + i);
+      dot.classList.toggle('active', i === step);
+      dot.classList.toggle('done', i < step);
+    }
+    for (let i = 1; i <= 3; i++) {
+      document.getElementById('sl' + i).classList.toggle('done', i < step);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function genRef() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let ref = 'GS-';
+    for (let i = 0; i < 5; i++) ref += chars[Math.floor(Math.random() * chars.length)];
+    return ref;
+  }
+
+  function confirm() {
+    const name = document.getElementById('cust-name').value.trim();
+    const phone = document.getElementById('cust-phone').value.trim();
+    const email = document.getElementById('cust-email').value.trim();
+    const notes = document.getElementById('cust-notes').value.trim();
+    const ref = genRef();
+    const dateStr = new Date(selDate + 'T00:00:00').toLocaleDateString('en-ZW', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    const now = new Date().toLocaleString('en-ZW', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+    document.getElementById('conf-submitted').textContent = 'Confirmed on ' + now;
+    document.getElementById('ref-code').textContent = ref;
+    document.getElementById('c-service').textContent = selService;
+    document.getElementById('c-datetime').textContent = dateStr + ' at ' + selSlot;
+    document.getElementById('c-duration').textContent = selDuration + ' mins';
+    document.getElementById('c-name').textContent = name;
+    document.getElementById('c-phone').textContent = phone;
+    document.getElementById('c-notes').textContent = notes || 'None';
+    document.getElementById('c-price').textContent = '$' + selPrice;
+
+    // WhatsApp message
+    const msg = encodeURIComponent(
+      `Hi Glam Studio! I've just booked an appointment.\n\n` +
+      `Ref: ${ref}\nService: ${selService}\nDate: ${dateStr} at ${selSlot}\nName: ${name}\nPhone: ${phone}\nTotal: $${selPrice}` +
+      (notes ? `\nNotes: ${notes}` : '')
+    );
+    document.getElementById('wa-btn').onclick = () => window.open(`https://wa.me/263778961269?text=${msg}`, '_blank');
+
+    ['step1','step2','step3'].forEach(id => document.getElementById(id).classList.remove('visible'));
+    for (let i = 1; i <= 4; i++) {
+      const dot = document.getElementById('sd' + i);
+      dot.classList.remove('active');
+      dot.classList.add('done');
+    }
+    for (let i = 1; i <= 3; i++) document.getElementById('sl' + i).classList.add('done');
+
+    document.getElementById('confirm-screen').classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function resetApp() {
+    selService = ''; selPrice = 0; selDuration = 0; selDate = ''; selSlot = '';
+    document.getElementById('cust-name').value = '';
+    document.getElementById('cust-phone').value = '';
+    document.getElementById('cust-email').value = '';
+    document.getElementById('cust-notes').value = '';
+    document.getElementById('book-date').value = today;
+    document.querySelectorAll('.service-item').forEach(i => i.classList.remove('selected'));
+    document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
+    document.getElementById('confirm-screen').classList.remove('visible');
+    document.getElementById('step1').classList.add('visible');
+    document.getElementById('step2').classList.remove('visible');
+    document.getElementById('step3').classList.remove('visible');
+    for (let i = 1; i <= 4; i++) {
+      const dot = document.getElementById('sd' + i);
+      dot.classList.remove('active', 'done');
+      if (i === 1) dot.classList.add('active');
+    }
+    for (let i = 1; i <= 3; i++) document.getElementById('sl' + i).classList.remove('done');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  updateSlots();
+</script>
+</body>
+</html>
