@@ -106,6 +106,30 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
 .whatsapp-btn { width:100%; padding:14px; background:#25D366; color:#fff; border:none; border-radius:var(--radius); font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; cursor:pointer; margin-top:4px; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s; }
 .whatsapp-btn:hover { background:#1ebe5c; }
 .footer-note { text-align:center; font-size:11px; color:var(--muted); padding:20px 16px; max-width:480px; margin:0 auto; }
+.pay-step { background:var(--card); border-radius:var(--radius); border:1px solid var(--border); padding:20px; margin-bottom:14px; display:none; animation:rise 0.35s ease; }
+.pay-step.visible { display:block; }
+.pay-method { border:1.5px solid var(--border); border-radius:var(--radius-sm); padding:14px; margin:8px 0; cursor:pointer; display:flex; align-items:center; gap:14px; background:var(--warm-white); transition:all 0.2s; }
+.pay-method:hover { border-color:var(--gold); }
+.pay-method.selected { border-color:var(--gold); background:var(--gold-light); }
+.pay-method-icon { font-size:24px; flex-shrink:0; }
+.pay-method-info { flex:1; }
+.pay-method-name { font-size:14px; font-weight:500; color:var(--ink); }
+.pay-method-desc { font-size:11px; color:var(--muted); margin-top:2px; }
+.pay-instructions { background:var(--ink); border-radius:var(--radius-sm); padding:16px; margin-top:14px; display:none; }
+.pay-instructions.show { display:block; }
+.pay-inst-title { font-family:'Cormorant Garamond',serif; font-size:16px; font-style:italic; color:#ccc; margin-bottom:12px; }
+.pay-inst-row { display:flex; justify-content:space-between; font-size:13px; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.08); }
+.pay-inst-row:last-child { border-bottom:none; }
+.pay-inst-label { color:#aaa; }
+.pay-inst-val { color:#fff; font-weight:500; }
+.pay-inst-val.gold { color:var(--gold-mid); }
+.pay-ref-box { background:rgba(184,134,11,0.15); border:1px dashed var(--gold); border-radius:var(--radius-sm); padding:10px 14px; margin-top:10px; text-align:center; }
+.pay-ref-label { font-size:10px; color:var(--gold-mid); text-transform:uppercase; letter-spacing:0.1em; }
+.pay-ref-val { font-size:22px; font-weight:500; color:#fff; font-family:'Cormorant Garamond',serif; letter-spacing:2px; margin-top:4px; }
+.pay-ref-hint { font-size:11px; color:#aaa; margin-top:4px; }
+.pay-confirm-check { display:flex; align-items:flex-start; gap:10px; margin-top:14px; padding:12px; background:#fff8e6; border:1px solid #f0c040; border-radius:var(--radius-sm); }
+.pay-confirm-check input[type="checkbox"] { width:18px; height:18px; flex-shrink:0; margin-top:1px; accent-color:var(--gold); cursor:pointer; }
+.pay-confirm-text { font-size:12px; line-height:1.5; color:var(--ink); }
 </style>
 </head>
 <body>
