@@ -129,7 +129,9 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
     <div class="step-line" id="sl2"></div>
     <div class="step-item"><div class="step-dot" id="sd3">3</div><div class="step-label">Details</div></div>
     <div class="step-line" id="sl3"></div>
-    <div class="step-item"><div class="step-dot" id="sd4">4</div><div class="step-label">Confirm</div></div>
+    <div class="step-item"><div class="step-dot" id="sd4">4</div><div class="step-label">Payment</div></div>
+    <div class="step-line" id="sl4"></div>
+    <div class="step-item"><div class="step-dot" id="sd5">5</div><div class="step-label">Confirm</div></div>
   </div>
 </div>
 
@@ -211,8 +213,57 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
       <div class="summary-row"><span class="sl">Total</span><span class="sv gold" id="sum-price">—</span></div>
     </div>
     <div class="err" id="err3">Please enter your name and phone number.</div>
-    <button class="btn-primary" id="confirm-btn" onclick="confirmBooking()">Confirm booking →</button>
+    <button class="btn-primary" id="confirm-btn" onclick="goStep(4)">Continue to payment →</button>
     <button class="btn-outline" onclick="goStep(2)">← Back</button>
+  </div>
+
+  <!-- STEP 4: PAYMENT -->
+  <div class="pay-step" id="step4">
+    <div class="section-head">Payment</div>
+    <div class="section-sub">Choose how you'd like to pay. Send payment then confirm below.</div>
+
+    <div class="pay-method" onclick="selectPayMethod(this,'ecocash')">
+      <div class="pay-method-icon">📱</div>
+      <div class="pay-method-info">
+        <div class="pay-method-name">EcoCash</div>
+        <div class="pay-method-desc">Send to 0778961269</div>
+      </div>
+    </div>
+    <div class="pay-method" onclick="selectPayMethod(this,'innbucks')">
+      <div class="pay-method-icon">💚</div>
+      <div class="pay-method-info">
+        <div class="pay-method-name">InnBucks</div>
+        <div class="pay-method-desc">Send to 0778961269</div>
+      </div>
+    </div>
+    <div class="pay-method" onclick="selectPayMethod(this,'visa')">
+      <div class="pay-method-icon">💳</div>
+      <div class="pay-method-info">
+        <div class="pay-method-name">Visa / Bank Card</div>
+        <div class="pay-method-desc">Pay at the studio on arrival</div>
+      </div>
+    </div>
+
+    <div class="pay-instructions" id="pay-instructions">
+      <div class="pay-inst-title">Payment instructions</div>
+      <div class="pay-inst-row"><span class="pay-inst-label">Send to</span><span class="pay-inst-val" id="pi-number">—</span></div>
+      <div class="pay-inst-row"><span class="pay-inst-label">Amount</span><span class="pay-inst-val gold" id="pi-amount">—</span></div>
+      <div class="pay-inst-row"><span class="pay-inst-label">Reference</span><span class="pay-inst-val" id="pi-ref">—</span></div>
+      <div class="pay-ref-box">
+        <div class="pay-ref-label">Use this exact reference</div>
+        <div class="pay-ref-val" id="pi-ref-big">—</div>
+        <div class="pay-ref-hint">So we can match your payment instantly</div>
+      </div>
+    </div>
+
+    <div class="pay-confirm-check" id="pay-confirm-check" style="display:none">
+      <input type="checkbox" id="pay-done-check">
+      <div class="pay-confirm-text">I have sent the payment and used the reference above. I understand my booking is confirmed once payment is verified.</div>
+    </div>
+
+    <div class="err" id="err4">Please select a payment method and confirm you have paid.</div>
+    <button class="btn-primary" onclick="submitBooking()">Confirm booking →</button>
+    <button class="btn-outline" onclick="goStep(3)">← Back</button>
   </div>
 </main>
 
@@ -248,7 +299,30 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
   </main>
 </div>
 
-<div class="footer-note">Glam Studio · Harare CBD · Appointments required · Walk-ins subject to availability</div>
+.pay-step { background:var(--card); border-radius:var(--radius); border:1px solid var(--border); padding:20px; margin-bottom:14px; display:none; animation:rise 0.35s ease; }
+.pay-step.visible { display:block; }
+.pay-method { border:1.5px solid var(--border); border-radius:var(--radius-sm); padding:14px; margin:8px 0; cursor:pointer; display:flex; align-items:center; gap:14px; background:var(--warm-white); transition:all 0.2s; }
+.pay-method:hover { border-color:var(--gold); }
+.pay-method.selected { border-color:var(--gold); background:var(--gold-light); }
+.pay-method-icon { font-size:24px; flex-shrink:0; }
+.pay-method-info { flex:1; }
+.pay-method-name { font-size:14px; font-weight:500; color:var(--ink); }
+.pay-method-desc { font-size:11px; color:var(--muted); margin-top:2px; }
+.pay-instructions { background:var(--ink); border-radius:var(--radius-sm); padding:16px; margin-top:14px; display:none; }
+.pay-instructions.show { display:block; }
+.pay-inst-title { font-family:'Cormorant Garamond',serif; font-size:16px; font-style:italic; color:#ccc; margin-bottom:12px; }
+.pay-inst-row { display:flex; justify-content:space-between; font-size:13px; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.08); }
+.pay-inst-row:last-child { border-bottom:none; }
+.pay-inst-label { color:#aaa; }
+.pay-inst-val { color:#fff; font-weight:500; }
+.pay-inst-val.gold { color:var(--gold-mid); }
+.pay-ref-box { background:rgba(184,134,11,0.15); border:1px dashed var(--gold); border-radius:var(--radius-sm); padding:10px 14px; margin-top:10px; text-align:center; }
+.pay-ref-label { font-size:10px; color:var(--gold-mid); text-transform:uppercase; letter-spacing:0.1em; }
+.pay-ref-val { font-size:22px; font-weight:500; color:#fff; font-family:'Cormorant Garamond',serif; letter-spacing:2px; margin-top:4px; }
+.pay-ref-hint { font-size:11px; color:#aaa; margin-top:4px; }
+.pay-confirm-check { display:flex; align-items:flex-start; gap:10px; margin-top:14px; padding:12px; background:#fff8e6; border:1px solid #f0c040; border-radius:var(--radius-sm); }
+.pay-confirm-check input[type="checkbox"] { width:18px; height:18px; flex-shrink:0; margin-top:1px; accent-color:var(--gold); cursor:pointer; }
+.pay-confirm-text { font-size:12px; line-height:1.5; color:var(--ink); }
 
 <script type="module">
 import { initializeApp }                              from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
@@ -302,6 +376,31 @@ function updateSummary() {
   document.getElementById('sum-price').textContent    = selPrice ? '$' + selPrice : '—';
 }
 
+/* ── PAYMENT ── */
+const PAYMENT_CONFIG = {
+  // ── PAYNOW INTEGRATION POINT ──
+  // When Paynow is ready, replace manual flow here with Paynow API call
+  ecocash:  { name: 'EcoCash',      number: '0778961269' },
+  innbucks: { name: 'InnBucks',     number: '0778961269' },
+  visa:     { name: 'Visa / Card',  number: 'Pay at studio' }
+};
+let selPayMethod = '';
+let payRef = '';
+
+function selectPayMethod(el, method) {
+  document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('selected'));
+  el.classList.add('selected');
+  selPayMethod = method;
+  const cfg = PAYMENT_CONFIG[method];
+  payRef = 'GS' + Math.floor(Math.random() * 90000 + 10000);
+  document.getElementById('pi-number').textContent  = cfg.number;
+  document.getElementById('pi-amount').textContent  = '$' + selPrice;
+  document.getElementById('pi-ref').textContent     = payRef;
+  document.getElementById('pi-ref-big').textContent = payRef;
+  document.getElementById('pay-instructions').classList.add('show');
+  document.getElementById('pay-confirm-check').style.display = method === 'visa' ? 'none' : 'flex';
+}
+
 /* ── ERRORS ── */
 function showErr(id, show) { document.getElementById(id).classList.toggle('show', show); }
 
@@ -314,12 +413,113 @@ function goStep(step) {
     if (!selDate || !selSlot) { showErr('err2', true); return; }
     showErr('err2', false); updateSummary();
   }
-  ['step1','step2','step3'].forEach((id, i) => document.getElementById(id).classList.toggle('visible', i + 1 === step));
-  for (let i = 1; i <= 4; i++) {
+  if (step === 4) {
+    const name  = document.getElementById('cust-name').value.trim();
+    const phone = document.getElementById('cust-phone').value.trim();
+    if (!name || phone.length < 9) { showErr('err3', true); return; }
+    showErr('err3', false);
+  }
+  ['step1','step2','step3'].forEach((id, i) =>
+    document.getElementById(id).classList.toggle('visible', i + 1 === step)
+  );
+  document.getElementById('step4').classList.toggle('visible', step === 4);
+  for (let i = 1; i <= 5; i++) {
     document.getElementById('sd' + i).classList.toggle('active', i === step);
     document.getElementById('sd' + i).classList.toggle('done',   i < step);
   }
-  for (let i = 1; i <= 3; i++) document.getElementById('sl' + i).classList.toggle('done', i < step);
+  for (let i = 1; i <= 4; i++) document.getElementById('sl' + i).classList.toggle('done', i < step);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── SUBMIT BOOKING ── */
+async function submitBooking() {
+  if (!selPayMethod) { showErr('err4', true); return; }
+  if (selPayMethod !== 'visa' && !document.getElementById('pay-done-check').checked) {
+    showErr('err4', true); return;
+  }
+  showErr('err4', false);
+
+  const btn = document.querySelector('#step4 .btn-primary');
+  btn.disabled = true;
+  btn.innerHTML = '<span>Confirming...</span><span style="display:inline-block;animation:spin 1s linear infinite">⟳</span>';
+
+  const name    = document.getElementById('cust-name').value.trim();
+  const phone   = document.getElementById('cust-phone').value.trim();
+  const email   = document.getElementById('cust-email').value.trim();
+  const notes   = document.getElementById('cust-notes').value.trim();
+  const ref     = genRef();
+  const dateStr = new Date(selDate + 'T00:00:00').toLocaleDateString('en-ZW',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const now     = new Date().toLocaleString('en-ZW',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+
+  try {
+    await saveBooking({
+      ref, service: selService, price: selPrice, duration: selDuration,
+      date: selDate, slot: selSlot, name, phone, email, notes,
+      paymentMethod: PAYMENT_CONFIG[selPayMethod].name,
+      paymentRef: payRef,
+      paymentStatus: selPayMethod === 'visa' ? 'pay_on_arrival' : 'pending_verification'
+    });
+
+    document.getElementById('conf-submitted').textContent = 'Confirmed on ' + now;
+    document.getElementById('ref-code').textContent   = ref;
+    document.getElementById('c-service').textContent  = selService;
+    document.getElementById('c-datetime').textContent = dateStr + ' at ' + selSlot;
+    document.getElementById('c-duration').textContent = selDuration + ' mins';
+    document.getElementById('c-name').textContent     = name;
+    document.getElementById('c-phone').textContent    = phone;
+    document.getElementById('c-notes').textContent    = notes || 'None';
+    document.getElementById('c-price').textContent    = '$' + selPrice;
+
+    const msg = encodeURIComponent(
+      'Hi Glam Studio! I just booked an appointment.\n\n' +
+      'Ref: ' + ref + '\nService: ' + selService + '\nDate: ' + dateStr + ' at ' + selSlot +
+      '\nName: ' + name + '\nPhone: ' + phone + '\nTotal: $' + selPrice +
+      '\nPayment: ' + PAYMENT_CONFIG[selPayMethod].name + ' — Ref: ' + payRef +
+      (notes ? '\nNotes: ' + notes : '')
+    );
+    document.getElementById('wa-btn').onclick = () =>
+      window.open('https://wa.me/2637700000000?text=' + msg, '_blank');
+
+    for (let i = 1; i <= 5; i++) {
+      document.getElementById('sd' + i).classList.remove('active');
+      document.getElementById('sd' + i).classList.add('done');
+    }
+    for (let i = 1; i <= 4; i++) document.getElementById('sl' + i).classList.add('done');
+    ['step1','step2','step3'].forEach(id => document.getElementById(id).classList.remove('visible'));
+    document.getElementById('step4').classList.remove('visible');
+    document.getElementById('confirm-screen').classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  } catch(e) {
+    console.error('Booking error:', e);
+    alert('Something went wrong. Please try again.');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Confirm booking →';
+  }
+}
+
+/* ── RESET ── */
+function resetApp() {
+  selService = ''; selPrice = 0; selDuration = 0; selDate = ''; selSlot = '';
+  selPayMethod = ''; payRef = '';
+  ['cust-name','cust-phone','cust-email','cust-notes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('book-date').value = today;
+  document.getElementById('pay-done-check').checked = false;
+  document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('selected'));
+  document.getElementById('pay-instructions').classList.remove('show');
+  document.getElementById('pay-confirm-check').style.display = 'none';
+  document.querySelectorAll('.service-item').forEach(i => i.classList.remove('selected'));
+  document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected','unavailable'));
+  document.getElementById('confirm-screen').classList.remove('visible');
+  document.getElementById('step4').classList.remove('visible');
+  ['step1','step2','step3'].forEach((id, i) => document.getElementById(id).classList.toggle('visible', i === 0));
+  for (let i = 1; i <= 5; i++) {
+    document.getElementById('sd' + i).classList.remove('active','done');
+    if (i === 1) document.getElementById('sd1').classList.add('active');
+  }
+  for (let i = 1; i <= 4; i++) document.getElementById('sl' + i).classList.remove('done');
+  updateSlots();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -333,94 +533,29 @@ function genRef() {
 /* ── FIREBASE SAVE ── */
 async function saveBooking(data) {
   try {
-    const ref = await addDoc(collection(db, 'salon_bookings'), {
-      bookingRef:    data.ref,
-      service:       data.service,
-      price:         data.price,
-      duration:      data.duration,
-      date:          data.date,
-      timeSlot:      data.slot,
-      customerName:  data.name,
-      customerPhone: data.phone,
-      customerEmail: data.email || '—',
-      notes:         data.notes || '—',
-      status:        'confirmed',
-      createdAt:     serverTimestamp()
+    const docRef = await addDoc(collection(db, 'salon_bookings'), {
+      bookingRef:     data.ref,
+      service:        data.service,
+      price:          data.price,
+      duration:       data.duration,
+      date:           data.date,
+      timeSlot:       data.slot,
+      customerName:   data.name,
+      customerPhone:  data.phone,
+      customerEmail:  data.email || '—',
+      notes:          data.notes || '—',
+      paymentMethod:  data.paymentMethod,
+      paymentRef:     data.paymentRef,
+      paymentStatus:  data.paymentStatus,
+      status:         'confirmed',
+      createdAt:      serverTimestamp()
     });
-    console.log('Booking saved to Firestore:', ref.id);
-  } catch (e) { console.error('Firestore error:', e); }
-}
-
-/* ── CONFIRM ── */
-async function confirmBooking() {
-  const name  = document.getElementById('cust-name').value.trim();
-  const phone = document.getElementById('cust-phone').value.trim();
-  if (!name || phone.length < 9) { showErr('err3', true); return; }
-  showErr('err3', false);
-
-  const btn = document.getElementById('confirm-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<span>Saving...</span><span style="display:inline-block;animation:spin 1s linear infinite">⟳</span>';
-
-  const email   = document.getElementById('cust-email').value.trim();
-  const notes   = document.getElementById('cust-notes').value.trim();
-  const ref     = genRef();
-  const dateStr = new Date(selDate + 'T00:00:00').toLocaleDateString('en-ZW',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  const now     = new Date().toLocaleString('en-ZW',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
-
-  await saveBooking({ ref, service: selService, price: selPrice, duration: selDuration, date: selDate, slot: selSlot, name, phone, email, notes });
-
-  document.getElementById('conf-submitted').textContent = 'Confirmed on ' + now;
-  document.getElementById('ref-code').textContent  = ref;
-  document.getElementById('c-service').textContent = selService;
-  document.getElementById('c-datetime').textContent= dateStr + ' at ' + selSlot;
-  document.getElementById('c-duration').textContent= selDuration + ' mins';
-  document.getElementById('c-name').textContent    = name;
-  document.getElementById('c-phone').textContent   = phone;
-  document.getElementById('c-notes').textContent   = notes || 'None';
-  document.getElementById('c-price').textContent   = '$' + selPrice;
-
-  const msg = encodeURIComponent(
-    'Hi Glam Studio! I just booked an appointment.\n\n' +
-    'Ref: ' + ref + '\nService: ' + selService + '\nDate: ' + dateStr + ' at ' + selSlot +
-    '\nName: ' + name + '\nPhone: ' + phone + '\nTotal: $' + selPrice +
-    (notes ? '\nNotes: ' + notes : '')
-  );
-  document.getElementById('wa-btn').onclick = () => window.open('https://wa.me/2637700000000?text=' + msg, '_blank');
-
-  btn.disabled = false;
-  btn.innerHTML = 'Confirm booking →';
-
-  for (let i = 1; i <= 4; i++) {
-    document.getElementById('sd' + i).classList.remove('active');
-    document.getElementById('sd' + i).classList.add('done');
-  }
-  for (let i = 1; i <= 3; i++) document.getElementById('sl' + i).classList.add('done');
-  ['step1','step2','step3'].forEach(id => document.getElementById(id).classList.remove('visible'));
-  document.getElementById('confirm-screen').classList.add('visible');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-/* ── RESET ── */
-function resetApp() {
-  selService = ''; selPrice = 0; selDuration = 0; selDate = ''; selSlot = '';
-  ['cust-name','cust-phone','cust-email','cust-notes'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('book-date').value = today;
-  document.querySelectorAll('.service-item').forEach(i => i.classList.remove('selected'));
-  document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected','unavailable'));
-  document.getElementById('confirm-screen').classList.remove('visible');
-  ['step1','step2','step3'].forEach((id, i) => document.getElementById(id).classList.toggle('visible', i === 0));
-  for (let i = 1; i <= 4; i++) {
-    document.getElementById('sd' + i).classList.remove('active','done');
-    if (i === 1) document.getElementById('sd1').classList.add('active');
-  }
-  for (let i = 1; i <= 3; i++) document.getElementById('sl' + i).classList.remove('done');
-  updateSlots();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+    console.log('✅ Booking saved:', docRef.id);
+  } catch (e) { console.error('❌ Firestore error:', e); throw e; }
 }
 
 /* ── EXPOSE ── */
-Object.assign(window, { selectService, selectSlot, updateSlots, goStep, confirmBooking, resetApp });
+Object.assign(window, { selectService, selectSlot, updateSlots, goStep, selectPayMethod, submitBooking, resetApp });
 
 updateSlots();
 </script>
