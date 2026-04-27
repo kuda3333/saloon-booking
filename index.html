@@ -271,7 +271,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
     <div class="pay-instructions" id="pay-instructions">
       <div class="pay-inst-title">Payment instructions</div>
       <div class="pay-inst-row"><span class="pay-inst-label">Send to</span><span class="pay-inst-val" id="pi-number">—</span></div>
-      <div class="pay-inst-row"><span class="pay-inst-label">Amount</span><span class="pay-inst-val gold" id="pi-amount">—</span></div>
+      <div class="pay-inst-row"><span class="pay-inst-label">Amount</span><span class="pay-inst-val" style="color:var(--gold-mid)" id="pi-amount">—</span></div>
       <div class="pay-inst-row"><span class="pay-inst-label">Reference</span><span class="pay-inst-val" id="pi-ref">—</span></div>
       <div class="pay-ref-box">
         <div class="pay-ref-label">Use this exact reference</div>
@@ -286,7 +286,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
     </div>
 
     <div class="err" id="err4">Please select a payment method and confirm you have paid.</div>
-    <button class="btn-primary" onclick="submitBooking()">Confirm booking →</button>
+    <button class="btn-primary" id="submit-btn" onclick="submitBooking()">Confirm booking →</button>
     <button class="btn-outline" onclick="goStep(3)">← Back</button>
   </div>
 </main>
@@ -323,31 +323,6 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
   </main>
 </div>
 
-.pay-step { background:var(--card); border-radius:var(--radius); border:1px solid var(--border); padding:20px; margin-bottom:14px; display:none; animation:rise 0.35s ease; }
-.pay-step.visible { display:block; }
-.pay-method { border:1.5px solid var(--border); border-radius:var(--radius-sm); padding:14px; margin:8px 0; cursor:pointer; display:flex; align-items:center; gap:14px; background:var(--warm-white); transition:all 0.2s; }
-.pay-method:hover { border-color:var(--gold); }
-.pay-method.selected { border-color:var(--gold); background:var(--gold-light); }
-.pay-method-icon { font-size:24px; flex-shrink:0; }
-.pay-method-info { flex:1; }
-.pay-method-name { font-size:14px; font-weight:500; color:var(--ink); }
-.pay-method-desc { font-size:11px; color:var(--muted); margin-top:2px; }
-.pay-instructions { background:var(--ink); border-radius:var(--radius-sm); padding:16px; margin-top:14px; display:none; }
-.pay-instructions.show { display:block; }
-.pay-inst-title { font-family:'Cormorant Garamond',serif; font-size:16px; font-style:italic; color:#ccc; margin-bottom:12px; }
-.pay-inst-row { display:flex; justify-content:space-between; font-size:13px; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.08); }
-.pay-inst-row:last-child { border-bottom:none; }
-.pay-inst-label { color:#aaa; }
-.pay-inst-val { color:#fff; font-weight:500; }
-.pay-inst-val.gold { color:var(--gold-mid); }
-.pay-ref-box { background:rgba(184,134,11,0.15); border:1px dashed var(--gold); border-radius:var(--radius-sm); padding:10px 14px; margin-top:10px; text-align:center; }
-.pay-ref-label { font-size:10px; color:var(--gold-mid); text-transform:uppercase; letter-spacing:0.1em; }
-.pay-ref-val { font-size:22px; font-weight:500; color:#fff; font-family:'Cormorant Garamond',serif; letter-spacing:2px; margin-top:4px; }
-.pay-ref-hint { font-size:11px; color:#aaa; margin-top:4px; }
-.pay-confirm-check { display:flex; align-items:flex-start; gap:10px; margin-top:14px; padding:12px; background:#fff8e6; border:1px solid #f0c040; border-radius:var(--radius-sm); }
-.pay-confirm-check input[type="checkbox"] { width:18px; height:18px; flex-shrink:0; margin-top:1px; accent-color:var(--gold); cursor:pointer; }
-.pay-confirm-text { font-size:12px; line-height:1.5; color:var(--ink); }
-
 <script type="module">
 import { initializeApp }                              from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
@@ -363,11 +338,27 @@ const fbApp = initializeApp({
 });
 const db = getFirestore(fbApp);
 
+/* ── PAYMENT CONFIG ── */
+const PAYMENT_CONFIG = {
+  ecocash:  { name: 'EcoCash',     number: '0778961269' },
+  innbucks: { name: 'InnBucks',    number: '0778961269' },
+  visa:     { name: 'Visa / Card', number: 'Pay at studio' }
+};
+
 /* ── STATE ── */
 let selService = '', selPrice = 0, selDuration = 0, selDate = '', selSlot = '';
+let selPayMethod = '', payRef = '';
 const today = new Date().toISOString().split('T')[0];
 document.getElementById('book-date').min   = today;
 document.getElementById('book-date').value = today;
+
+/* ── HELPERS ── */
+function genRef() {
+  const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let r = 'GS-';
+  for (let i = 0; i < 5; i++) r += c[Math.floor(Math.random() * c.length)];
+  return r;
+}
+function showErr(id, show) { document.getElementById(id).classList.toggle('show', show); }
 
 /* ── SERVICE / SLOT ── */
 function selectService(el, name, price, duration) {
@@ -384,33 +375,23 @@ function updateSlots() {
   selDate = document.getElementById('book-date').value;
   const day = new Date(selDate).getDay();
   document.querySelectorAll('.slot').forEach((s, i) => {
-    s.classList.remove('unavailable','selected');
+    s.classList.remove('unavailable', 'selected');
     if (day === 0) s.classList.add('unavailable');
-    else if ([1,4].includes(i) && day % 2 === 0) s.classList.add('unavailable');
+    else if ([1, 4].includes(i) && day % 2 === 0) s.classList.add('unavailable');
   });
   selSlot = '';
 }
 
 /* ── SUMMARY ── */
 function updateSummary() {
-  const ds = selDate ? new Date(selDate + 'T00:00:00').toLocaleDateString('en-ZW',{weekday:'short',day:'numeric',month:'short',year:'numeric'}) : '—';
+  const ds = selDate ? new Date(selDate + 'T00:00:00').toLocaleDateString('en-ZW', { weekday:'short', day:'numeric', month:'short', year:'numeric' }) : '—';
   document.getElementById('sum-service').textContent  = selService || '—';
   document.getElementById('sum-datetime').textContent = (selDate && selSlot) ? ds + ' at ' + selSlot : '—';
   document.getElementById('sum-duration').textContent = selDuration ? selDuration + ' mins' : '—';
   document.getElementById('sum-price').textContent    = selPrice ? '$' + selPrice : '—';
 }
 
-/* ── PAYMENT ── */
-const PAYMENT_CONFIG = {
-  // ── PAYNOW INTEGRATION POINT ──
-  // When Paynow is ready, replace manual flow here with Paynow API call
-  ecocash:  { name: 'EcoCash',      number: '0778961269' },
-  innbucks: { name: 'InnBucks',     number: '0778961269' },
-  visa:     { name: 'Visa / Card',  number: 'Pay at studio' }
-};
-let selPayMethod = '';
-let payRef = '';
-
+/* ── PAYMENT METHOD ── */
 function selectPayMethod(el, method) {
   document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('selected'));
   el.classList.add('selected');
@@ -425,17 +406,17 @@ function selectPayMethod(el, method) {
   document.getElementById('pay-confirm-check').style.display = method === 'visa' ? 'none' : 'flex';
 }
 
-/* ── ERRORS ── */
-function showErr(id, show) { document.getElementById(id).classList.toggle('show', show); }
-
-/* ── STEPS ── */
+/* ── NAVIGATION ── */
 function goStep(step) {
-  if (step === 2 && !selService) { showErr('err1', true); return; }
-  showErr('err1', false);
+  if (step === 2) {
+    if (!selService) { showErr('err1', true); return; }
+    showErr('err1', false);
+  }
   if (step === 3) {
     selDate = document.getElementById('book-date').value;
     if (!selDate || !selSlot) { showErr('err2', true); return; }
-    showErr('err2', false); updateSummary();
+    showErr('err2', false);
+    updateSummary();
   }
   if (step === 4) {
     const name  = document.getElementById('cust-name').value.trim();
@@ -455,15 +436,36 @@ function goStep(step) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+/* ── FIREBASE SAVE ── */
+async function saveBooking(data) {
+  const docRef = await addDoc(collection(db, 'salon_bookings'), {
+    bookingRef:    data.ref,
+    service:       data.service,
+    price:         data.price,
+    duration:      data.duration,
+    date:          data.date,
+    timeSlot:      data.slot,
+    customerName:  data.name,
+    customerPhone: data.phone,
+    customerEmail: data.email || '—',
+    notes:         data.notes || '—',
+    paymentMethod: data.paymentMethod,
+    paymentRef:    data.paymentRef,
+    paymentStatus: data.paymentStatus,
+    status:        'confirmed',
+    createdAt:     serverTimestamp()
+  });
+  console.log('✅ Booking saved:', docRef.id);
+}
+
 /* ── SUBMIT BOOKING ── */
 async function submitBooking() {
   if (!selPayMethod) { showErr('err4', true); return; }
-  if (selPayMethod !== 'visa' && !document.getElementById('pay-done-check').checked) {
-    showErr('err4', true); return;
-  }
+  const check = document.getElementById('pay-done-check');
+  if (selPayMethod !== 'visa' && !check.checked) { showErr('err4', true); return; }
   showErr('err4', false);
 
-  const btn = document.querySelector('#step4 .btn-primary');
+  const btn = document.getElementById('submit-btn');
   btn.disabled = true;
   btn.innerHTML = '<span>Confirming...</span><span style="display:inline-block;animation:spin 1s linear infinite">⟳</span>';
 
@@ -472,15 +474,15 @@ async function submitBooking() {
   const email   = document.getElementById('cust-email').value.trim();
   const notes   = document.getElementById('cust-notes').value.trim();
   const ref     = genRef();
-  const dateStr = new Date(selDate + 'T00:00:00').toLocaleDateString('en-ZW',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  const now     = new Date().toLocaleString('en-ZW',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const dateStr = new Date(selDate + 'T00:00:00').toLocaleDateString('en-ZW', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  const now     = new Date().toLocaleString('en-ZW', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
 
   try {
     await saveBooking({
       ref, service: selService, price: selPrice, duration: selDuration,
       date: selDate, slot: selSlot, name, phone, email, notes,
       paymentMethod: PAYMENT_CONFIG[selPayMethod].name,
-      paymentRef: payRef,
+      paymentRef:    payRef,
       paymentStatus: selPayMethod === 'visa' ? 'pay_on_arrival' : 'pending_verification'
     });
 
@@ -502,7 +504,7 @@ async function submitBooking() {
       (notes ? '\nNotes: ' + notes : '')
     );
     document.getElementById('wa-btn').onclick = () =>
-      window.open('https://wa.me/2637700000000?text=' + msg, '_blank');
+      window.open('https://wa.me/2637778961269?text=' + msg, '_blank');
 
     for (let i = 1; i <= 5; i++) {
       document.getElementById('sd' + i).classList.remove('active');
@@ -515,8 +517,8 @@ async function submitBooking() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
   } catch(e) {
-    console.error('Booking error:', e);
-    alert('Something went wrong. Please try again.');
+    console.error('❌ Booking error:', e);
+    alert('Something went wrong: ' + e.message);
   } finally {
     btn.disabled = false;
     btn.innerHTML = 'Confirm booking →';
@@ -537,7 +539,9 @@ function resetApp() {
   document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected','unavailable'));
   document.getElementById('confirm-screen').classList.remove('visible');
   document.getElementById('step4').classList.remove('visible');
-  ['step1','step2','step3'].forEach((id, i) => document.getElementById(id).classList.toggle('visible', i === 0));
+  ['step1','step2','step3'].forEach((id, i) =>
+    document.getElementById(id).classList.toggle('visible', i === 0)
+  );
   for (let i = 1; i <= 5; i++) {
     document.getElementById('sd' + i).classList.remove('active','done');
     if (i === 1) document.getElementById('sd1').classList.add('active');
@@ -545,37 +549,6 @@ function resetApp() {
   for (let i = 1; i <= 4; i++) document.getElementById('sl' + i).classList.remove('done');
   updateSlots();
   window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-/* ── REF ── */
-function genRef() {
-  const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let r = 'GS-';
-  for (let i = 0; i < 5; i++) r += c[Math.floor(Math.random() * c.length)];
-  return r;
-}
-
-/* ── FIREBASE SAVE ── */
-async function saveBooking(data) {
-  try {
-    const docRef = await addDoc(collection(db, 'salon_bookings'), {
-      bookingRef:     data.ref,
-      service:        data.service,
-      price:          data.price,
-      duration:       data.duration,
-      date:           data.date,
-      timeSlot:       data.slot,
-      customerName:   data.name,
-      customerPhone:  data.phone,
-      customerEmail:  data.email || '—',
-      notes:          data.notes || '—',
-      paymentMethod:  data.paymentMethod,
-      paymentRef:     data.paymentRef,
-      paymentStatus:  data.paymentStatus,
-      status:         'confirmed',
-      createdAt:      serverTimestamp()
-    });
-    console.log('✅ Booking saved:', docRef.id);
-  } catch (e) { console.error('❌ Firestore error:', e); throw e; }
 }
 
 /* ── EXPOSE ── */
