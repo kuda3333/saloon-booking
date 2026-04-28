@@ -142,7 +142,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
   <div class="hero-meta">
     <span>Harare CBD</span>
     <span>Mon – Sat, 8am – 6pm</span>
-    <span>+263 77 8961 269</span>
+    <span>+263 77 000 0000</span>
   </div>
 </div>
 
@@ -339,12 +339,59 @@ const fbApp = initializeApp({
 });
 const db = getFirestore(fbApp);
 
-/* ── PAYMENT CONFIG ── */
+/* ── PAYNOW CONFIG ──────────────────────────────────────────
+   Fill these in when your Paynow merchant account is approved.
+   Get credentials at: https://developers.paynow.co.zw
+   ─────────────────────────────────────────────────────────── */
+const PAYNOW_CONFIG = {
+  integrationId:  'YOUR_INTEGRATION_ID',   // From Paynow dashboard
+  integrationKey: 'YOUR_INTEGRATION_KEY',  // From Paynow dashboard
+  resultUrl:      'https://your-vercel-url.vercel.app/payment-result', // Your live URL
+  returnUrl:      'https://your-vercel-url.vercel.app',
+  enabled: false  // ← Set to TRUE once credentials are filled in above
+};
+
+/* ── PAYMENT CONFIG (manual fallback while Paynow pending) ── */
 const PAYMENT_CONFIG = {
   ecocash:  { name: 'EcoCash',     number: '0778961269' },
   innbucks: { name: 'InnBucks',    number: '0778961269' },
   visa:     { name: 'Visa / Card', number: 'Pay at studio' }
 };
+
+/* ── PAYNOW PAYMENT INITIATOR ── */
+async function initiatePaynow(amount, email, phone, ref, method) {
+  if (!PAYNOW_CONFIG.enabled) return null;
+  try {
+    // Paynow requires a server-side hash — this calls your Cloud Function
+    // Deploy the Cloud Function from: https://github.com/paynow/Paynow-NodeJS-SDK
+    const res = await fetch('/api/paynow-initiate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        integrationId:  PAYNOW_CONFIG.integrationId,
+        integrationKey: PAYNOW_CONFIG.integrationKey,
+        resultUrl:      PAYNOW_CONFIG.resultUrl,
+        returnUrl:      PAYNOW_CONFIG.returnUrl,
+        reference:      ref,
+        amount:         amount,
+        email:          email,
+        phone:          phone,
+        method:         method === 'ecocash' ? 'ecocash' : 'innbucks',
+        items:          [{ name: 'Glam Studio Booking', amount }]
+      })
+    });
+    const data = await res.json();
+    if (data.redirectUrl) {
+      window.location.href = data.redirectUrl; // Redirect to Paynow payment page
+      return 'redirecting';
+    }
+    if (data.pollUrl) return data.pollUrl; // Mobile money — poll for confirmation
+    return null;
+  } catch(e) {
+    console.error('Paynow error:', e);
+    return null;
+  }
+}
 
 /* ── STATE ── */
 let selService = '', selPrice = 0, selDuration = 0, selDate = '', selSlot = '';
@@ -403,12 +450,26 @@ function selectPayMethod(el, method) {
   selPayMethod = method;
   const cfg = PAYMENT_CONFIG[method];
   payRef = genPayRef();
-  document.getElementById('pi-number').textContent  = cfg.number;
-  document.getElementById('pi-amount').textContent  = '$' + selPrice;
-  document.getElementById('pi-ref').textContent     = payRef;
-  document.getElementById('pi-ref-big').textContent = payRef;
+
+  if (PAYNOW_CONFIG.enabled && method !== 'visa') {
+    // Paynow active — show phone prompt instruction
+    document.getElementById('pi-number').textContent  = 'Payment via Paynow';
+    document.getElementById('pi-amount').textContent  = '$' + selPrice;
+    document.getElementById('pi-ref').textContent     = payRef;
+    document.getElementById('pi-ref-big').textContent = payRef;
+    document.getElementById('pay-confirm-check').style.display = 'none';
+    // Change button text to reflect Paynow redirect
+    document.getElementById('submit-btn').textContent = 'Pay now →';
+  } else {
+    // Manual fallback
+    document.getElementById('pi-number').textContent  = cfg.number;
+    document.getElementById('pi-amount').textContent  = '$' + selPrice;
+    document.getElementById('pi-ref').textContent     = payRef;
+    document.getElementById('pi-ref-big').textContent = payRef;
+    document.getElementById('submit-btn').innerHTML   = 'Confirm booking →';
+    document.getElementById('pay-confirm-check').style.display = method === 'visa' ? 'none' : 'flex';
+  }
   document.getElementById('pay-instructions').classList.add('show');
-  document.getElementById('pay-confirm-check').style.display = method === 'visa' ? 'none' : 'flex';
 }
 
 /* ── NAVIGATION ── */
@@ -469,7 +530,9 @@ async function submitBooking() {
   if (!selPayMethod) { showErr('err4', true); return; }
   const check = document.getElementById('pay-done-check');
   if (selPayMethod !== 'visa' && !check.checked) { showErr('err4', true); return; }
-  // Price is locked at service selection time and re-validated here
+  showErr('err4', false);
+
+  // Price locked at service selection — re-validated here
   const lockedPrice = selPrice;
   if (!lockedPrice || lockedPrice <= 0) {
     alert('Invalid booking — please start again.'); return;
@@ -488,12 +551,34 @@ async function submitBooking() {
   const now     = new Date().toLocaleString('en-ZW', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
 
   try {
+    // ── PAYNOW FLOW (when enabled) ──────────────────────────
+    if (PAYNOW_CONFIG.enabled && selPayMethod !== 'visa') {
+      const pollUrl = await initiatePaynow(
+        lockedPrice,
+        email || 'noemail@glamstudio.co.zw',
+        phone, payRef, selPayMethod
+      );
+      if (pollUrl === 'redirecting') return; // Page redirects to Paynow
+      if (!pollUrl) {
+        alert('Payment initiation failed. Please try manual payment.');
+        btn.disabled = false;
+        btn.innerHTML = 'Confirm booking →';
+        return;
+      }
+    }
+
+    // ── MANUAL / VISA FLOW ──────────────────────────────────
     await saveBooking({
-      ref, service: selService, price: selPrice, duration: selDuration,
-      date: selDate, slot: selSlot, name, phone, email, notes,
-      paymentMethod: PAYMENT_CONFIG[selPayMethod].name,
-      paymentRef:    payRef,
-      paymentStatus: selPayMethod === 'visa' ? 'pay_on_arrival' : 'pending_verification'
+      ref, service: selService, price: lockedPrice,
+      duration: selDuration, date: selDate, slot: selSlot,
+      name, phone, email, notes,
+      paymentMethod:  PAYMENT_CONFIG[selPayMethod].name,
+      paymentRef:     payRef,
+      paymentStatus:  selPayMethod === 'visa'
+                        ? 'pay_on_arrival'
+                        : PAYNOW_CONFIG.enabled
+                          ? 'paynow_initiated'
+                          : 'manual_pending_verification'
     });
 
     document.getElementById('conf-submitted').textContent = 'Confirmed on ' + now;
