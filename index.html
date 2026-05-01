@@ -581,6 +581,24 @@ async function submitBooking() {
                           : 'manual_pending_verification'
     });
 
+    // Send email notifications via Resend
+    fetch('/api/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type: 'salon_booking',
+        data: {
+          ref, service: selService, price: lockedPrice,
+          duration: selDuration,
+          datetime: new Date(selDate + 'T00:00:00').toLocaleDateString('en-ZW',{weekday:'long',day:'numeric',month:'long',year:'numeric'}) + ' at ' + selSlot,
+          name, phone, email, notes: notes || 'None',
+          paymentMethod: PAYMENT_CONFIG[selPayMethod].name,
+          paymentRef: payRef,
+          paymentStatus: selPayMethod === 'visa' ? 'Pay on arrival' : 'Manual — pending verification'
+        }
+      })
+    }).catch(e => console.warn('Email notification failed:', e));
+
     document.getElementById('conf-submitted').textContent = 'Confirmed on ' + now;
     document.getElementById('ref-code').textContent   = ref;
     document.getElementById('c-service').textContent  = selService;
