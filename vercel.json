@@ -5,11 +5,5 @@
   "cleanUrls": true,
   "rewrites": [
     { "source": "/admin", "destination": "/admin.html" }
-  ],
-  "crons": [
-    {
-      "path": "/api/send-reminders",
-      "schedule": "0 * * * *"
-    }
   ]
 }
