@@ -142,7 +142,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
   <div class="hero-meta">
     <span>Harare CBD</span>
     <span>Mon – Sat, 8am – 6pm</span>
-    <span>+263 77 000 0000</span>
+    <span>+263 77 896 1269</span>
   </div>
 </div>
 
@@ -326,7 +326,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
 
 <script type="module">
 import { initializeApp }                              from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 /* ── FIREBASE ── */
 const fbApp = initializeApp({
@@ -423,15 +423,40 @@ function selectSlot(el) {
   document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
   el.classList.add('selected'); selSlot = el.textContent;
 }
-function updateSlots() {
+async function updateSlots() {
   selDate = document.getElementById('book-date').value;
-  const day = new Date(selDate).getDay();
-  document.querySelectorAll('.slot').forEach((s, i) => {
-    s.classList.remove('unavailable', 'selected');
-    if (day === 0) s.classList.add('unavailable');
-    else if ([1, 4].includes(i) && day % 2 === 0) s.classList.add('unavailable');
-  });
   selSlot = '';
+  const grid = document.getElementById('slots-grid');
+  const day = new Date(selDate + 'T00:00:00').getDay();
+
+  document.querySelectorAll('.slot').forEach(s => s.classList.remove('unavailable', 'selected'));
+
+  if (day === 0) {
+    document.querySelectorAll('.slot').forEach(s => s.classList.add('unavailable'));
+    return;
+  }
+
+  if (!selDate) return;
+
+  grid.style.opacity = '0.5';
+  grid.style.pointerEvents = 'none';
+  try {
+    const q = query(
+      collection(db, 'salon_bookings'),
+      where('date', '==', selDate),
+      where('status', '==', 'confirmed')
+    );
+    const snap = await getDocs(q);
+    const booked = new Set(snap.docs.map(d => d.data().timeSlot));
+    document.querySelectorAll('.slot').forEach(s => {
+      if (booked.has(s.textContent.trim())) s.classList.add('unavailable');
+    });
+  } catch (e) {
+    console.warn('Could not load slot availability:', e);
+  } finally {
+    grid.style.opacity = '1';
+    grid.style.pointerEvents = '';
+  }
 }
 
 /* ── SUMMARY ── */
