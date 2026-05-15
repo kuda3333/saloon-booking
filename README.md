@@ -121,9 +121,24 @@ Required GitHub secrets: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`.
 2. For EcoCash/InnBucks bookings, match the customer's payment SMS against the `paymentRef` in the email.
 3. Customers receive an SMS reminder 24 hours before their appointment automatically.
 
-### Cancelling / rescheduling
+### Operator dashboard (`/admin`)
 
-For now this is manual: open Firestore console → `salon_bookings` → find the doc by `bookingRef`, set `status: 'cancelled'`. (An admin dashboard with one-click actions ships in Sprint 2.)
+A lightweight ops console lives at [`/admin`](https://saloon-booking-ten.vercel.app/admin):
+
+- See today's, upcoming, or all bookings filtered by date/status
+- Mark a booking *paid* once the EcoCash/InnBucks SMS lands
+- Mark *completed* when the customer leaves
+- *Cancel* a booking
+- One-click WhatsApp the customer
+- Live revenue, pending and completed counts
+
+**Setup (one-time):**
+
+1. Firebase Console → **Authentication** → *Get started* → enable **Email/Password**
+2. Click **Add user** and create an operator account (your email + a strong password)
+3. That's it — go to `/admin`, sign in, and you're operating
+
+To add more operators later, repeat step 2.
 
 ### Bringing the site down for maintenance
 

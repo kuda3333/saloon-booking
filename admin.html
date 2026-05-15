@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1a1209">
+<meta name="robots" content="noindex, nofollow">
+<title>Glam Studio · Operator Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#fdfaf6; --ink:#1a1209; --ink-soft:#2a1f14;
+  --gold:#b8860b; --gold-mid:#d4a017; --gold-light:#f5e9c8;
+  --rose:#c4795a; --rose-light:#faeee8;
+  --green:#1a6b3c; --green-light:#e8f5ee;
+  --muted:#8a7d6e; --border:#ebe1d2; --card:#ffffff;
+  --radius:14px; --radius-sm:10px;
+  --shadow-sm:0 1px 2px rgba(26,18,9,0.04), 0 1px 3px rgba(26,18,9,0.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--cream);color:var(--ink);font-family:'Inter',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;border:none}
+.serif{font-family:'Cormorant Garamond',serif}
+
+/* Login */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:linear-gradient(180deg,#1a1209,#2a1f14)}
+.login-card{background:#fff;border-radius:18px;padding:32px;width:100%;max-width:360px;box-shadow:0 20px 60px rgba(0,0,0,0.4)}
+.login-brand{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;text-align:center;margin-bottom:4px}
+.login-sub{text-align:center;color:var(--muted);font-size:12px;margin-bottom:24px}
+.login-card label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:6px;margin-top:14px}
+.login-card label:first-of-type{margin-top:0}
+.login-card input{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font:inherit;color:var(--ink);background:#fff9f4;outline:none}
+.login-card input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,160,23,0.12)}
+.login-card .btn{width:100%;margin-top:18px;padding:14px;background:var(--ink);color:#fff;border-radius:var(--radius);font-weight:600}
+.login-card .btn:hover{background:var(--ink-soft)}
+.login-err{font-size:12px;color:#a04020;background:var(--rose-light);border:1px solid #f0c4b0;padding:10px;border-radius:var(--radius-sm);margin-top:10px;display:none}
+.login-err.show{display:block}
+
+/* App */
+#app{display:none}
+header{background:var(--ink);color:#fff;padding:16px 20px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600}
+.brand .accent{color:var(--gold-mid)}
+.who{font-size:11px;color:#b5a995;text-align:right}
+.who button{display:block;background:none;color:#d4c4a8;font-size:11px;text-decoration:underline;margin-top:2px}
+
+.tabs{background:#fff;border-bottom:1px solid var(--border);padding:0 16px;display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:14px 16px;font-size:13px;font-weight:500;color:var(--muted);background:none;border-bottom:2px solid transparent;white-space:nowrap}
+.tab.active{color:var(--ink);border-bottom-color:var(--gold)}
+
+.toolbar{padding:14px 16px;background:var(--card);border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.toolbar input[type=date], .toolbar select, .toolbar input[type=text]{padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font:inherit;background:#fff9f4;outline:none}
+.toolbar input:focus, .toolbar select:focus{border-color:var(--gold)}
+.btn-sm{padding:8px 12px;border-radius:8px;font-size:12px;font-weight:500;background:var(--ink);color:#fff}
+.btn-sm.outline{background:#fff;color:var(--ink);border:1.5px solid var(--border)}
+
+/* Stats */
+.stats-row{padding:14px 16px;background:var(--cream);border-bottom:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stat{background:#fff;border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;text-align:center}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--ink);line-height:1}
+.stat-num.gold{color:var(--gold)}
+.stat-label{font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-top:4px;font-weight:500}
+
+/* List */
+.list{padding:14px 16px;display:grid;gap:10px;max-width:900px;margin:0 auto}
+.bk{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow-sm);position:relative}
+.bk.cancelled{opacity:0.5;background:#f8f3ec}
+.bk.completed{border-left:3px solid var(--green)}
+.bk.confirmed{border-left:3px solid var(--gold)}
+.bk-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
+.bk-time{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--ink);line-height:1}
+.bk-time .date{font-size:11px;color:var(--muted);font-weight:400;font-family:'Inter',sans-serif;display:block;margin-top:2px;letter-spacing:0.04em}
+.bk-ref{font-size:11px;font-weight:600;color:var(--gold);background:var(--gold-light);padding:4px 8px;border-radius:6px;letter-spacing:0.06em}
+.bk-meta{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font-size:12px;margin-bottom:10px}
+.bk-meta .k{color:var(--muted);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:0.04em}
+.bk-meta .v{color:var(--ink);font-weight:500;margin-bottom:4px}
+.bk-status-row{display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid var(--border);margin-top:6px;flex-wrap:wrap;gap:8px}
+.bk-status{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;padding:4px 10px;border-radius:100px}
+.bk-status.confirmed{background:var(--gold-light);color:var(--gold)}
+.bk-status.completed{background:var(--green-light);color:var(--green)}
+.bk-status.cancelled{background:#f3e9e5;color:#8a4030}
+.bk-pay{font-size:11px;color:var(--muted)}
+.bk-pay strong{color:var(--ink);font-weight:600}
+.bk-actions{display:flex;gap:6px;flex-wrap:wrap}
+.bk-actions .btn-sm{font-size:11px;padding:6px 10px}
+.bk-actions .complete{background:var(--green)}
+.bk-actions .cancel{background:#fff;color:#8a4030;border:1.5px solid #f0c4b0}
+.bk-actions .paid{background:var(--gold);color:var(--ink)}
+.bk-notes{font-size:12px;color:var(--muted);margin-top:8px;padding:8px 10px;background:#fdf6e8;border-radius:8px;border-left:2px solid var(--gold-mid);line-height:1.4}
+
+.empty{text-align:center;padding:60px 24px;color:var(--muted);font-size:13px}
+.empty .em-icon{font-size:32px;margin-bottom:12px;opacity:0.4}
+.loading{text-align:center;padding:40px;color:var(--muted);font-size:13px}
+
+@media (min-width:640px) {
+  .bk-meta{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login-wrap">
+  <div class="login-card">
+    <div class="login-brand">Glam Studio</div>
+    <div class="login-sub">Operator dashboard</div>
+    <label>Email</label>
+    <input type="email" id="li-email" autocomplete="username">
+    <label>Password</label>
+    <input type="password" id="li-password" autocomplete="current-password">
+    <div class="login-err" id="login-err"></div>
+    <button class="btn" id="login-btn">Sign in</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <header>
+    <div class="brand">Glam<span class="accent">·</span>Studio</div>
+    <div class="who"><span id="who-email">—</span><button id="logout-btn">Sign out</button></div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="today">Today</button>
+    <button class="tab" data-tab="upcoming">Upcoming</button>
+    <button class="tab" data-tab="all">All</button>
+    <button class="tab" data-tab="search">Search</button>
+  </div>
+
+  <div class="toolbar" id="toolbar">
+    <input type="date" id="filter-date">
+    <select id="filter-status">
+      <option value="">All statuses</option>
+      <option value="confirmed">Confirmed</option>
+      <option value="completed">Completed</option>
+      <option value="cancelled">Cancelled</option>
+    </select>
+    <input type="text" id="filter-search" placeholder="Ref, name or phone…" style="display:none;flex:1;min-width:200px">
+    <button class="btn-sm outline" id="refresh-btn">↻ Refresh</button>
+  </div>
+
+  <div class="stats-row" id="stats">
+    <div class="stat"><div class="stat-num" id="st-count">0</div><div class="stat-label">Bookings</div></div>
+    <div class="stat"><div class="stat-num gold" id="st-revenue">$0</div><div class="stat-label">Revenue</div></div>
+    <div class="stat"><div class="stat-num" id="st-completed">0</div><div class="stat-label">Completed</div></div>
+    <div class="stat"><div class="stat-num" id="st-pending">0</div><div class="stat-label">Pending</div></div>
+  </div>
+
+  <div class="list" id="list"><div class="loading">Loading bookings…</div></div>
+</div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getFirestore, collection, query, where, orderBy, getDocs, doc, updateDoc }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const fbApp = initializeApp({
+  apiKey: "AIzaSyDO0qkpj-oQeVFDIF86KRzteKh1Lai-_vU",
+  authDomain: "saloon-booking-ce824.firebaseapp.com",
+  projectId: "saloon-booking-ce824",
+  storageBucket: "saloon-booking-ce824.firebasestorage.app",
+  messagingSenderId: "600545587683",
+  appId: "1:600545587683:web:da4d5863341a126dc870d6"
+});
+const auth = getAuth(fbApp);
+const db   = getFirestore(fbApp);
+
+const $ = id => document.getElementById(id);
+const todayStr = () => new Date().toISOString().split('T')[0];
+
+let currentTab = 'today';
+let currentBookings = [];
+
+/* ── LOGIN ── */
+$('login-btn').addEventListener('click', async () => {
+  const email = $('li-email').value.trim();
+  const pw    = $('li-password').value;
+  $('login-err').classList.remove('show');
+  try {
+    await signInWithEmailAndPassword(auth, email, pw);
+  } catch (e) {
+    $('login-err').textContent = e.code === 'auth/invalid-credential'
+      ? 'Wrong email or password.' : (e.message || 'Sign in failed.');
+    $('login-err').classList.add('show');
+  }
+});
+$('login-password' in window ? null : 'li-password')?.addEventListener('keydown', e => {
+  if (e.key === 'Enter') $('login-btn').click();
+});
+$('li-password').addEventListener('keydown', e => { if (e.key === 'Enter') $('login-btn').click(); });
+
+$('logout-btn').addEventListener('click', () => signOut(auth));
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    $('login-wrap').style.display = 'none';
+    $('app').style.display = 'block';
+    $('who-email').textContent = user.email;
+    $('filter-date').value = todayStr();
+    loadBookings();
+  } else {
+    $('login-wrap').style.display = 'flex';
+    $('app').style.display = 'none';
+  }
+});
+
+/* ── TABS ── */
+document.querySelectorAll('.tab').forEach(t =>
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    currentTab = t.dataset.tab;
+    $('filter-search').style.display = currentTab === 'search' ? '' : 'none';
+    $('filter-date').style.display   = currentTab === 'search' ? 'none' : '';
+    loadBookings();
+  })
+);
+
+$('filter-date').addEventListener('change', loadBookings);
+$('filter-status').addEventListener('change', loadBookings);
+$('filter-search').addEventListener('input', () => {
+  clearTimeout(window.__searchTimer);
+  window.__searchTimer = setTimeout(loadBookings, 250);
+});
+$('refresh-btn').addEventListener('click', loadBookings);
+
+/* ── LOAD ── */
+async function loadBookings() {
+  $('list').innerHTML = '<div class="loading">Loading bookings…</div>';
+  try {
+    let constraints = [];
+    if (currentTab === 'today') {
+      constraints.push(where('date', '==', $('filter-date').value || todayStr()));
+    } else if (currentTab === 'upcoming') {
+      constraints.push(where('date', '>=', todayStr()));
+    }
+    const status = $('filter-status').value;
+    if (status) constraints.push(where('status', '==', status));
+
+    const q = constraints.length
+      ? query(collection(db, 'salon_bookings'), ...constraints)
+      : query(collection(db, 'salon_bookings'));
+    const snap = await getDocs(q);
+    let items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+    if (currentTab === 'search') {
+      const term = $('filter-search').value.trim().toLowerCase();
+      if (term) items = items.filter(b =>
+        (b.bookingRef || '').toLowerCase().includes(term) ||
+        (b.customerName || '').toLowerCase().includes(term) ||
+        (b.customerPhone || '').toLowerCase().includes(term)
+      );
+    }
+
+    items.sort((a, b) => (a.date + a.timeSlot).localeCompare(b.date + b.timeSlot));
+    currentBookings = items;
+    renderStats(items);
+    renderList(items);
+  } catch (e) {
+    console.error(e);
+    $('list').innerHTML = `<div class="empty"><div class="em-icon">⚠️</div>Could not load bookings.<br>${e.message}</div>`;
+  }
+}
+
+function renderStats(items) {
+  const completed = items.filter(b => b.status === 'completed');
+  const pending   = items.filter(b => b.status === 'confirmed');
+  const revenue   = completed.reduce((sum, b) => sum + (Number(b.price) || 0), 0)
+                  + pending.reduce((sum, b) => sum + (Number(b.paidNow) || 0), 0);
+  $('st-count').textContent     = items.length;
+  $('st-revenue').textContent   = '$' + revenue;
+  $('st-completed').textContent = completed.length;
+  $('st-pending').textContent   = pending.length;
+}
+
+function renderList(items) {
+  if (!items.length) {
+    $('list').innerHTML = '<div class="empty"><div class="em-icon">✦</div>No bookings yet.<br>They\'ll show up here as they come in.</div>';
+    return;
+  }
+  $('list').innerHTML = items.map(b => {
+    const d = b.date ? new Date(b.date + 'T00:00:00').toLocaleDateString('en-ZW', { weekday:'short', day:'numeric', month:'short' }) : '—';
+    const status = b.status || 'confirmed';
+    const paid = b.paymentStatus?.includes('verified') || b.paymentStatus === 'paid';
+    return `<div class="bk ${status}" data-id="${b.id}">
+      <div class="bk-top">
+        <div class="bk-time">${b.timeSlot || '—'}<span class="date">${d}</span></div>
+        <span class="bk-ref">${b.bookingRef || '—'}</span>
+      </div>
+      <div class="bk-meta">
+        <div><div class="k">Service</div><div class="v">${esc(b.service)}</div></div>
+        <div><div class="k">Stylist</div><div class="v">${esc(b.stylistName) || '—'}</div></div>
+        <div><div class="k">Customer</div><div class="v">${esc(b.customerName)}</div></div>
+        <div><div class="k">Phone</div><div class="v"><a href="tel:${esc(b.customerPhone)}" style="color:inherit;text-decoration:none">${esc(b.customerPhone)}</a></div></div>
+      </div>
+      ${b.notes && b.notes !== '—' && b.notes !== 'None' ? `<div class="bk-notes">📝 ${esc(b.notes)}</div>` : ''}
+      <div class="bk-status-row">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <span class="bk-status ${status}">${status}</span>
+          <span class="bk-pay">${esc(b.paymentMethod) || '—'} · <strong>$${b.paidNow ?? b.price ?? 0}</strong>${b.paidNow && b.paidNow < b.price ? ` of $${b.price}` : ''} · Ref ${esc(b.paymentRef) || '—'} · ${paid ? '✓ paid' : '⌛ pending'}</span>
+        </div>
+        <div class="bk-actions">
+          ${status === 'confirmed' && !paid ? `<button class="btn-sm paid" data-action="mark-paid">Mark paid</button>` : ''}
+          ${status === 'confirmed' ? `<button class="btn-sm complete" data-action="complete">Complete</button>` : ''}
+          ${status !== 'cancelled' && status !== 'completed' ? `<button class="btn-sm cancel" data-action="cancel">Cancel</button>` : ''}
+          <a class="btn-sm outline" href="https://wa.me/${normalizePhone(b.customerPhone)}?text=${encodeURIComponent(`Hi ${b.customerName}, this is Glam Studio about your booking ${b.bookingRef}.`)}" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function normalizePhone(p) {
+  const d = String(p || '').replace(/\D/g, '');
+  if (d.startsWith('263')) return d;
+  if (d.startsWith('0'))   return '263' + d.slice(1);
+  return d;
+}
+
+/* ── ACTIONS ── */
+$('list').addEventListener('click', async (e) => {
+  const btn = e.target.closest('[data-action]');
+  if (!btn) return;
+  const card = btn.closest('.bk');
+  const id   = card.dataset.id;
+  const action = btn.dataset.action;
+  const verb = { 'mark-paid':'mark this booking as paid', 'complete':'mark this booking as completed', 'cancel':'cancel this booking' }[action];
+  if (!confirm(`Are you sure you want to ${verb}?`)) return;
+  btn.disabled = true; btn.textContent = '…';
+  try {
+    const update =
+      action === 'mark-paid' ? { paymentStatus: 'verified', verifiedAt: new Date() } :
+      action === 'complete'  ? { status: 'completed', completedAt: new Date() } :
+      action === 'cancel'    ? { status: 'cancelled', cancelledAt: new Date() } : null;
+    if (!update) return;
+    await updateDoc(doc(db, 'salon_bookings', id), update);
+    await loadBookings();
+  } catch (err) {
+    alert('Action failed: ' + err.message);
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

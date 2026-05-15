@@ -13,755 +13,236 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --cream:        #fdfaf6;
-  --warm-white:   #fff9f4;
-  --ink:          #1a1209;
-  --ink-soft:     #2a1f14;
-  --gold:         #b8860b;
-  --gold-light:   #f5e9c8;
-  --gold-mid:     #d4a017;
-  --rose:         #c4795a;
-  --rose-soft:    #e3a890;
-  --rose-light:   #faeee8;
-  --blush:        #f4e1d7;
-  --muted:        #8a7d6e;
-  --muted-soft:   #b5a995;
-  --border:       #ebe1d2;
-  --border-soft:  #f3ead9;
-  --card:         #ffffff;
-  --radius:       18px;
-  --radius-sm:    12px;
-  --radius-lg:    24px;
-  --shadow-sm:    0 1px 2px rgba(26,18,9,0.04), 0 1px 3px rgba(26,18,9,0.06);
-  --shadow-md:    0 4px 12px rgba(26,18,9,0.06), 0 2px 4px rgba(26,18,9,0.04);
-  --shadow-lg:    0 12px 32px rgba(26,18,9,0.08);
+  --cream: #fdfaf6; --warm-white: #fff9f4; --ink: #1a1209; --ink-soft: #2a1f14;
+  --gold: #b8860b; --gold-light: #f5e9c8; --gold-mid: #d4a017;
+  --rose: #c4795a; --rose-soft: #e3a890; --rose-light: #faeee8;
+  --blush: #f4e1d7; --muted: #8a7d6e; --muted-soft: #b5a995;
+  --border: #ebe1d2; --border-soft: #f3ead9; --card: #ffffff;
+  --radius: 18px; --radius-sm: 12px; --radius-lg: 24px;
+  --shadow-sm: 0 1px 2px rgba(26,18,9,0.04), 0 1px 3px rgba(26,18,9,0.06);
+  --shadow-md: 0 4px 12px rgba(26,18,9,0.06), 0 2px 4px rgba(26,18,9,0.04);
+  --shadow-lg: 0 12px 32px rgba(26,18,9,0.08);
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body {
-  background: var(--cream);
-  color: var(--ink);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 15px;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
+body { background: var(--cream); color: var(--ink); font-family: 'Inter', -apple-system, sans-serif; font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
 img, svg { display: block; max-width: 100%; }
 button { font: inherit; cursor: pointer; }
 .serif { font-family: 'Cormorant Garamond', serif; }
 
-/* ── HERO ───────────────────────────────────────────── */
-.hero {
-  position: relative;
-  background:
-    radial-gradient(1200px 600px at 50% -10%, rgba(212,160,23,0.18), transparent 50%),
-    radial-gradient(900px 500px at 100% 100%, rgba(196,121,90,0.22), transparent 60%),
-    linear-gradient(180deg, #1a1209 0%, #2a1f14 100%);
-  padding: 56px 24px 80px;
-  overflow: hidden;
-  text-align: center;
-  color: #fff;
-}
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    repeating-linear-gradient(45deg, transparent 0 80px, rgba(255,255,255,0.015) 80px 81px),
-    radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.08), transparent),
-    radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,0.06), transparent),
-    radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,0.05), transparent);
-  pointer-events: none;
-}
+/* Hero */
+.hero { position: relative; background: radial-gradient(1200px 600px at 50% -10%, rgba(212,160,23,0.18), transparent 50%), radial-gradient(900px 500px at 100% 100%, rgba(196,121,90,0.22), transparent 60%), linear-gradient(180deg, #1a1209 0%, #2a1f14 100%); padding: 56px 24px 80px; overflow: hidden; text-align: center; color: #fff; }
+.hero::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent 0 80px, rgba(255,255,255,0.015) 80px 81px), radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.08), transparent), radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,0.06), transparent); pointer-events: none; }
 .hero > * { position: relative; }
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.12);
-  padding: 6px 14px;
-  border-radius: 100px;
-  font-size: 11px; font-weight: 500;
-  color: #f5e9c8;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  margin-bottom: 18px;
-}
+.hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.08); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.12); padding: 6px 14px; border-radius: 100px; font-size: 11px; font-weight: 500; color: #f5e9c8; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 18px; }
 .hero-badge::before { content: '✦'; color: var(--gold-mid); }
-.hero-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 56px; font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.01em;
-  margin-bottom: 12px;
-}
-.hero-tagline {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 18px;
-  color: #d4c4a8;
-  margin-bottom: 28px;
-}
-.hero-rating {
-  display: inline-flex; align-items: center; gap: 10px;
-  margin-bottom: 28px;
-  padding: 8px 16px;
-  background: rgba(255,255,255,0.06);
-  border-radius: 100px;
-  border: 1px solid rgba(255,255,255,0.1);
-}
+.hero-name { font-family: 'Cormorant Garamond', serif; font-size: 56px; font-weight: 600; line-height: 1.05; letter-spacing: -0.01em; margin-bottom: 12px; }
+.hero-tagline { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; color: #d4c4a8; margin-bottom: 28px; }
+.hero-rating { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 28px; padding: 8px 16px; background: rgba(255,255,255,0.06); border-radius: 100px; border: 1px solid rgba(255,255,255,0.1); }
 .stars { display: inline-flex; gap: 2px; color: var(--gold-mid); font-size: 13px; }
 .rating-text { font-size: 12px; color: #d4c4a8; }
 .rating-text strong { color: #fff; font-weight: 600; }
-
-.hero-cta {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: linear-gradient(135deg, var(--gold-mid) 0%, var(--gold) 100%);
-  color: var(--ink);
-  padding: 14px 28px;
-  border-radius: 100px;
-  font-size: 14px; font-weight: 600;
-  letter-spacing: 0.02em;
-  border: none;
-  box-shadow: 0 8px 24px rgba(212,160,23,0.32);
-  transition: transform 0.2s, box-shadow 0.2s;
-  text-decoration: none;
-  margin-bottom: 12px;
-}
+.hero-cta { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--gold-mid) 0%, var(--gold) 100%); color: var(--ink); padding: 14px 28px; border-radius: 100px; font-size: 14px; font-weight: 600; letter-spacing: 0.02em; border: none; box-shadow: 0 8px 24px rgba(212,160,23,0.32); transition: transform 0.2s, box-shadow 0.2s; text-decoration: none; margin-bottom: 12px; }
 .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(212,160,23,0.4); }
-.hero-cta:active { transform: translateY(0); }
-
-.hero-meta {
-  display: flex; justify-content: center; gap: 18px;
-  flex-wrap: wrap;
-  margin-top: 18px;
-  font-size: 12px;
-  color: #a89880;
-}
+.hero-meta { display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; margin-top: 18px; font-size: 12px; color: #a89880; }
 .hero-meta span { display: inline-flex; align-items: center; gap: 6px; }
 .hero-meta span::before { content: '◆'; color: var(--gold-mid); font-size: 6px; }
 
-/* ── TRUST STRIP ────────────────────────────────────── */
-.trust-strip {
-  background: var(--card);
-  border-bottom: 1px solid var(--border);
-  padding: 24px 16px;
-}
-.trust-grid {
-  max-width: 720px; margin: 0 auto;
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  text-align: center;
-}
-.trust-item .ti-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 26px; font-weight: 600;
-  color: var(--ink); line-height: 1;
-}
+/* Trust strip */
+.trust-strip { background: var(--card); border-bottom: 1px solid var(--border); padding: 24px 16px; }
+.trust-grid { max-width: 720px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; text-align: center; }
+.trust-item .ti-num { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; color: var(--ink); line-height: 1; }
 .trust-item .ti-num .accent { color: var(--gold); }
-.trust-item .ti-label {
-  font-size: 10px; font-weight: 500;
-  text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--muted);
-  margin-top: 6px;
-}
+.trust-item .ti-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-top: 6px; }
 
-/* ── SECTION SHELL ──────────────────────────────────── */
-.shell {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 0 16px;
-}
+/* Section shell */
+.shell { max-width: 720px; margin: 0 auto; padding: 0 16px; }
 .section-block { padding: 36px 0 8px; }
-.section-eyebrow {
-  font-size: 10px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.14em;
-  color: var(--gold);
-  margin-bottom: 8px;
-}
-.section-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 30px; font-weight: 600;
-  color: var(--ink);
-  margin-bottom: 6px;
-  line-height: 1.15;
-}
-.section-lede {
-  font-size: 13px; color: var(--muted);
-  margin-bottom: 20px;
-  max-width: 480px;
-}
+.section-eyebrow { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--gold); margin-bottom: 8px; }
+.section-title { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 600; color: var(--ink); margin-bottom: 6px; line-height: 1.15; }
+.section-lede { font-size: 13px; color: var(--muted); margin-bottom: 20px; max-width: 480px; }
 
-/* ── REVIEWS ────────────────────────────────────────── */
-.reviews-scroller {
-  display: flex; gap: 12px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding: 4px 16px 20px;
-  margin: 0 -16px;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
+/* Reviews */
+.reviews-scroller { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 4px 16px 20px; margin: 0 -16px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
 .reviews-scroller::-webkit-scrollbar { display: none; }
-.review-card {
-  flex: 0 0 280px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px;
-  scroll-snap-align: start;
-  box-shadow: var(--shadow-sm);
-  display: flex; flex-direction: column;
-}
-.review-stars {
-  color: var(--gold-mid);
-  font-size: 12px;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
-}
-.review-body {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 16px;
-  line-height: 1.5;
-  color: var(--ink-soft);
-  margin-bottom: 14px;
-  flex: 1;
-}
-.review-foot {
-  display: flex; align-items: center; gap: 10px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border-soft);
-}
-.review-avatar {
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 600;
-  color: #fff;
-}
+.review-card { flex: 0 0 280px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; scroll-snap-align: start; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; }
+.review-stars { color: var(--gold-mid); font-size: 12px; letter-spacing: 1px; margin-bottom: 8px; }
+.review-body { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 16px; line-height: 1.5; color: var(--ink-soft); margin-bottom: 14px; flex: 1; }
+.review-foot { display: flex; align-items: center; gap: 10px; padding-top: 12px; border-top: 1px solid var(--border-soft); }
+.review-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #fff; }
 .review-meta { line-height: 1.3; }
 .review-name { font-size: 12px; font-weight: 600; color: var(--ink); }
 .review-detail { font-size: 11px; color: var(--muted); }
 
-/* ── STYLISTS ───────────────────────────────────────── */
-.stylists-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin-bottom: 8px;
-}
-.stylist-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px;
-  text-align: center;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
+/* Stylists preview */
+.stylists-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 8px; }
+.stylist-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; text-align: center; box-shadow: var(--shadow-sm); transition: transform 0.2s, box-shadow 0.2s; }
 .stylist-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-.stylist-avatar {
-  width: 64px; height: 64px;
-  border-radius: 50%;
-  margin: 0 auto 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 24px; font-weight: 600;
-  color: #fff;
-}
+.stylist-avatar { width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; color: #fff; }
 .stylist-name { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
 .stylist-tag { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
-.stylist-rating {
-  display: inline-flex; align-items: center; gap: 4px;
-  font-size: 11px;
-  color: var(--gold);
-  font-weight: 500;
-}
+.stylist-rating { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--gold); font-weight: 500; }
 
-/* ── BOOKING FUNNEL ─────────────────────────────────── */
+/* Booking funnel */
 .book-anchor { padding-top: 40px; }
-.steps {
-  display: flex; align-items: center; justify-content: center;
-  gap: 0; margin: 8px 0 4px; padding: 0 16px;
-}
-.step-item { display: flex; flex-direction: column; align-items: center; gap: 5px; }
-.step-dot {
-  width: 30px; height: 30px;
-  border-radius: 50%;
-  border: 1.5px solid var(--border);
-  background: var(--cream); color: var(--muted);
-  font-size: 12px; font-weight: 500;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.3s;
-}
+.steps-wrap { background: #fff; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 20px 0 6px; margin-top: 24px; }
+.steps { display: flex; align-items: center; justify-content: center; gap: 0; margin: 8px 0 4px; padding: 0 16px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+.steps::-webkit-scrollbar { display: none; }
+.step-item { display: flex; flex-direction: column; align-items: center; gap: 5px; flex-shrink: 0; }
+.step-dot { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--border); background: var(--cream); color: var(--muted); font-size: 11px; font-weight: 500; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
 .step-dot.active { background: var(--ink); color: #fff; border-color: var(--ink); transform: scale(1.08); }
 .step-dot.done { background: var(--gold); color: #fff; border-color: var(--gold); }
-.step-label {
-  font-size: 9px; font-weight: 500;
-  letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--muted);
-}
-.step-line {
-  width: 36px; height: 1.5px;
-  background: var(--border);
-  margin-bottom: 16px;
-  transition: background 0.3s;
-}
+.step-label { font-size: 9px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.step-line { width: 24px; height: 1.5px; background: var(--border); margin-bottom: 16px; transition: background 0.3s; flex-shrink: 0; }
 .step-line.done { background: var(--gold); }
 
 main.funnel { max-width: 480px; margin: 0 auto; padding: 16px 16px 60px; }
-
-.section {
-  background: var(--card);
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  padding: 24px;
-  margin-bottom: 14px;
-  display: none;
-  animation: rise 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  box-shadow: var(--shadow-sm);
-}
+.section { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 24px; margin-bottom: 14px; display: none; animation: rise 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: var(--shadow-sm); }
 .section.visible { display: block; }
 @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+.section-head { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; color: var(--ink); margin-bottom: 4px; line-height: 1.2; }
+.section-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
 
-.section-head {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 24px; font-weight: 600;
-  color: var(--ink); margin-bottom: 4px;
-  line-height: 1.2;
-}
-.section-sub {
-  font-size: 13px; color: var(--muted);
-  margin-bottom: 20px; line-height: 1.5;
-}
-
-label {
-  font-size: 11px; font-weight: 500;
-  text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--muted);
-  display: block; margin-bottom: 8px; margin-top: 18px;
-}
+label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); display: block; margin-bottom: 8px; margin-top: 18px; }
 label:first-of-type { margin-top: 0; }
 
-input[type="text"], input[type="email"], input[type="tel"],
-input[type="date"], select, textarea {
-  width: 100%;
-  padding: 13px 14px;
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  font-family: 'Inter', sans-serif;
-  font-size: 15px; color: var(--ink);
-  background: var(--warm-white);
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  appearance: none; -webkit-appearance: none;
-}
-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a7d6e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  padding-right: 36px;
-}
-input:focus, select:focus, textarea:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(212,160,23,0.12);
-}
+input[type="text"], input[type="email"], input[type="tel"], input[type="date"], select, textarea { width: 100%; padding: 13px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-family: 'Inter', sans-serif; font-size: 15px; color: var(--ink); background: var(--warm-white); outline: none; transition: border-color 0.2s, box-shadow 0.2s; appearance: none; -webkit-appearance: none; }
+select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a7d6e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+input:focus, select:focus, textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,160,23,0.12); }
 textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 
-/* ── SERVICE CARDS ──────────────────────────────────── */
+/* Service & variation cards */
 .service-list { display: grid; gap: 10px; margin-top: 6px; }
-.service-item {
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 14px;
-  cursor: pointer;
-  display: flex; align-items: center;
-  gap: 14px;
-  background: var(--warm-white);
-  transition: all 0.2s;
-  position: relative;
-  overflow: hidden;
-}
+.service-item { border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 14px; cursor: pointer; display: flex; align-items: center; gap: 14px; background: var(--warm-white); transition: all 0.2s; }
 .service-item:hover { border-color: var(--gold); transform: translateY(-1px); box-shadow: var(--shadow-md); }
-.service-item.selected {
-  border-color: var(--gold);
-  background: var(--gold-light);
-  box-shadow: 0 0 0 3px rgba(212,160,23,0.12);
-}
-.service-icon {
-  width: 48px; height: 48px;
-  border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px;
-  flex-shrink: 0;
-}
+.service-item.selected { border-color: var(--gold); background: var(--gold-light); box-shadow: 0 0 0 3px rgba(212,160,23,0.12); }
+.service-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
 .service-info { flex: 1; min-width: 0; }
 .s-name { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
 .s-meta { font-size: 11px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
 .s-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--muted-soft); }
-.s-price {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 22px; color: var(--gold);
-  font-weight: 600;
-  flex-shrink: 0;
-}
-
+.s-price { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold); font-weight: 600; flex-shrink: 0; }
+.s-from { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-top: 2px; font-family: 'Inter', sans-serif; font-weight: 500; }
 .service-icon.icon-hair { background: linear-gradient(135deg, #f5e9c8, #d4a017); }
 .service-icon.icon-nails { background: linear-gradient(135deg, #faeee8, #e3a890); }
 .service-icon.icon-beauty { background: linear-gradient(135deg, #f4e1d7, #c4795a); color: #fff; }
-.service-icon.icon-wellness { background: linear-gradient(135deg, #e8f0e3, #8aa97a); color: #fff; }
 
-/* ── SLOTS ──────────────────────────────────────────── */
-.slots-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 8px; margin-top: 6px;
-  transition: opacity 0.2s;
-}
-.slot {
-  padding: 12px 6px;
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  text-align: center; cursor: pointer;
-  font-size: 14px; font-weight: 500;
-  color: var(--ink-soft);
-  background: var(--warm-white);
-  transition: all 0.2s;
-}
+/* Variation list */
+.variation-list { display: grid; gap: 8px; margin-top: 6px; }
+.variation-item { border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: var(--warm-white); transition: all 0.2s; }
+.variation-item:hover { border-color: var(--gold); }
+.variation-item.selected { border-color: var(--gold); background: var(--gold-light); box-shadow: 0 0 0 3px rgba(212,160,23,0.12); }
+.v-name { font-size: 14px; font-weight: 500; color: var(--ink); }
+.v-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.v-price { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--gold); font-weight: 600; }
+
+/* Stylist selection list */
+.stylist-list { display: grid; gap: 10px; margin-top: 6px; }
+.stylist-pick { border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 14px; cursor: pointer; display: flex; align-items: center; gap: 12px; background: var(--warm-white); transition: all 0.2s; }
+.stylist-pick:hover { border-color: var(--gold); }
+.stylist-pick.selected { border-color: var(--gold); background: var(--gold-light); box-shadow: 0 0 0 3px rgba(212,160,23,0.12); }
+.sp-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: #fff; flex-shrink: 0; }
+.sp-info { flex: 1; min-width: 0; }
+.sp-name { font-size: 14px; font-weight: 600; color: var(--ink); }
+.sp-tag { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.sp-rating { font-size: 11px; color: var(--gold); font-weight: 500; flex-shrink: 0; }
+
+/* Slots */
+.slots-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 6px; transition: opacity 0.2s; }
+.slot { padding: 12px 6px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); text-align: center; cursor: pointer; font-size: 14px; font-weight: 500; color: var(--ink-soft); background: var(--warm-white); transition: all 0.2s; }
 .slot:hover { border-color: var(--gold); color: var(--ink); }
-.slot.selected {
-  border-color: var(--gold);
-  background: var(--gold-light);
-  color: var(--ink);
-  box-shadow: 0 0 0 3px rgba(212,160,23,0.12);
-}
-.slot.unavailable {
-  opacity: 0.35;
-  cursor: not-allowed;
-  text-decoration: line-through;
-}
+.slot.selected { border-color: var(--gold); background: var(--gold-light); color: var(--ink); box-shadow: 0 0 0 3px rgba(212,160,23,0.12); }
+.slot.unavailable { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; }
 
-/* ── SUMMARY ────────────────────────────────────────── */
-.summary-box {
-  background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
-  border-radius: var(--radius-sm);
-  padding: 18px;
-  margin-top: 18px;
-  position: relative;
-  overflow: hidden;
-}
-.summary-box::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(400px 200px at 100% 0%, rgba(212,160,23,0.12), transparent);
-  pointer-events: none;
-}
-.summary-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 16px; font-style: italic;
-  color: #d4c4a8;
-  margin-bottom: 12px;
-  position: relative;
-}
-.summary-row {
-  display: flex; justify-content: space-between;
-  font-size: 13px;
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  position: relative;
-}
+/* Summary */
+.summary-box { background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%); border-radius: var(--radius-sm); padding: 18px; margin-top: 18px; position: relative; overflow: hidden; }
+.summary-box::before { content: ''; position: absolute; inset: 0; background: radial-gradient(400px 200px at 100% 0%, rgba(212,160,23,0.12), transparent); pointer-events: none; }
+.summary-title { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-style: italic; color: #d4c4a8; margin-bottom: 12px; position: relative; }
+.summary-row { display: flex; justify-content: space-between; font-size: 13px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.08); position: relative; }
 .summary-row:last-child { border-bottom: none; font-weight: 600; padding-top: 10px; }
 .summary-row .sl { color: #b5a995; }
 .summary-row .sv { color: #fff; }
 .summary-row .sv.gold { color: var(--gold-mid); font-family: 'Cormorant Garamond', serif; font-size: 18px; }
 
-/* ── BUTTONS ────────────────────────────────────────── */
-.btn-primary {
-  width: 100%;
-  padding: 16px;
-  background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius);
-  font-family: 'Inter', sans-serif;
-  font-size: 14px; font-weight: 600;
-  letter-spacing: 0.02em;
-  cursor: pointer;
-  margin-top: 14px;
-  transition: all 0.2s;
-  display: flex; align-items: center; justify-content: center;
-  gap: 8px;
-  box-shadow: 0 8px 20px rgba(26,18,9,0.18);
-}
+/* Buttons */
+.btn-primary { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%); color: #fff; border: none; border-radius: var(--radius); font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 0.02em; cursor: pointer; margin-top: 14px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 8px 20px rgba(26,18,9,0.18); }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(26,18,9,0.24); }
 .btn-primary:active { transform: translateY(0); }
 .btn-primary:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; transform: none; box-shadow: none; }
-
-.btn-outline {
-  width: 100%;
-  padding: 13px;
-  background: transparent;
-  color: var(--ink);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  font-family: 'Inter', sans-serif;
-  font-size: 13px; font-weight: 500;
-  cursor: pointer;
-  margin-top: 8px;
-  transition: all 0.2s;
-}
+.btn-outline { width: 100%; padding: 13px; background: transparent; color: var(--ink); border: 1.5px solid var(--border); border-radius: var(--radius); font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; margin-top: 8px; transition: all 0.2s; }
 .btn-outline:hover { border-color: var(--ink); background: var(--warm-white); }
 
-/* ── ERRORS ─────────────────────────────────────────── */
-.err {
-  font-size: 12px; color: #a04020;
-  background: var(--rose-light);
-  border-radius: var(--radius-sm);
-  padding: 10px 12px;
-  margin-top: 10px;
-  display: none;
-  border: 1px solid #f0c4b0;
-}
+/* Errors */
+.err { font-size: 12px; color: #a04020; background: var(--rose-light); border-radius: var(--radius-sm); padding: 10px 12px; margin-top: 10px; display: none; border: 1px solid #f0c4b0; }
 .err.show { display: block; }
 
-/* ── CONFIRMATION ───────────────────────────────────── */
+/* Deposit toggle */
+.pay-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0 6px; padding: 4px; background: var(--warm-white); border-radius: var(--radius-sm); border: 1.5px solid var(--border); }
+.pay-toggle-opt { padding: 12px 10px; text-align: center; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+.pay-toggle-opt.selected { background: var(--ink); color: #fff; box-shadow: var(--shadow-sm); }
+.pay-toggle-name { font-size: 13px; font-weight: 600; }
+.pay-toggle-detail { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.pay-toggle-opt.selected .pay-toggle-detail { color: #d4c4a8; }
+
+/* Confirmation */
 #confirm-screen { display: none; }
 #confirm-screen.visible { display: block; }
-.confirm-card {
-  background: var(--card);
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  overflow: hidden;
-  animation: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-  margin-bottom: 14px;
-  box-shadow: var(--shadow-md);
-}
-.confirm-header {
-  background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
-  padding: 28px 20px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-.confirm-header::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(500px 250px at 50% 0%, rgba(212,160,23,0.18), transparent);
-}
-.confirm-icon {
-  width: 56px; height: 56px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--gold-mid), var(--gold));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 24px;
-  margin: 0 auto 14px;
-  position: relative;
-  box-shadow: 0 8px 24px rgba(212,160,23,0.3);
-}
-.confirm-header h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 28px; color: #fff;
-  margin-bottom: 4px;
-  position: relative;
-}
-.confirm-header p {
-  font-size: 12px; color: #b5a995;
-  position: relative;
-}
-.booking-ref {
-  text-align: center;
-  padding: 18px;
-  background: linear-gradient(180deg, var(--gold-light), #faf2dc);
-  border-bottom: 1px solid var(--border);
-}
-.ref-label {
-  font-size: 10px; color: var(--gold);
-  text-transform: uppercase; letter-spacing: 0.12em;
-  font-weight: 600;
-}
-.ref-code {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 36px; font-weight: 600;
-  color: var(--ink);
-  letter-spacing: 4px;
-  margin-top: 4px;
-}
+.confirm-card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; animation: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); margin-bottom: 14px; box-shadow: var(--shadow-md); }
+.confirm-header { background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%); padding: 28px 20px; text-align: center; position: relative; overflow: hidden; }
+.confirm-header::before { content: ''; position: absolute; inset: 0; background: radial-gradient(500px 250px at 50% 0%, rgba(212,160,23,0.18), transparent); }
+.confirm-icon { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-mid), var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 14px; position: relative; box-shadow: 0 8px 24px rgba(212,160,23,0.3); }
+.confirm-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: #fff; margin-bottom: 4px; position: relative; }
+.confirm-header p { font-size: 12px; color: #b5a995; position: relative; }
+.booking-ref { text-align: center; padding: 18px; background: linear-gradient(180deg, var(--gold-light), #faf2dc); border-bottom: 1px solid var(--border); }
+.ref-label { font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; }
+.ref-code { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 600; color: var(--ink); letter-spacing: 4px; margin-top: 4px; }
 .ref-hint { font-size: 11px; color: var(--muted); margin-top: 4px; }
 .confirm-body { padding: 20px; }
-.conf-row {
-  display: flex; justify-content: space-between;
-  align-items: flex-start;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 13px;
-  gap: 12px;
-}
+.conf-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; gap: 12px; }
 .conf-row:last-child { border-bottom: none; }
-.c-label {
-  color: var(--muted);
-  font-size: 11px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.06em;
-  flex-shrink: 0;
-}
+.c-label { color: var(--muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; flex-shrink: 0; }
 .c-val { font-weight: 500; text-align: right; color: var(--ink); }
 .c-val.gold { color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 18px; }
-
-.whatsapp-btn {
-  width: 100%;
-  padding: 15px;
-  background: #25D366;
-  color: #fff;
-  border: none;
-  border-radius: var(--radius);
-  font-family: 'Inter', sans-serif;
-  font-size: 14px; font-weight: 600;
-  cursor: pointer;
-  margin-top: 4px;
-  display: flex; align-items: center; justify-content: center;
-  gap: 8px;
-  transition: all 0.2s;
-  box-shadow: 0 8px 20px rgba(37,211,102,0.28);
-}
+.whatsapp-btn { width: 100%; padding: 15px; background: #25D366; color: #fff; border: none; border-radius: var(--radius); font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 4px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; box-shadow: 0 8px 20px rgba(37,211,102,0.28); }
 .whatsapp-btn:hover { background: #1ebe5c; transform: translateY(-2px); }
 
-/* ── PAYMENT ────────────────────────────────────────── */
-.pay-step {
-  background: var(--card);
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  padding: 24px;
-  margin-bottom: 14px;
-  display: none;
-  animation: rise 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  box-shadow: var(--shadow-sm);
-}
+/* Payment */
+.pay-step { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 24px; margin-bottom: 14px; display: none; animation: rise 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: var(--shadow-sm); }
 .pay-step.visible { display: block; }
-.pay-method {
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 14px;
-  margin: 8px 0;
-  cursor: pointer;
-  display: flex; align-items: center;
-  gap: 14px;
-  background: var(--warm-white);
-  transition: all 0.2s;
-}
+.pay-method { border: 1.5px solid var(--border); border-radius: var(--radius-sm); padding: 14px; margin: 8px 0; cursor: pointer; display: flex; align-items: center; gap: 14px; background: var(--warm-white); transition: all 0.2s; }
 .pay-method:hover { border-color: var(--gold); transform: translateY(-1px); }
-.pay-method.selected {
-  border-color: var(--gold);
-  background: var(--gold-light);
-  box-shadow: 0 0 0 3px rgba(212,160,23,0.12);
-}
+.pay-method.selected { border-color: var(--gold); background: var(--gold-light); box-shadow: 0 0 0 3px rgba(212,160,23,0.12); }
 .pay-method-icon { font-size: 26px; flex-shrink: 0; }
 .pay-method-info { flex: 1; }
 .pay-method-name { font-size: 14px; font-weight: 600; color: var(--ink); }
 .pay-method-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
-.pay-instructions {
-  background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
-  border-radius: var(--radius-sm);
-  padding: 18px;
-  margin-top: 14px;
-  display: none;
-  position: relative;
-  overflow: hidden;
-}
-.pay-instructions::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(400px 200px at 100% 0%, rgba(212,160,23,0.1), transparent);
-}
+.pay-instructions { background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%); border-radius: var(--radius-sm); padding: 18px; margin-top: 14px; display: none; position: relative; overflow: hidden; }
+.pay-instructions::before { content: ''; position: absolute; inset: 0; background: radial-gradient(400px 200px at 100% 0%, rgba(212,160,23,0.1), transparent); }
 .pay-instructions.show { display: block; }
-.pay-inst-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 16px; font-style: italic;
-  color: #d4c4a8;
-  margin-bottom: 12px;
-  position: relative;
-}
-.pay-inst-row {
-  display: flex; justify-content: space-between;
-  font-size: 13px;
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  position: relative;
-}
+.pay-inst-title { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-style: italic; color: #d4c4a8; margin-bottom: 12px; position: relative; }
+.pay-inst-row { display: flex; justify-content: space-between; font-size: 13px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.08); position: relative; }
 .pay-inst-row:last-child { border-bottom: none; }
 .pay-inst-label { color: #b5a995; }
 .pay-inst-val { color: #fff; font-weight: 500; }
 .pay-inst-val.gold { color: var(--gold-mid); }
-.pay-ref-box {
-  background: rgba(212,160,23,0.15);
-  border: 1px dashed var(--gold);
-  border-radius: var(--radius-sm);
-  padding: 12px 14px;
-  margin-top: 12px;
-  text-align: center;
-  position: relative;
-}
-.pay-ref-label {
-  font-size: 10px; color: var(--gold-mid);
-  text-transform: uppercase; letter-spacing: 0.12em;
-  font-weight: 600;
-}
-.pay-ref-val {
-  font-size: 24px; font-weight: 500;
-  color: #fff;
-  font-family: 'Cormorant Garamond', serif;
-  letter-spacing: 3px;
-  margin-top: 4px;
-}
+.pay-ref-box { background: rgba(212,160,23,0.15); border: 1px dashed var(--gold); border-radius: var(--radius-sm); padding: 12px 14px; margin-top: 12px; text-align: center; position: relative; }
+.pay-ref-label { font-size: 10px; color: var(--gold-mid); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; }
+.pay-ref-val { font-size: 24px; font-weight: 500; color: #fff; font-family: 'Cormorant Garamond', serif; letter-spacing: 3px; margin-top: 4px; }
 .pay-ref-hint { font-size: 11px; color: #b5a995; margin-top: 4px; }
-.pay-confirm-check {
-  display: flex; align-items: flex-start; gap: 10px;
-  margin-top: 14px;
-  padding: 14px;
-  background: #fff8e6;
-  border: 1px solid #f0c040;
-  border-radius: var(--radius-sm);
-}
-.pay-confirm-check input[type="checkbox"] {
-  width: 18px; height: 18px; flex-shrink: 0;
-  margin-top: 1px;
-  accent-color: var(--gold);
-  cursor: pointer;
-}
+.pay-confirm-check { display: flex; align-items: flex-start; gap: 10px; margin-top: 14px; padding: 14px; background: #fff8e6; border: 1px solid #f0c040; border-radius: var(--radius-sm); }
+.pay-confirm-check input[type="checkbox"] { width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; accent-color: var(--gold); cursor: pointer; }
 .pay-confirm-text { font-size: 12px; line-height: 1.5; color: var(--ink); }
 
-/* ── FOOTER ─────────────────────────────────────────── */
-footer {
-  background: var(--ink);
-  color: #d4c4a8;
-  padding: 40px 24px 24px;
-  margin-top: 40px;
-  text-align: center;
-}
-.footer-name {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 22px; color: #fff;
-  margin-bottom: 6px;
-}
+/* Footer */
+footer { background: var(--ink); color: #d4c4a8; padding: 40px 24px 24px; margin-top: 40px; text-align: center; }
+.footer-name { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: #fff; margin-bottom: 6px; }
 .footer-tagline { font-size: 12px; color: #a89880; margin-bottom: 24px; font-style: italic; font-family: 'Cormorant Garamond', serif; }
-.footer-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  max-width: 480px; margin: 0 auto 24px;
-  font-size: 11px;
-}
-.footer-grid h4 {
-  color: var(--gold-mid);
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  margin-bottom: 8px;
-  font-weight: 600;
-}
+.footer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 480px; margin: 0 auto 24px; font-size: 11px; }
+.footer-grid h4 { color: var(--gold-mid); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 8px; font-weight: 600; }
 .footer-grid p { line-height: 1.6; color: #a89880; }
-.footer-bottom {
-  font-size: 10px; color: #6a5d4e;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255,255,255,0.08);
-}
+.footer-bottom { font-size: 10px; color: #6a5d4e; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); }
 
-/* ── RESPONSIVE ─────────────────────────────────────── */
 @media (min-width: 640px) {
   .hero-name { font-size: 64px; }
   .stylists-grid { grid-template-columns: repeat(4, 1fr); }
@@ -770,7 +251,6 @@ footer {
 </head>
 <body>
 
-<!-- ═══ HERO ═══════════════════════════════════════════ -->
 <section class="hero">
   <div class="hero-badge">Open today · 8am – 6pm</div>
   <h1 class="hero-name">Glam Studio</h1>
@@ -790,113 +270,40 @@ footer {
   </div>
 </section>
 
-<!-- ═══ TRUST STRIP ════════════════════════════════════ -->
 <div class="trust-strip">
   <div class="trust-grid">
-    <div class="trust-item">
-      <div class="ti-num">4.9<span class="accent">★</span></div>
-      <div class="ti-label">Customer rating</div>
-    </div>
-    <div class="trust-item">
-      <div class="ti-num">1.2k<span class="accent">+</span></div>
-      <div class="ti-label">Happy bookings</div>
-    </div>
-    <div class="trust-item">
-      <div class="ti-num">&lt; 5<span class="accent">m</span></div>
-      <div class="ti-label">Avg reply time</div>
-    </div>
+    <div class="trust-item"><div class="ti-num">4.9<span class="accent">★</span></div><div class="ti-label">Customer rating</div></div>
+    <div class="trust-item"><div class="ti-num">1.2k<span class="accent">+</span></div><div class="ti-label">Happy bookings</div></div>
+    <div class="trust-item"><div class="ti-num">&lt; 5<span class="accent">m</span></div><div class="ti-label">Avg reply time</div></div>
   </div>
 </div>
 
-<!-- ═══ REVIEWS ════════════════════════════════════════ -->
 <div class="shell section-block">
   <div class="section-eyebrow">Testimonials</div>
   <h2 class="section-title">What our clients say</h2>
   <p class="section-lede">Real reviews from real bookings.</p>
 </div>
 <div class="reviews-scroller">
-  <div class="review-card">
-    <div class="review-stars">★★★★★</div>
-    <p class="review-body">"Rumbi did my knotless braids and they came out perfect. Booking online took two minutes and she was ready when I arrived."</p>
-    <div class="review-foot">
-      <div class="review-avatar" style="background:linear-gradient(135deg,#d4a017,#b8860b)">T</div>
-      <div class="review-meta">
-        <div class="review-name">Tatenda M.</div>
-        <div class="review-detail">Knotless braids · 2 weeks ago</div>
-      </div>
-    </div>
-  </div>
-  <div class="review-card">
-    <div class="review-stars">★★★★★</div>
-    <p class="review-body">"The facial was incredible. My skin felt brand new and the studio is so calm. I'm coming back monthly."</p>
-    <div class="review-foot">
-      <div class="review-avatar" style="background:linear-gradient(135deg,#c4795a,#a06040)">N</div>
-      <div class="review-meta">
-        <div class="review-name">Nyasha K.</div>
-        <div class="review-detail">Facial · 1 month ago</div>
-      </div>
-    </div>
-  </div>
-  <div class="review-card">
-    <div class="review-stars">★★★★★</div>
-    <p class="review-body">"Got my makeup done for a wedding — flawless and lasted all day. Would trust them with any event."</p>
-    <div class="review-foot">
-      <div class="review-avatar" style="background:linear-gradient(135deg,#8aa97a,#5e7a52)">C</div>
-      <div class="review-meta">
-        <div class="review-name">Chiedza R.</div>
-        <div class="review-detail">Full makeup · 3 weeks ago</div>
-      </div>
-    </div>
-  </div>
-  <div class="review-card">
-    <div class="review-stars">★★★★★</div>
-    <p class="review-body">"Easy to find, easy to pay with EcoCash, and the quality is on another level. Best mani-pedi I've had in Harare."</p>
-    <div class="review-foot">
-      <div class="review-avatar" style="background:linear-gradient(135deg,#e3a890,#c4795a)">F</div>
-      <div class="review-meta">
-        <div class="review-name">Farai S.</div>
-        <div class="review-detail">Mani-pedi · 1 week ago</div>
-      </div>
-    </div>
-  </div>
+  <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-body">"Rumbi did my knotless braids and they came out perfect. Booking online took two minutes and she was ready when I arrived."</p><div class="review-foot"><div class="review-avatar" style="background:linear-gradient(135deg,#d4a017,#b8860b)">T</div><div class="review-meta"><div class="review-name">Tatenda M.</div><div class="review-detail">Knotless braids · 2 weeks ago</div></div></div></div>
+  <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-body">"The facial was incredible. My skin felt brand new and the studio is so calm. I'm coming back monthly."</p><div class="review-foot"><div class="review-avatar" style="background:linear-gradient(135deg,#c4795a,#a06040)">N</div><div class="review-meta"><div class="review-name">Nyasha K.</div><div class="review-detail">Facial · 1 month ago</div></div></div></div>
+  <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-body">"Got my makeup done for a wedding — flawless and lasted all day. Would trust them with any event."</p><div class="review-foot"><div class="review-avatar" style="background:linear-gradient(135deg,#8aa97a,#5e7a52)">C</div><div class="review-meta"><div class="review-name">Chiedza R.</div><div class="review-detail">Full makeup · 3 weeks ago</div></div></div></div>
+  <div class="review-card"><div class="review-stars">★★★★★</div><p class="review-body">"Easy to find, easy to pay with EcoCash, and the quality is on another level. Best mani-pedi I've had in Harare."</p><div class="review-foot"><div class="review-avatar" style="background:linear-gradient(135deg,#e3a890,#c4795a)">F</div><div class="review-meta"><div class="review-name">Farai S.</div><div class="review-detail">Mani-pedi · 1 week ago</div></div></div></div>
 </div>
 
-<!-- ═══ STYLISTS ═══════════════════════════════════════ -->
 <div class="shell section-block">
   <div class="section-eyebrow">Our team</div>
   <h2 class="section-title">Meet the stylists</h2>
   <p class="section-lede">Every member of our team is certified and brings years of experience.</p>
   <div class="stylists-grid">
-    <div class="stylist-card">
-      <div class="stylist-avatar" style="background:linear-gradient(135deg,#d4a017,#b8860b)">R</div>
-      <div class="stylist-name">Rumbi</div>
-      <div class="stylist-tag">Braiding · Natural hair</div>
-      <div class="stylist-rating">★ 4.9 · 142 reviews</div>
-    </div>
-    <div class="stylist-card">
-      <div class="stylist-avatar" style="background:linear-gradient(135deg,#c4795a,#a06040)">T</div>
-      <div class="stylist-name">Tendai</div>
-      <div class="stylist-tag">Color · Cuts · Relaxer</div>
-      <div class="stylist-rating">★ 4.9 · 98 reviews</div>
-    </div>
-    <div class="stylist-card">
-      <div class="stylist-avatar" style="background:linear-gradient(135deg,#8aa97a,#5e7a52)">M</div>
-      <div class="stylist-name">Mercy</div>
-      <div class="stylist-tag">Nails · Manicure</div>
-      <div class="stylist-rating">★ 5.0 · 76 reviews</div>
-    </div>
-    <div class="stylist-card">
-      <div class="stylist-avatar" style="background:linear-gradient(135deg,#e3a890,#c4795a)">P</div>
-      <div class="stylist-name">Precious</div>
-      <div class="stylist-tag">Facials · Makeup · Brows</div>
-      <div class="stylist-rating">★ 4.8 · 124 reviews</div>
-    </div>
+    <div class="stylist-card"><div class="stylist-avatar" style="background:linear-gradient(135deg,#d4a017,#b8860b)">R</div><div class="stylist-name">Rumbi</div><div class="stylist-tag">Braiding · Natural hair</div><div class="stylist-rating">★ 4.9 · 142 reviews</div></div>
+    <div class="stylist-card"><div class="stylist-avatar" style="background:linear-gradient(135deg,#c4795a,#a06040)">T</div><div class="stylist-name">Tendai</div><div class="stylist-tag">Color · Cuts · Relaxer</div><div class="stylist-rating">★ 4.9 · 98 reviews</div></div>
+    <div class="stylist-card"><div class="stylist-avatar" style="background:linear-gradient(135deg,#8aa97a,#5e7a52)">M</div><div class="stylist-name">Mercy</div><div class="stylist-tag">Nails · Manicure</div><div class="stylist-rating">★ 5.0 · 76 reviews</div></div>
+    <div class="stylist-card"><div class="stylist-avatar" style="background:linear-gradient(135deg,#e3a890,#c4795a)">P</div><div class="stylist-name">Precious</div><div class="stylist-tag">Facials · Makeup · Brows</div><div class="stylist-rating">★ 4.8 · 124 reviews</div></div>
   </div>
 </div>
 
-<!-- ═══ BOOKING FUNNEL ═════════════════════════════════ -->
 <div id="book" class="book-anchor"></div>
-<div style="background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:20px 0 6px;margin-top:24px">
+<div class="steps-wrap">
   <div class="shell section-block" style="padding-top:0;padding-bottom:0;text-align:center">
     <div class="section-eyebrow">Book in 60 seconds</div>
     <h2 class="section-title">Reserve your spot</h2>
@@ -904,100 +311,69 @@ footer {
   <div class="steps">
     <div class="step-item"><div class="step-dot active" id="sd1">1</div><div class="step-label">Service</div></div>
     <div class="step-line" id="sl1"></div>
-    <div class="step-item"><div class="step-dot" id="sd2">2</div><div class="step-label">Date</div></div>
+    <div class="step-item"><div class="step-dot" id="sd2">2</div><div class="step-label">Style</div></div>
     <div class="step-line" id="sl2"></div>
-    <div class="step-item"><div class="step-dot" id="sd3">3</div><div class="step-label">Details</div></div>
+    <div class="step-item"><div class="step-dot" id="sd3">3</div><div class="step-label">Stylist</div></div>
     <div class="step-line" id="sl3"></div>
-    <div class="step-item"><div class="step-dot" id="sd4">4</div><div class="step-label">Pay</div></div>
+    <div class="step-item"><div class="step-dot" id="sd4">4</div><div class="step-label">Date</div></div>
     <div class="step-line" id="sl4"></div>
-    <div class="step-item"><div class="step-dot" id="sd5">5</div><div class="step-label">Done</div></div>
+    <div class="step-item"><div class="step-dot" id="sd5">5</div><div class="step-label">You</div></div>
+    <div class="step-line" id="sl5"></div>
+    <div class="step-item"><div class="step-dot" id="sd6">6</div><div class="step-label">Pay</div></div>
+    <div class="step-line" id="sl6"></div>
+    <div class="step-item"><div class="step-dot" id="sd7">7</div><div class="step-label">Done</div></div>
   </div>
 </div>
 
 <main class="funnel">
-  <!-- STEP 1 -->
+  <!-- STEP 1: Service -->
   <div class="section visible" id="step1">
     <div class="section-head">Choose your service</div>
-    <div class="section-sub">Select one service to book. Need multiple? Book separately.</div>
-    <div class="service-list">
-      <div class="service-item" data-service="Hair Relaxer" data-price="45" data-duration="90">
-        <div class="service-icon icon-hair">✂</div>
-        <div class="service-info">
-          <div class="s-name">Hair Relaxer</div>
-          <div class="s-meta">90 mins<span class="dot"></span>Hair</div>
-        </div>
-        <div class="s-price">$45</div>
-      </div>
-      <div class="service-item" data-service="Hair Braiding" data-price="30" data-duration="120">
-        <div class="service-icon icon-hair">✂</div>
-        <div class="service-info">
-          <div class="s-name">Hair Braiding</div>
-          <div class="s-meta">120 mins<span class="dot"></span>Hair</div>
-        </div>
-        <div class="s-price">$30</div>
-      </div>
-      <div class="service-item" data-service="Manicure & Pedicure" data-price="25" data-duration="60">
-        <div class="service-icon icon-nails">💅</div>
-        <div class="service-info">
-          <div class="s-name">Manicure & Pedicure</div>
-          <div class="s-meta">60 mins<span class="dot"></span>Nails</div>
-        </div>
-        <div class="s-price">$25</div>
-      </div>
-      <div class="service-item" data-service="Facial Treatment" data-price="35" data-duration="75">
-        <div class="service-icon icon-beauty">✨</div>
-        <div class="service-info">
-          <div class="s-name">Facial Treatment</div>
-          <div class="s-meta">75 mins<span class="dot"></span>Beauty</div>
-        </div>
-        <div class="s-price">$35</div>
-      </div>
-      <div class="service-item" data-service="Full Makeup" data-price="50" data-duration="60">
-        <div class="service-icon icon-beauty">💄</div>
-        <div class="service-info">
-          <div class="s-name">Full Makeup</div>
-          <div class="s-meta">60 mins<span class="dot"></span>Beauty</div>
-        </div>
-        <div class="s-price">$50</div>
-      </div>
-      <div class="service-item" data-service="Eyebrows & Lashes" data-price="20" data-duration="45">
-        <div class="service-icon icon-beauty">👁</div>
-        <div class="service-info">
-          <div class="s-name">Eyebrows & Lashes</div>
-          <div class="s-meta">45 mins<span class="dot"></span>Beauty</div>
-        </div>
-        <div class="s-price">$20</div>
-      </div>
-    </div>
+    <div class="section-sub">Pick a service category. You'll choose specifics next.</div>
+    <div class="service-list" id="service-list"></div>
     <div class="err" id="err1">Please select a service to continue.</div>
     <button class="btn-primary" data-action="next:2">Continue →</button>
   </div>
 
-  <!-- STEP 2 -->
+  <!-- STEP 2: Variation -->
   <div class="section" id="step2">
+    <div class="section-head">Pick the style</div>
+    <div class="section-sub" id="variation-sub">—</div>
+    <div class="variation-list" id="variation-list"></div>
+    <div class="err" id="err2">Please pick a style to continue.</div>
+    <button class="btn-primary" data-action="next:3">Continue →</button>
+    <button class="btn-outline" data-action="next:1">← Back</button>
+  </div>
+
+  <!-- STEP 3: Stylist -->
+  <div class="section" id="step3">
+    <div class="section-head">Choose your stylist</div>
+    <div class="section-sub">Or pick "Any available" and we'll assign the best fit.</div>
+    <div class="stylist-list" id="stylist-list"></div>
+    <div class="err" id="err3">Please choose a stylist (or "Any available").</div>
+    <button class="btn-primary" data-action="next:4">Continue →</button>
+    <button class="btn-outline" data-action="next:2">← Back</button>
+  </div>
+
+  <!-- STEP 4: Date & Time -->
+  <div class="section" id="step4">
     <div class="section-head">Pick a date & time</div>
     <div class="section-sub">We're open Monday to Saturday, 8am – 6pm.</div>
     <label>Preferred date</label>
     <input type="date" id="book-date">
     <label>Available time slots</label>
     <div class="slots-grid" id="slots-grid">
-      <div class="slot">08:00</div>
-      <div class="slot">09:00</div>
-      <div class="slot">10:00</div>
-      <div class="slot">11:00</div>
-      <div class="slot">12:00</div>
-      <div class="slot">13:00</div>
-      <div class="slot">14:00</div>
-      <div class="slot">15:00</div>
-      <div class="slot">16:00</div>
+      <div class="slot">08:00</div><div class="slot">09:00</div><div class="slot">10:00</div>
+      <div class="slot">11:00</div><div class="slot">12:00</div><div class="slot">13:00</div>
+      <div class="slot">14:00</div><div class="slot">15:00</div><div class="slot">16:00</div>
     </div>
-    <div class="err" id="err2">Please select a date and time slot.</div>
-    <button class="btn-primary" data-action="next:3">Continue →</button>
-    <button class="btn-outline" data-action="next:1">← Back</button>
+    <div class="err" id="err4">Please select a date and time slot.</div>
+    <button class="btn-primary" data-action="next:5">Continue →</button>
+    <button class="btn-outline" data-action="next:3">← Back</button>
   </div>
 
-  <!-- STEP 3 -->
-  <div class="section" id="step3">
+  <!-- STEP 5: Customer details -->
+  <div class="section" id="step5">
     <div class="section-head">Your details</div>
     <div class="section-sub">We'll send your confirmation to these contacts.</div>
     <label>Full name</label>
@@ -1011,41 +387,38 @@ footer {
     <div class="summary-box">
       <div class="summary-title">Booking summary</div>
       <div class="summary-row"><span class="sl">Service</span><span class="sv" id="sum-service">—</span></div>
+      <div class="summary-row"><span class="sl">Stylist</span><span class="sv" id="sum-stylist">—</span></div>
       <div class="summary-row"><span class="sl">Date & Time</span><span class="sv" id="sum-datetime">—</span></div>
       <div class="summary-row"><span class="sl">Duration</span><span class="sv" id="sum-duration">—</span></div>
       <div class="summary-row"><span class="sl">Total</span><span class="sv gold" id="sum-price">—</span></div>
     </div>
-    <div class="err" id="err3">Please enter your name and a valid Zimbabwean phone number (e.g. 0771234567).</div>
-    <button class="btn-primary" data-action="next:4">Continue to payment →</button>
-    <button class="btn-outline" data-action="next:2">← Back</button>
+    <div class="err" id="err5">Please enter your name and a valid Zimbabwean phone number (e.g. 0771234567).</div>
+    <button class="btn-primary" data-action="next:6">Continue to payment →</button>
+    <button class="btn-outline" data-action="next:4">← Back</button>
   </div>
 
-  <!-- STEP 4: PAYMENT -->
-  <div class="pay-step" id="step4">
+  <!-- STEP 6: Payment with deposit toggle -->
+  <div class="pay-step" id="step6">
     <div class="section-head">Payment</div>
-    <div class="section-sub">Choose how you'd like to pay. Send payment then confirm below.</div>
+    <div class="section-sub">Pay a 30% deposit to lock your slot, or settle the full amount now.</div>
 
-    <div class="pay-method" data-method="ecocash">
-      <div class="pay-method-icon">📱</div>
-      <div class="pay-method-info">
-        <div class="pay-method-name">EcoCash</div>
-        <div class="pay-method-desc">Send to 0778961269</div>
+    <label style="margin-top:0">Amount to pay now</label>
+    <div class="pay-toggle">
+      <div class="pay-toggle-opt selected" data-pay-mode="deposit">
+        <div class="pay-toggle-name">Deposit (30%)</div>
+        <div class="pay-toggle-detail" id="deposit-amt">$0</div>
+      </div>
+      <div class="pay-toggle-opt" data-pay-mode="full">
+        <div class="pay-toggle-name">Pay in full</div>
+        <div class="pay-toggle-detail" id="full-amt">$0</div>
       </div>
     </div>
-    <div class="pay-method" data-method="innbucks">
-      <div class="pay-method-icon">💚</div>
-      <div class="pay-method-info">
-        <div class="pay-method-name">InnBucks</div>
-        <div class="pay-method-desc">Send to 0778961269</div>
-      </div>
-    </div>
-    <div class="pay-method" data-method="visa">
-      <div class="pay-method-icon">💳</div>
-      <div class="pay-method-info">
-        <div class="pay-method-name">Visa / Bank Card</div>
-        <div class="pay-method-desc">Pay at the studio on arrival</div>
-      </div>
-    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:6px">Deposits secure your slot and reduce no-shows. The remainder is paid at the studio.</p>
+
+    <label>Payment method</label>
+    <div class="pay-method" data-method="ecocash"><div class="pay-method-icon">📱</div><div class="pay-method-info"><div class="pay-method-name">EcoCash</div><div class="pay-method-desc">Send to 0778961269</div></div></div>
+    <div class="pay-method" data-method="innbucks"><div class="pay-method-icon">💚</div><div class="pay-method-info"><div class="pay-method-name">InnBucks</div><div class="pay-method-desc">Send to 0778961269</div></div></div>
+    <div class="pay-method" data-method="visa"><div class="pay-method-icon">💳</div><div class="pay-method-info"><div class="pay-method-name">Visa / Bank Card</div><div class="pay-method-desc">Pay at the studio on arrival</div></div></div>
 
     <div class="pay-instructions" id="pay-instructions">
       <div class="pay-inst-title">Payment instructions</div>
@@ -1064,13 +437,12 @@ footer {
       <div class="pay-confirm-text">I have sent the payment and used the reference above. I understand my booking is confirmed once payment is verified.</div>
     </div>
 
-    <div class="err" id="err4">Please select a payment method and confirm you have paid.</div>
+    <div class="err" id="err6">Please select a payment method and confirm you have paid.</div>
     <button class="btn-primary" id="submit-btn" data-action="submit">Confirm booking →</button>
-    <button class="btn-outline" data-action="next:3">← Back</button>
+    <button class="btn-outline" data-action="next:5">← Back</button>
   </div>
 </main>
 
-<!-- ═══ CONFIRMATION ═══════════════════════════════════ -->
 <div id="confirm-screen">
   <main class="funnel">
     <div class="confirm-card">
@@ -1086,11 +458,13 @@ footer {
       </div>
       <div class="confirm-body">
         <div class="conf-row"><span class="c-label">Service</span><span class="c-val" id="c-service"></span></div>
+        <div class="conf-row"><span class="c-label">Stylist</span><span class="c-val" id="c-stylist"></span></div>
         <div class="conf-row"><span class="c-label">Date & Time</span><span class="c-val" id="c-datetime"></span></div>
         <div class="conf-row"><span class="c-label">Duration</span><span class="c-val" id="c-duration"></span></div>
         <div class="conf-row"><span class="c-label">Name</span><span class="c-val" id="c-name"></span></div>
         <div class="conf-row"><span class="c-label">Phone</span><span class="c-val" id="c-phone"></span></div>
         <div class="conf-row"><span class="c-label">Notes</span><span class="c-val" id="c-notes"></span></div>
+        <div class="conf-row"><span class="c-label">Paid now</span><span class="c-val" id="c-paid-now"></span></div>
         <div class="conf-row"><span class="c-label">Total</span><span class="c-val gold" id="c-price"></span></div>
       </div>
     </div>
@@ -1102,25 +476,15 @@ footer {
   </main>
 </div>
 
-<!-- ═══ FOOTER ═════════════════════════════════════════ -->
 <footer>
   <div class="footer-name">Glam Studio</div>
   <div class="footer-tagline">Where your glow begins.</div>
   <div class="footer-grid">
-    <div>
-      <h4>Visit</h4>
-      <p>Harare CBD<br>Zimbabwe</p>
-    </div>
-    <div>
-      <h4>Hours</h4>
-      <p>Mon–Sat<br>8am – 6pm</p>
-    </div>
-    <div>
-      <h4>Contact</h4>
-      <p>+263 77 896 1269<br>WhatsApp</p>
-    </div>
+    <div><h4>Visit</h4><p>Harare CBD<br>Zimbabwe</p></div>
+    <div><h4>Hours</h4><p>Mon–Sat<br>8am – 6pm</p></div>
+    <div><h4>Contact</h4><p>+263 77 896 1269<br>WhatsApp</p></div>
   </div>
-  <div class="footer-bottom">© Glam Studio · All rights reserved</div>
+  <div class="footer-bottom">© Glam Studio · All rights reserved · <a href="/admin" style="color:#6a5d4e;text-decoration:none">Staff</a></div>
 </footer>
 
 <script type="module">
@@ -1130,65 +494,90 @@ import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDoc
 
 /* ── FIREBASE ── */
 const fbApp = initializeApp({
-  apiKey:            "AIzaSyDO0qkpj-oQeVFDIF86KRzteKh1Lai-_vU",
-  authDomain:        "saloon-booking-ce824.firebaseapp.com",
-  projectId:         "saloon-booking-ce824",
-  storageBucket:     "saloon-booking-ce824.firebasestorage.app",
+  apiKey: "AIzaSyDO0qkpj-oQeVFDIF86KRzteKh1Lai-_vU",
+  authDomain: "saloon-booking-ce824.firebaseapp.com",
+  projectId: "saloon-booking-ce824",
+  storageBucket: "saloon-booking-ce824.firebasestorage.app",
   messagingSenderId: "600545587683",
-  appId:             "1:600545587683:web:da4d5863341a126dc870d6"
+  appId: "1:600545587683:web:da4d5863341a126dc870d6"
 });
 const db = getFirestore(fbApp);
 
-/* ── PAYNOW CONFIG ── */
-const PAYNOW_CONFIG = {
-  integrationId:  'YOUR_INTEGRATION_ID',
-  integrationKey: 'YOUR_INTEGRATION_KEY',
-  resultUrl:      'https://saloon-booking-ten.vercel.app/api/paynow-result',
-  returnUrl:      'https://saloon-booking-ten.vercel.app',
-  enabled: false
-};
+/* ── DATA: SERVICES & VARIATIONS ────────────────────────── */
+const SERVICES = [
+  { id: 'hair-relaxer', name: 'Hair Relaxer', category: 'hair', icon: '✂', basePrice: 45, baseDuration: 90,
+    variations: [
+      { name: 'Standard relaxer',         price: 45, duration: 90 },
+      { name: 'Sensitive scalp formula',  price: 55, duration: 90 },
+      { name: 'Relaxer + deep treatment', price: 70, duration: 120 },
+    ] },
+  { id: 'hair-braiding', name: 'Hair Braiding', category: 'hair', icon: '✂', basePrice: 30, baseDuration: 120,
+    variations: [
+      { name: 'Cornrows',         price: 30, duration: 90 },
+      { name: 'Box braids',       price: 50, duration: 240 },
+      { name: 'Knotless braids',  price: 65, duration: 300 },
+      { name: 'Fulani braids',    price: 70, duration: 300 },
+      { name: 'Senegalese twists',price: 60, duration: 240 },
+    ] },
+  { id: 'manicure-pedicure', name: 'Manicure & Pedicure', category: 'nails', icon: '💅', basePrice: 25, baseDuration: 60,
+    variations: [
+      { name: 'Classic mani-pedi',     price: 25, duration: 60 },
+      { name: 'Gel mani-pedi',         price: 40, duration: 75 },
+      { name: 'Acrylic full set',      price: 55, duration: 90 },
+      { name: 'Nail art (per hand)',   price: 15, duration: 30 },
+    ] },
+  { id: 'facial', name: 'Facial Treatment', category: 'beauty', icon: '✨', basePrice: 35, baseDuration: 75,
+    variations: [
+      { name: 'Express cleanse',       price: 35, duration: 45 },
+      { name: 'Deep cleanse + mask',   price: 55, duration: 75 },
+      { name: 'Anti-aging facial',     price: 75, duration: 90 },
+    ] },
+  { id: 'makeup', name: 'Full Makeup', category: 'beauty', icon: '💄', basePrice: 50, baseDuration: 60,
+    variations: [
+      { name: 'Day / event makeup',    price: 50, duration: 60 },
+      { name: 'Bridal makeup',         price: 120, duration: 90 },
+      { name: 'Photoshoot ready',      price: 80, duration: 75 },
+    ] },
+  { id: 'brows-lashes', name: 'Eyebrows & Lashes', category: 'beauty', icon: '👁', basePrice: 20, baseDuration: 45,
+    variations: [
+      { name: 'Brow shape + tint',     price: 20, duration: 30 },
+      { name: 'Lash lift',             price: 35, duration: 60 },
+      { name: 'Classic lash extensions', price: 60, duration: 90 },
+    ] },
+];
 
-/* ── PAYMENT CONFIG ── */
+/* ── DATA: STYLISTS ─────────────────────────────────────── */
+const STYLISTS = [
+  { id: 'rumbi',    name: 'Rumbi',    initial: 'R', tag: 'Braiding · Natural hair', rating: 4.9, color: 'linear-gradient(135deg,#d4a017,#b8860b)', services: ['hair-relaxer','hair-braiding'] },
+  { id: 'tendai',   name: 'Tendai',   initial: 'T', tag: 'Color · Cuts · Relaxer',  rating: 4.9, color: 'linear-gradient(135deg,#c4795a,#a06040)', services: ['hair-relaxer','hair-braiding'] },
+  { id: 'mercy',    name: 'Mercy',    initial: 'M', tag: 'Nails specialist',         rating: 5.0, color: 'linear-gradient(135deg,#8aa97a,#5e7a52)', services: ['manicure-pedicure'] },
+  { id: 'precious', name: 'Precious', initial: 'P', tag: 'Facials · Makeup · Brows', rating: 4.8, color: 'linear-gradient(135deg,#e3a890,#c4795a)', services: ['facial','makeup','brows-lashes'] },
+];
+
+/* ── PAYMENT CONFIG ─────────────────────────────────────── */
 const PAYMENT_CONFIG = {
   ecocash:  { name: 'EcoCash',     number: '0778961269' },
   innbucks: { name: 'InnBucks',    number: '0778961269' },
-  visa:     { name: 'Visa / Card', number: 'Pay at studio' }
+  visa:     { name: 'Visa / Card', number: 'Pay at studio' },
 };
+const DEPOSIT_PCT = 0.30;
 
-/* ── PAYNOW INITIATOR ── */
-async function initiatePaynow(amount, email, phone, ref, method) {
-  if (!PAYNOW_CONFIG.enabled) return null;
-  try {
-    const res = await fetch('/api/paynow-initiate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        integrationId:  PAYNOW_CONFIG.integrationId,
-        integrationKey: PAYNOW_CONFIG.integrationKey,
-        resultUrl:      PAYNOW_CONFIG.resultUrl,
-        returnUrl:      PAYNOW_CONFIG.returnUrl,
-        reference:      ref,
-        amount, email, phone,
-        method:         method === 'ecocash' ? 'ecocash' : 'innbucks',
-        items:          [{ name: 'Glam Studio Booking', amount }]
-      })
-    });
-    const data = await res.json();
-    if (data.redirectUrl) { window.location.href = data.redirectUrl; return 'redirecting'; }
-    if (data.pollUrl) return data.pollUrl;
-    return null;
-  } catch(e) { console.error('Paynow error:', e); return null; }
-}
-
-/* ── STATE ── */
-let selService = '', selPrice = 0, selDuration = 0, selDate = '', selSlot = '';
-let selPayMethod = '', payRef = '';
+/* ── STATE ──────────────────────────────────────────────── */
+const state = {
+  service: null,           // SERVICES entry
+  variation: null,         // variation object
+  stylist: null,           // STYLISTS entry or { id: 'any', name: 'Any available' }
+  date: '',
+  slot: '',
+  payMode: 'deposit',      // 'deposit' | 'full'
+  payMethod: '',
+  payRef: '',
+};
 const today = new Date().toISOString().split('T')[0];
 const dateInput = document.getElementById('book-date');
-dateInput.min = today;
-dateInput.value = today;
+dateInput.min = today; dateInput.value = today;
 
-/* ── HELPERS ── */
+/* ── HELPERS ────────────────────────────────────────────── */
 function genRef() {
   const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   const bytes = crypto.getRandomValues(new Uint8Array(5));
@@ -1199,125 +588,164 @@ function genPayRef() {
   return 'GS' + Array.from(bytes).map(b => String(b).padStart(3,'0')).join('').slice(0,5);
 }
 const showErr = (id, show) => document.getElementById(id).classList.toggle('show', show);
+const $ = id => document.getElementById(id);
 
-/* ── SERVICE / SLOT ── */
-function selectService(el) {
-  document.querySelectorAll('.service-item').forEach(i => i.classList.remove('selected'));
-  el.classList.add('selected');
-  selService  = el.dataset.service;
-  selPrice    = +el.dataset.price;
-  selDuration = +el.dataset.duration;
-}
-function selectSlot(el) {
-  if (el.classList.contains('unavailable')) return;
-  document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
-  el.classList.add('selected');
-  selSlot = el.textContent.trim();
+const totalPrice = () => state.variation?.price ?? state.service?.basePrice ?? 0;
+const totalDuration = () => state.variation?.duration ?? state.service?.baseDuration ?? 0;
+const depositAmount = () => Math.ceil(totalPrice() * DEPOSIT_PCT);
+const amountToPayNow = () => state.payMode === 'full' ? totalPrice() : depositAmount();
+
+/* ── RENDER: SERVICES ───────────────────────────────────── */
+function renderServices() {
+  const list = $('service-list');
+  list.innerHTML = SERVICES.map(s => {
+    const minPrice = Math.min(...s.variations.map(v => v.price));
+    return `<div class="service-item" data-service-id="${s.id}">
+      <div class="service-icon icon-${s.category}">${s.icon}</div>
+      <div class="service-info">
+        <div class="s-name">${s.name}</div>
+        <div class="s-meta">${s.variations.length} options<span class="dot"></span>${s.category}</div>
+      </div>
+      <div class="s-price">$${minPrice}<span class="s-from">from</span></div>
+    </div>`;
+  }).join('');
 }
 
+/* ── RENDER: VARIATIONS ─────────────────────────────────── */
+function renderVariations() {
+  if (!state.service) return;
+  $('variation-sub').textContent = `Pick the ${state.service.name.toLowerCase()} option you'd like.`;
+  $('variation-list').innerHTML = state.service.variations.map((v, i) => `
+    <div class="variation-item" data-variation-idx="${i}">
+      <div>
+        <div class="v-name">${v.name}</div>
+        <div class="v-meta">${v.duration} mins</div>
+      </div>
+      <div class="v-price">$${v.price}</div>
+    </div>`).join('');
+}
+
+/* ── RENDER: STYLISTS ───────────────────────────────────── */
+function renderStylists() {
+  if (!state.service) return;
+  const eligible = STYLISTS.filter(s => s.services.includes(state.service.id));
+  const items = [{ id: 'any', name: 'Any available', tag: 'We pick the best fit', initial: '✦', rating: '—', color: 'linear-gradient(135deg,#1a1209,#3a2914)' }, ...eligible];
+  $('stylist-list').innerHTML = items.map(s => `
+    <div class="stylist-pick" data-stylist-id="${s.id}">
+      <div class="sp-avatar" style="background:${s.color}">${s.initial}</div>
+      <div class="sp-info">
+        <div class="sp-name">${s.name}</div>
+        <div class="sp-tag">${s.tag}</div>
+      </div>
+      ${s.rating !== '—' ? `<div class="sp-rating">★ ${s.rating}</div>` : ''}
+    </div>`).join('');
+}
+
+/* ── SLOT AVAILABILITY ──────────────────────────────────── */
 async function updateSlots() {
-  selDate = dateInput.value;
-  selSlot = '';
-  const grid = document.getElementById('slots-grid');
-  const day = new Date(selDate + 'T00:00:00').getDay();
+  state.date = dateInput.value;
+  state.slot = '';
+  const grid = $('slots-grid');
+  const day = new Date(state.date + 'T00:00:00').getDay();
 
   document.querySelectorAll('.slot').forEach(s => s.classList.remove('unavailable', 'selected'));
   if (day === 0) { document.querySelectorAll('.slot').forEach(s => s.classList.add('unavailable')); return; }
-  if (!selDate) return;
+  if (!state.date) return;
 
-  grid.style.opacity = '0.5';
-  grid.style.pointerEvents = 'none';
+  grid.style.opacity = '0.5'; grid.style.pointerEvents = 'none';
   try {
-    const q = query(
-      collection(db, 'salon_bookings'),
-      where('date', '==', selDate),
-      where('status', '==', 'confirmed')
-    );
+    const filters = [where('date', '==', state.date), where('status', '==', 'confirmed')];
+    if (state.stylist && state.stylist.id !== 'any') {
+      filters.push(where('stylistId', '==', state.stylist.id));
+    }
+    const q = query(collection(db, 'salon_bookings'), ...filters);
     const snap = await getDocs(q);
     const booked = new Set(snap.docs.map(d => d.data().timeSlot));
     document.querySelectorAll('.slot').forEach(s => {
       if (booked.has(s.textContent.trim())) s.classList.add('unavailable');
     });
-  } catch (e) { console.warn('Could not load slot availability:', e); }
+  } catch (e) { console.warn('Slot availability:', e); }
   finally { grid.style.opacity = '1'; grid.style.pointerEvents = ''; }
 }
 
-/* ── SUMMARY ── */
+/* ── SUMMARY ────────────────────────────────────────────── */
 function updateSummary() {
-  const ds = selDate
-    ? new Date(selDate + 'T00:00:00').toLocaleDateString('en-ZW',
-        { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })
+  const ds = state.date
+    ? new Date(state.date + 'T00:00:00').toLocaleDateString('en-ZW', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })
     : '—';
-  document.getElementById('sum-service').textContent  = selService || '—';
-  document.getElementById('sum-datetime').textContent = (selDate && selSlot) ? ds + ' at ' + selSlot : '—';
-  document.getElementById('sum-duration').textContent = selDuration ? selDuration + ' mins' : '—';
-  document.getElementById('sum-price').textContent    = selPrice ? '$' + selPrice : '—';
+  $('sum-service').textContent  = state.variation ? `${state.service.name} — ${state.variation.name}` : '—';
+  $('sum-stylist').textContent  = state.stylist?.name ?? '—';
+  $('sum-datetime').textContent = (state.date && state.slot) ? ds + ' at ' + state.slot : '—';
+  $('sum-duration').textContent = totalDuration() ? totalDuration() + ' mins' : '—';
+  $('sum-price').textContent    = totalPrice() ? '$' + totalPrice() : '—';
 }
 
-/* ── PAYMENT METHOD ── */
+/* ── PAYMENT UI ─────────────────────────────────────────── */
+function refreshPayAmounts() {
+  $('deposit-amt').textContent = '$' + depositAmount();
+  $('full-amt').textContent    = '$' + totalPrice();
+}
+function selectPayMode(mode) {
+  state.payMode = mode;
+  document.querySelectorAll('.pay-toggle-opt').forEach(o => o.classList.toggle('selected', o.dataset.payMode === mode));
+  if (state.payMethod) selectPayMethod(document.querySelector(`.pay-method[data-method="${state.payMethod}"]`), state.payMethod);
+}
 function selectPayMethod(el, method) {
   document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('selected'));
   el.classList.add('selected');
-  selPayMethod = method;
+  state.payMethod = method;
+  state.payRef = genPayRef();
   const cfg = PAYMENT_CONFIG[method];
-  payRef = genPayRef();
-
-  if (PAYNOW_CONFIG.enabled && method !== 'visa') {
-    document.getElementById('pi-number').textContent  = 'Payment via Paynow';
-    document.getElementById('pi-amount').textContent  = '$' + selPrice;
-    document.getElementById('pi-ref').textContent     = payRef;
-    document.getElementById('pi-ref-big').textContent = payRef;
-    document.getElementById('pay-confirm-check').style.display = 'none';
-    document.getElementById('submit-btn').textContent = 'Pay now →';
-  } else {
-    document.getElementById('pi-number').textContent  = cfg.number;
-    document.getElementById('pi-amount').textContent  = '$' + selPrice;
-    document.getElementById('pi-ref').textContent     = payRef;
-    document.getElementById('pi-ref-big').textContent = payRef;
-    document.getElementById('submit-btn').textContent = 'Confirm booking →';
-    document.getElementById('pay-confirm-check').style.display = method === 'visa' ? 'none' : 'flex';
-  }
-  document.getElementById('pay-instructions').classList.add('show');
+  const amt = method === 'visa' ? totalPrice() : amountToPayNow();
+  $('pi-number').textContent  = cfg.number;
+  $('pi-amount').textContent  = '$' + amt + (method === 'visa' ? ' (at studio)' : (state.payMode === 'deposit' ? ' (deposit)' : ''));
+  $('pi-ref').textContent     = state.payRef;
+  $('pi-ref-big').textContent = state.payRef;
+  $('submit-btn').textContent = 'Confirm booking →';
+  $('pay-confirm-check').style.display = method === 'visa' ? 'none' : 'flex';
+  $('pay-instructions').classList.add('show');
 }
 
-/* ── NAVIGATION ── */
+/* ── NAVIGATION ─────────────────────────────────────────── */
 function goStep(step) {
-  if (step === 2) {
-    if (!selService) { showErr('err1', true); return; }
-    showErr('err1', false);
+  if (step === 2) { if (!state.service) return showErr('err1', true); showErr('err1', false); renderVariations(); }
+  if (step === 3) { if (!state.variation) return showErr('err2', true); showErr('err2', false); renderStylists(); }
+  if (step === 4) { if (!state.stylist)   return showErr('err3', true); showErr('err3', false); }
+  if (step === 5) {
+    state.date = dateInput.value;
+    if (!state.date || !state.slot) return showErr('err4', true);
+    showErr('err4', false); updateSummary();
   }
-  if (step === 3) {
-    selDate = dateInput.value;
-    if (!selDate || !selSlot) { showErr('err2', true); return; }
-    showErr('err2', false);
-    updateSummary();
-  }
-  if (step === 4) {
-    const name  = document.getElementById('cust-name').value.trim();
-    const phone = document.getElementById('cust-phone').value.trim();
+  if (step === 6) {
+    const name  = $('cust-name').value.trim();
+    const phone = $('cust-phone').value.trim();
     const phoneRegex = /^(\+?263|0)[7][1-9]\d{7}$/;
-    if (!name || !phoneRegex.test(phone.replace(/\s/g,''))) { showErr('err3', true); return; }
-    showErr('err3', false);
+    if (!name || !phoneRegex.test(phone.replace(/\s/g,''))) return showErr('err5', true);
+    showErr('err5', false);
+    refreshPayAmounts();
   }
-  ['step1','step2','step3'].forEach((id, i) =>
-    document.getElementById(id).classList.toggle('visible', i + 1 === step)
-  );
-  document.getElementById('step4').classList.toggle('visible', step === 4);
-  for (let i = 1; i <= 5; i++) {
-    document.getElementById('sd' + i).classList.toggle('active', i === step);
-    document.getElementById('sd' + i).classList.toggle('done',   i < step);
+
+  ['step1','step2','step3','step4','step5'].forEach((id, i) =>
+    $(id).classList.toggle('visible', i + 1 === step));
+  $('step6').classList.toggle('visible', step === 6);
+  for (let i = 1; i <= 7; i++) {
+    $('sd' + i).classList.toggle('active', i === step);
+    $('sd' + i).classList.toggle('done',   i < step);
   }
-  for (let i = 1; i <= 4; i++) document.getElementById('sl' + i).classList.toggle('done', i < step);
-  document.getElementById('book').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  for (let i = 1; i <= 6; i++) $('sl' + i).classList.toggle('done', i < step);
+  $('book').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-/* ── FIREBASE SAVE ── */
+/* ── SAVE ──────────────────────────────────────────────── */
 async function saveBooking(data) {
   const docRef = await addDoc(collection(db, 'salon_bookings'), {
     bookingRef:    data.ref,
     service:       data.service,
+    variation:     data.variation,
     price:         data.price,
     duration:      data.duration,
+    stylistId:     data.stylistId,
+    stylistName:   data.stylistName,
     date:          data.date,
     timeSlot:      data.slot,
     customerName:  data.name,
@@ -1325,63 +753,60 @@ async function saveBooking(data) {
     customerEmail: data.email || '—',
     notes:         data.notes || '—',
     paymentMethod: data.paymentMethod,
+    paymentMode:   data.paymentMode,
+    paidNow:       data.paidNow,
     paymentRef:    data.paymentRef,
     paymentStatus: data.paymentStatus,
     status:        'confirmed',
-    createdAt:     serverTimestamp()
+    createdAt:     serverTimestamp(),
   });
   console.log('✅ Booking saved:', docRef.id);
 }
 
-/* ── SUBMIT BOOKING ── */
+/* ── SUBMIT ────────────────────────────────────────────── */
 async function submitBooking() {
-  if (!selPayMethod) { showErr('err4', true); return; }
-  const check = document.getElementById('pay-done-check');
-  if (selPayMethod !== 'visa' && !check.checked) { showErr('err4', true); return; }
-  showErr('err4', false);
+  if (!state.payMethod) return showErr('err6', true);
+  const check = $('pay-done-check');
+  if (state.payMethod !== 'visa' && !check.checked) return showErr('err6', true);
+  showErr('err6', false);
 
-  const lockedPrice = selPrice;
-  if (!lockedPrice || lockedPrice <= 0) { alert('Invalid booking — please start again.'); return; }
+  const lockedPrice = totalPrice();
+  if (!lockedPrice || lockedPrice <= 0) return alert('Invalid booking — start over.');
 
-  const btn = document.getElementById('submit-btn');
+  const btn = $('submit-btn');
   btn.disabled = true;
-  btn.innerHTML = '<span>Confirming...</span><span style="display:inline-block;animation:spin 1s linear infinite">⟳</span>';
+  btn.innerHTML = '<span>Confirming…</span><span style="display:inline-block;animation:spin 1s linear infinite">⟳</span>';
 
-  const name    = document.getElementById('cust-name').value.trim();
-  const phone   = document.getElementById('cust-phone').value.trim();
-  const email   = document.getElementById('cust-email').value.trim();
-  const notes   = document.getElementById('cust-notes').value.trim();
-  const ref     = genRef();
-  const dateStr = new Date(selDate + 'T00:00:00').toLocaleDateString('en-ZW',
+  const name  = $('cust-name').value.trim();
+  const phone = $('cust-phone').value.trim();
+  const email = $('cust-email').value.trim();
+  const notes = $('cust-notes').value.trim();
+  const ref   = genRef();
+  const dateStr = new Date(state.date + 'T00:00:00').toLocaleDateString('en-ZW',
     { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-  const now     = new Date().toLocaleString('en-ZW',
+  const now = new Date().toLocaleString('en-ZW',
     { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  const paidNow = state.payMethod === 'visa' ? 0 : amountToPayNow();
+  const paymentStatus = state.payMethod === 'visa'
+    ? 'pay_on_arrival'
+    : state.payMode === 'deposit' ? 'deposit_pending_verification' : 'full_pending_verification';
 
   try {
-    if (PAYNOW_CONFIG.enabled && selPayMethod !== 'visa') {
-      const pollUrl = await initiatePaynow(
-        lockedPrice, email || 'noemail@glamstudio.co.zw',
-        phone, payRef, selPayMethod
-      );
-      if (pollUrl === 'redirecting') return;
-      if (!pollUrl) {
-        alert('Payment initiation failed. Please try manual payment.');
-        btn.disabled = false; btn.innerHTML = 'Confirm booking →';
-        return;
-      }
-    }
-
     await saveBooking({
-      ref, service: selService, price: lockedPrice,
-      duration: selDuration, date: selDate, slot: selSlot,
+      ref,
+      service:    `${state.service.name} — ${state.variation.name}`,
+      variation:  state.variation.name,
+      price:      lockedPrice,
+      duration:   totalDuration(),
+      stylistId:  state.stylist.id,
+      stylistName: state.stylist.name,
+      date: state.date, slot: state.slot,
       name, phone, email, notes,
-      paymentMethod:  PAYMENT_CONFIG[selPayMethod].name,
-      paymentRef:     payRef,
-      paymentStatus:  selPayMethod === 'visa'
-                        ? 'pay_on_arrival'
-                        : PAYNOW_CONFIG.enabled
-                          ? 'paynow_initiated'
-                          : 'manual_pending_verification'
+      paymentMethod: PAYMENT_CONFIG[state.payMethod].name,
+      paymentMode:   state.payMode,
+      paidNow,
+      paymentRef:    state.payRef,
+      paymentStatus,
     });
 
     fetch('/api/send-email', {
@@ -1390,95 +815,115 @@ async function submitBooking() {
       body: JSON.stringify({
         type: 'salon_booking',
         data: {
-          ref, service: selService, price: lockedPrice,
-          duration: selDuration,
-          datetime: dateStr + ' at ' + selSlot,
+          ref,
+          service: `${state.service.name} — ${state.variation.name}`,
+          price: lockedPrice, duration: totalDuration(),
+          datetime: dateStr + ' at ' + state.slot,
           name, phone, email, notes: notes || 'None',
-          paymentMethod: PAYMENT_CONFIG[selPayMethod].name,
-          paymentRef: payRef,
-          paymentStatus: selPayMethod === 'visa' ? 'Pay on arrival' : 'Manual — pending verification'
+          paymentMethod: PAYMENT_CONFIG[state.payMethod].name + (state.payMethod !== 'visa' ? ` (${state.payMode})` : ''),
+          paymentRef: state.payRef,
+          paymentStatus: paymentStatus.replace(/_/g, ' '),
         }
       })
-    }).catch(e => console.warn('Email notification failed:', e));
+    }).catch(e => console.warn('Email failed:', e));
 
-    document.getElementById('conf-submitted').textContent = 'Confirmed on ' + now;
-    document.getElementById('ref-code').textContent   = ref;
-    document.getElementById('c-service').textContent  = selService;
-    document.getElementById('c-datetime').textContent = dateStr + ' at ' + selSlot;
-    document.getElementById('c-duration').textContent = selDuration + ' mins';
-    document.getElementById('c-name').textContent     = name;
-    document.getElementById('c-phone').textContent    = phone;
-    document.getElementById('c-notes').textContent    = notes || 'None';
-    document.getElementById('c-price').textContent    = '$' + selPrice;
+    $('conf-submitted').textContent = 'Confirmed on ' + now;
+    $('ref-code').textContent  = ref;
+    $('c-service').textContent = `${state.service.name} — ${state.variation.name}`;
+    $('c-stylist').textContent = state.stylist.name;
+    $('c-datetime').textContent = dateStr + ' at ' + state.slot;
+    $('c-duration').textContent = totalDuration() + ' mins';
+    $('c-name').textContent  = name;
+    $('c-phone').textContent = phone;
+    $('c-notes').textContent = notes || 'None';
+    $('c-paid-now').textContent = paidNow ? '$' + paidNow + (state.payMode === 'deposit' ? ' (deposit)' : '') : 'At studio';
+    $('c-price').textContent = '$' + lockedPrice;
 
     const msg = encodeURIComponent(
-      'Hi Glam Studio! I just booked an appointment.\n\n' +
-      'Ref: ' + ref + '\nService: ' + selService + '\nDate: ' + dateStr + ' at ' + selSlot +
-      '\nName: ' + name + '\nPhone: ' + phone + '\nTotal: $' + selPrice +
-      '\nPayment: ' + PAYMENT_CONFIG[selPayMethod].name + ' — Ref: ' + payRef +
-      (notes ? '\nNotes: ' + notes : '')
-    );
-    document.getElementById('wa-btn').onclick = () =>
-      window.open('https://wa.me/2637778961269?text=' + msg, '_blank', 'noopener,noreferrer');
+      `Hi Glam Studio! I just booked an appointment.\n\nRef: ${ref}\nService: ${state.service.name} — ${state.variation.name}` +
+      `\nStylist: ${state.stylist.name}\nDate: ${dateStr} at ${state.slot}\nName: ${name}\nPhone: ${phone}` +
+      `\nTotal: $${lockedPrice}\nPayment: ${PAYMENT_CONFIG[state.payMethod].name} — Ref ${state.payRef}` +
+      (notes ? `\nNotes: ${notes}` : ''));
+    $('wa-btn').onclick = () => window.open('https://wa.me/2637778961269?text=' + msg, '_blank', 'noopener,noreferrer');
 
-    for (let i = 1; i <= 5; i++) {
-      document.getElementById('sd' + i).classList.remove('active');
-      document.getElementById('sd' + i).classList.add('done');
-    }
-    for (let i = 1; i <= 4; i++) document.getElementById('sl' + i).classList.add('done');
-    ['step1','step2','step3'].forEach(id => document.getElementById(id).classList.remove('visible'));
-    document.getElementById('step4').classList.remove('visible');
-    document.getElementById('confirm-screen').classList.add('visible');
-    document.getElementById('book').scrollIntoView({ behavior: 'smooth' });
-
+    for (let i = 1; i <= 7; i++) { $('sd' + i).classList.remove('active'); $('sd' + i).classList.add('done'); }
+    for (let i = 1; i <= 6; i++) $('sl' + i).classList.add('done');
+    ['step1','step2','step3','step4','step5'].forEach(id => $(id).classList.remove('visible'));
+    $('step6').classList.remove('visible');
+    $('confirm-screen').classList.add('visible');
+    $('book').scrollIntoView({ behavior: 'smooth' });
   } catch(e) {
-    console.error('❌ Booking error:', e);
+    console.error('Booking error:', e);
     alert('Something went wrong: ' + e.message);
   } finally {
-    btn.disabled = false;
-    btn.innerHTML = 'Confirm booking →';
+    btn.disabled = false; btn.innerHTML = 'Confirm booking →';
   }
 }
 
-/* ── RESET ── */
+/* ── RESET ─────────────────────────────────────────────── */
 function resetApp() {
-  selService = ''; selPrice = 0; selDuration = 0; selDate = ''; selSlot = '';
-  selPayMethod = ''; payRef = '';
-  ['cust-name','cust-phone','cust-email','cust-notes'].forEach(id => document.getElementById(id).value = '');
+  Object.assign(state, { service: null, variation: null, stylist: null, date: '', slot: '', payMode: 'deposit', payMethod: '', payRef: '' });
+  ['cust-name','cust-phone','cust-email','cust-notes'].forEach(id => $(id).value = '');
   dateInput.value = today;
-  document.getElementById('pay-done-check').checked = false;
-  document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('selected'));
-  document.getElementById('pay-instructions').classList.remove('show');
-  document.getElementById('pay-confirm-check').style.display = 'none';
-  document.querySelectorAll('.service-item').forEach(i => i.classList.remove('selected'));
-  document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected','unavailable'));
-  document.getElementById('confirm-screen').classList.remove('visible');
-  document.getElementById('step4').classList.remove('visible');
-  ['step1','step2','step3'].forEach((id, i) =>
-    document.getElementById(id).classList.toggle('visible', i === 0)
-  );
-  for (let i = 1; i <= 5; i++) {
-    document.getElementById('sd' + i).classList.remove('active','done');
-    if (i === 1) document.getElementById('sd1').classList.add('active');
-  }
-  for (let i = 1; i <= 4; i++) document.getElementById('sl' + i).classList.remove('done');
+  $('pay-done-check').checked = false;
+  document.querySelectorAll('.pay-method, .service-item, .variation-item, .stylist-pick, .slot').forEach(el => el.classList.remove('selected','unavailable'));
+  $('pay-instructions').classList.remove('show');
+  $('pay-confirm-check').style.display = 'none';
+  $('confirm-screen').classList.remove('visible');
+  $('step6').classList.remove('visible');
+  ['step1','step2','step3','step4','step5'].forEach((id, i) => $(id).classList.toggle('visible', i === 0));
+  for (let i = 1; i <= 7; i++) { $('sd' + i).classList.remove('active','done'); if (i === 1) $('sd1').classList.add('active'); }
+  for (let i = 1; i <= 6; i++) $('sl' + i).classList.remove('done');
+  selectPayMode('deposit');
   updateSlots();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* ── EVENT BINDINGS (no inline handlers) ── */
-document.querySelectorAll('.service-item').forEach(el =>
-  el.addEventListener('click', () => selectService(el)));
-
-document.querySelectorAll('.slot').forEach(el =>
-  el.addEventListener('click', () => selectSlot(el)));
-
-document.querySelectorAll('.pay-method').forEach(el =>
-  el.addEventListener('click', () => selectPayMethod(el, el.dataset.method)));
-
-dateInput.addEventListener('input', updateSlots);
+/* ── EVENT WIRING ──────────────────────────────────────── */
+renderServices();
 
 document.body.addEventListener('click', (e) => {
+  // Service pick
+  const sEl = e.target.closest('.service-item');
+  if (sEl) {
+    document.querySelectorAll('.service-item').forEach(i => i.classList.remove('selected'));
+    sEl.classList.add('selected');
+    state.service = SERVICES.find(s => s.id === sEl.dataset.serviceId);
+    state.variation = null;
+    return;
+  }
+  // Variation pick
+  const vEl = e.target.closest('.variation-item');
+  if (vEl) {
+    document.querySelectorAll('.variation-item').forEach(i => i.classList.remove('selected'));
+    vEl.classList.add('selected');
+    state.variation = state.service.variations[+vEl.dataset.variationIdx];
+    return;
+  }
+  // Stylist pick
+  const stEl = e.target.closest('.stylist-pick');
+  if (stEl) {
+    document.querySelectorAll('.stylist-pick').forEach(i => i.classList.remove('selected'));
+    stEl.classList.add('selected');
+    if (stEl.dataset.stylistId === 'any') state.stylist = { id: 'any', name: 'Any available' };
+    else state.stylist = STYLISTS.find(s => s.id === stEl.dataset.stylistId);
+    return;
+  }
+  // Slot pick
+  const slotEl = e.target.closest('.slot');
+  if (slotEl && !slotEl.classList.contains('unavailable')) {
+    document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
+    slotEl.classList.add('selected');
+    state.slot = slotEl.textContent.trim();
+    return;
+  }
+  // Pay method
+  const pEl = e.target.closest('.pay-method');
+  if (pEl) { selectPayMethod(pEl, pEl.dataset.method); return; }
+  // Pay mode toggle
+  const ptEl = e.target.closest('.pay-toggle-opt');
+  if (ptEl) { selectPayMode(ptEl.dataset.payMode); return; }
+  // Action buttons
   const action = e.target.closest('[data-action]')?.dataset.action;
   if (!action) return;
   if (action === 'submit') return submitBooking();
@@ -1487,6 +932,7 @@ document.body.addEventListener('click', (e) => {
   if (m) goStep(+m[1]);
 });
 
+dateInput.addEventListener('input', updateSlots);
 updateSlots();
 </script>
 </body>
