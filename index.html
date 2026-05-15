@@ -2,197 +2,975 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1a1209">
+<meta name="description" content="Glam Studio — Hair, nails, beauty and wellness in Harare CBD. Book your appointment online in under a minute.">
+<meta property="og:title" content="Glam Studio — Book your appointment">
+<meta property="og:description" content="Hair · Nails · Beauty · Wellness — Harare CBD.">
+<meta property="og:type" content="website">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; connect-src https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com; img-src 'self' data:;">
 <title>Glam Studio — Book an Appointment</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --cream: #faf7f2; --warm-white: #fff9f4; --ink: #1a1209;
-  --gold: #b8860b; --gold-light: #f5e9c8; --gold-mid: #d4a017;
-  --rose: #c4795a; --rose-light: #faeee8; --muted: #8a7d6e;
-  --border: #e8dfd0; --card: #ffffff; --radius: 16px; --radius-sm: 10px;
+  --cream:        #fdfaf6;
+  --warm-white:   #fff9f4;
+  --ink:          #1a1209;
+  --ink-soft:     #2a1f14;
+  --gold:         #b8860b;
+  --gold-light:   #f5e9c8;
+  --gold-mid:     #d4a017;
+  --rose:         #c4795a;
+  --rose-soft:    #e3a890;
+  --rose-light:   #faeee8;
+  --blush:        #f4e1d7;
+  --muted:        #8a7d6e;
+  --muted-soft:   #b5a995;
+  --border:       #ebe1d2;
+  --border-soft:  #f3ead9;
+  --card:         #ffffff;
+  --radius:       18px;
+  --radius-sm:    12px;
+  --radius-lg:    24px;
+  --shadow-sm:    0 1px 2px rgba(26,18,9,0.04), 0 1px 3px rgba(26,18,9,0.06);
+  --shadow-md:    0 4px 12px rgba(26,18,9,0.06), 0 2px 4px rgba(26,18,9,0.04);
+  --shadow-lg:    0 12px 32px rgba(26,18,9,0.08);
 }
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--cream); color: var(--ink); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
-
-.hero { background: var(--ink); padding: 40px 20px 32px; text-align: center; position: relative; overflow: hidden; }
-.hero::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(184,134,11,0.04) 40px,rgba(184,134,11,0.04) 41px); }
-.hero-eyebrow { font-size:10px; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold-mid); margin-bottom:10px; }
-.hero-name { font-family:'Cormorant Garamond',serif; font-size:42px; font-weight:600; color:#fff; line-height:1.1; margin-bottom:8px; }
-.hero-tagline { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:16px; color:#bbb; margin-bottom:20px; }
-.hero-meta { display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
-.hero-meta span { font-size:11px; color:#888; display:flex; align-items:center; gap:5px; }
-.hero-meta span::before { content:'◆'; color:var(--gold-mid); font-size:7px; }
-
-.steps { display:flex; align-items:center; justify-content:center; gap:0; margin:24px 0 8px; padding:0 16px; }
-.step-item { display:flex; flex-direction:column; align-items:center; gap:5px; }
-.step-dot { width:30px; height:30px; border-radius:50%; border:1.5px solid var(--border); background:var(--cream); color:var(--muted); font-size:12px; font-weight:500; display:flex; align-items:center; justify-content:center; transition:all 0.3s; }
-.step-dot.active { background:var(--ink); color:#fff; border-color:var(--ink); }
-.step-dot.done { background:var(--gold); color:#fff; border-color:var(--gold); }
-.step-label { font-size:9px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); }
-.step-line { width:40px; height:1.5px; background:var(--border); margin-bottom:16px; transition:background 0.3s; }
-.step-line.done { background:var(--gold); }
-
-main { max-width:480px; margin:0 auto; padding:16px 16px 60px; }
-
-.section { background:var(--card); border-radius:var(--radius); border:1px solid var(--border); padding:20px; margin-bottom:14px; display:none; animation:rise 0.35s ease; }
-.section.visible { display:block; }
-@keyframes rise { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-@keyframes spin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
-
-.section-head { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; color:var(--ink); margin-bottom:4px; }
-.section-sub { font-size:12px; color:var(--muted); margin-bottom:18px; line-height:1.5; }
-
-label { font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:0.07em; color:var(--muted); display:block; margin-bottom:6px; margin-top:16px; }
-label:first-of-type { margin-top:0; }
-input[type="text"], input[type="email"], input[type="tel"], input[type="date"], select, textarea {
-  width:100%; padding:12px 14px; border:1.5px solid var(--border); border-radius:var(--radius-sm);
-  font-family:'DM Sans',sans-serif; font-size:14px; color:var(--ink); background:var(--warm-white);
-  outline:none; transition:border-color 0.2s; appearance:none; -webkit-appearance:none;
+html { scroll-behavior: smooth; }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
-select { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a7d6e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; padding-right:36px; }
-input:focus, select:focus, textarea:focus { border-color:var(--gold); }
-textarea { resize:vertical; min-height:80px; line-height:1.6; }
+img, svg { display: block; max-width: 100%; }
+button { font: inherit; cursor: pointer; }
+.serif { font-family: 'Cormorant Garamond', serif; }
 
-.service-list { display:grid; gap:8px; margin-top:6px; }
-.service-item { border:1.5px solid var(--border); border-radius:var(--radius-sm); padding:12px 14px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; background:var(--warm-white); transition:all 0.2s; }
-.service-item:hover { border-color:var(--gold); }
-.service-item.selected { border-color:var(--gold); background:var(--gold-light); }
-.s-name { font-size:14px; font-weight:500; color:var(--ink); }
-.s-duration { font-size:11px; color:var(--muted); margin-top:2px; }
-.s-price { font-family:'Cormorant Garamond',serif; font-size:18px; color:var(--gold); font-weight:600; }
+/* ── HERO ───────────────────────────────────────────── */
+.hero {
+  position: relative;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, rgba(212,160,23,0.18), transparent 50%),
+    radial-gradient(900px 500px at 100% 100%, rgba(196,121,90,0.22), transparent 60%),
+    linear-gradient(180deg, #1a1209 0%, #2a1f14 100%);
+  padding: 56px 24px 80px;
+  overflow: hidden;
+  text-align: center;
+  color: #fff;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(45deg, transparent 0 80px, rgba(255,255,255,0.015) 80px 81px),
+    radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.08), transparent),
+    radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,0.06), transparent),
+    radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,0.05), transparent);
+  pointer-events: none;
+}
+.hero > * { position: relative; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 11px; font-weight: 500;
+  color: #f5e9c8;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.hero-badge::before { content: '✦'; color: var(--gold-mid); }
+.hero-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 56px; font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin-bottom: 12px;
+}
+.hero-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 18px;
+  color: #d4c4a8;
+  margin-bottom: 28px;
+}
+.hero-rating {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-bottom: 28px;
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.stars { display: inline-flex; gap: 2px; color: var(--gold-mid); font-size: 13px; }
+.rating-text { font-size: 12px; color: #d4c4a8; }
+.rating-text strong { color: #fff; font-weight: 600; }
 
-.slots-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:6px; }
-.slot { padding:10px 6px; border:1.5px solid var(--border); border-radius:var(--radius-sm); text-align:center; cursor:pointer; font-size:13px; font-weight:500; color:var(--muted); background:var(--warm-white); transition:all 0.2s; }
-.slot:hover { border-color:var(--gold); color:var(--ink); }
-.slot.selected { border-color:var(--gold); background:var(--gold-light); color:var(--ink); }
-.slot.unavailable { opacity:0.35; cursor:not-allowed; text-decoration:line-through; }
+.hero-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, var(--gold-mid) 0%, var(--gold) 100%);
+  color: var(--ink);
+  padding: 14px 28px;
+  border-radius: 100px;
+  font-size: 14px; font-weight: 600;
+  letter-spacing: 0.02em;
+  border: none;
+  box-shadow: 0 8px 24px rgba(212,160,23,0.32);
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+  margin-bottom: 12px;
+}
+.hero-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(212,160,23,0.4); }
+.hero-cta:active { transform: translateY(0); }
 
-.summary-box { background:var(--ink); border-radius:var(--radius-sm); padding:16px; margin-top:16px; }
-.summary-title { font-family:'Cormorant Garamond',serif; font-size:16px; font-style:italic; color:#ccc; margin-bottom:10px; }
-.summary-row { display:flex; justify-content:space-between; font-size:13px; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.08); }
-.summary-row:last-child { border-bottom:none; font-weight:500; }
-.summary-row .sl { color:#aaa; }
-.summary-row .sv { color:#fff; }
-.summary-row .sv.gold { color:var(--gold-mid); }
+.hero-meta {
+  display: flex; justify-content: center; gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  font-size: 12px;
+  color: #a89880;
+}
+.hero-meta span { display: inline-flex; align-items: center; gap: 6px; }
+.hero-meta span::before { content: '◆'; color: var(--gold-mid); font-size: 6px; }
 
-.btn-primary { width:100%; padding:15px; background:var(--ink); color:#fff; border:none; border-radius:var(--radius); font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; cursor:pointer; margin-top:12px; letter-spacing:0.03em; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px; }
-.btn-primary:hover { background:var(--rose); }
-.btn-primary:active { transform:scale(0.98); }
-.btn-primary:disabled { background:var(--border); color:var(--muted); cursor:not-allowed; transform:none; }
-.btn-outline { width:100%; padding:12px; background:transparent; color:var(--ink); border:1.5px solid var(--border); border-radius:var(--radius); font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; cursor:pointer; margin-top:8px; transition:all 0.2s; }
-.btn-outline:hover { border-color:var(--ink); }
+/* ── TRUST STRIP ────────────────────────────────────── */
+.trust-strip {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 24px 16px;
+}
+.trust-grid {
+  max-width: 720px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  text-align: center;
+}
+.trust-item .ti-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px; font-weight: 600;
+  color: var(--ink); line-height: 1;
+}
+.trust-item .ti-num .accent { color: var(--gold); }
+.trust-item .ti-label {
+  font-size: 10px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-top: 6px;
+}
 
-.err { font-size:12px; color:var(--rose); background:var(--rose-light); border-radius:var(--radius-sm); padding:8px 12px; margin-top:8px; display:none; border:1px solid #f0c4b0; }
-.err.show { display:block; }
+/* ── SECTION SHELL ──────────────────────────────────── */
+.shell {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+.section-block { padding: 36px 0 8px; }
+.section-eyebrow {
+  font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px; font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 6px;
+  line-height: 1.15;
+}
+.section-lede {
+  font-size: 13px; color: var(--muted);
+  margin-bottom: 20px;
+  max-width: 480px;
+}
 
-#confirm-screen { display:none; }
-#confirm-screen.visible { display:block; }
-.confirm-card { background:var(--card); border-radius:var(--radius); border:1px solid var(--border); overflow:hidden; animation:rise 0.4s ease; margin-bottom:14px; }
-.confirm-header { background:var(--ink); padding:24px 20px; text-align:center; }
-.confirm-icon { width:52px; height:52px; border-radius:50%; background:var(--gold); display:flex; align-items:center; justify-content:center; font-size:22px; margin:0 auto 12px; }
-.confirm-header h2 { font-family:'Cormorant Garamond',serif; font-size:26px; color:#fff; margin-bottom:4px; }
-.confirm-header p { font-size:12px; color:#aaa; }
-.booking-ref { text-align:center; padding:16px; background:var(--gold-light); border-bottom:1px solid var(--border); }
-.ref-label { font-size:10px; color:var(--gold); text-transform:uppercase; letter-spacing:0.1em; }
-.ref-code { font-family:'Cormorant Garamond',serif; font-size:34px; font-weight:600; color:var(--ink); letter-spacing:3px; margin-top:4px; }
-.ref-hint { font-size:11px; color:var(--muted); margin-top:4px; }
-.confirm-body { padding:18px 20px; }
-.conf-row { display:flex; justify-content:space-between; align-items:flex-start; padding:9px 0; border-bottom:1px solid var(--border); font-size:13px; gap:12px; }
-.conf-row:last-child { border-bottom:none; }
-.c-label { color:var(--muted); font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:0.05em; flex-shrink:0; }
-.c-val { font-weight:500; text-align:right; color:var(--ink); }
-.c-val.gold { color:var(--gold); }
-.whatsapp-btn { width:100%; padding:14px; background:#25D366; color:#fff; border:none; border-radius:var(--radius); font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; cursor:pointer; margin-top:4px; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s; }
-.whatsapp-btn:hover { background:#1ebe5c; }
-.footer-note { text-align:center; font-size:11px; color:var(--muted); padding:20px 16px; max-width:480px; margin:0 auto; }
-.pay-step { background:var(--card); border-radius:var(--radius); border:1px solid var(--border); padding:20px; margin-bottom:14px; display:none; animation:rise 0.35s ease; }
-.pay-step.visible { display:block; }
-.pay-method { border:1.5px solid var(--border); border-radius:var(--radius-sm); padding:14px; margin:8px 0; cursor:pointer; display:flex; align-items:center; gap:14px; background:var(--warm-white); transition:all 0.2s; }
-.pay-method:hover { border-color:var(--gold); }
-.pay-method.selected { border-color:var(--gold); background:var(--gold-light); }
-.pay-method-icon { font-size:24px; flex-shrink:0; }
-.pay-method-info { flex:1; }
-.pay-method-name { font-size:14px; font-weight:500; color:var(--ink); }
-.pay-method-desc { font-size:11px; color:var(--muted); margin-top:2px; }
-.pay-instructions { background:var(--ink); border-radius:var(--radius-sm); padding:16px; margin-top:14px; display:none; }
-.pay-instructions.show { display:block; }
-.pay-inst-title { font-family:'Cormorant Garamond',serif; font-size:16px; font-style:italic; color:#ccc; margin-bottom:12px; }
-.pay-inst-row { display:flex; justify-content:space-between; font-size:13px; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.08); }
-.pay-inst-row:last-child { border-bottom:none; }
-.pay-inst-label { color:#aaa; }
-.pay-inst-val { color:#fff; font-weight:500; }
-.pay-inst-val.gold { color:var(--gold-mid); }
-.pay-ref-box { background:rgba(184,134,11,0.15); border:1px dashed var(--gold); border-radius:var(--radius-sm); padding:10px 14px; margin-top:10px; text-align:center; }
-.pay-ref-label { font-size:10px; color:var(--gold-mid); text-transform:uppercase; letter-spacing:0.1em; }
-.pay-ref-val { font-size:22px; font-weight:500; color:#fff; font-family:'Cormorant Garamond',serif; letter-spacing:2px; margin-top:4px; }
-.pay-ref-hint { font-size:11px; color:#aaa; margin-top:4px; }
-.pay-confirm-check { display:flex; align-items:flex-start; gap:10px; margin-top:14px; padding:12px; background:#fff8e6; border:1px solid #f0c040; border-radius:var(--radius-sm); }
-.pay-confirm-check input[type="checkbox"] { width:18px; height:18px; flex-shrink:0; margin-top:1px; accent-color:var(--gold); cursor:pointer; }
-.pay-confirm-text { font-size:12px; line-height:1.5; color:var(--ink); }
+/* ── REVIEWS ────────────────────────────────────────── */
+.reviews-scroller {
+  display: flex; gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 4px 16px 20px;
+  margin: 0 -16px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.reviews-scroller::-webkit-scrollbar { display: none; }
+.review-card {
+  flex: 0 0 280px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  scroll-snap-align: start;
+  box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column;
+}
+.review-stars {
+  color: var(--gold-mid);
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.review-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+  flex: 1;
+}
+.review-foot {
+  display: flex; align-items: center; gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-soft);
+}
+.review-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600;
+  color: #fff;
+}
+.review-meta { line-height: 1.3; }
+.review-name { font-size: 12px; font-weight: 600; color: var(--ink); }
+.review-detail { font-size: 11px; color: var(--muted); }
+
+/* ── STYLISTS ───────────────────────────────────────── */
+.stylists-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.stylist-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.stylist-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.stylist-avatar {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px; font-weight: 600;
+  color: #fff;
+}
+.stylist-name { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+.stylist-tag { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+.stylist-rating {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+/* ── BOOKING FUNNEL ─────────────────────────────────── */
+.book-anchor { padding-top: 40px; }
+.steps {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; margin: 8px 0 4px; padding: 0 16px;
+}
+.step-item { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.step-dot {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: var(--cream); color: var(--muted);
+  font-size: 12px; font-weight: 500;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s;
+}
+.step-dot.active { background: var(--ink); color: #fff; border-color: var(--ink); transform: scale(1.08); }
+.step-dot.done { background: var(--gold); color: #fff; border-color: var(--gold); }
+.step-label {
+  font-size: 9px; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--muted);
+}
+.step-line {
+  width: 36px; height: 1.5px;
+  background: var(--border);
+  margin-bottom: 16px;
+  transition: background 0.3s;
+}
+.step-line.done { background: var(--gold); }
+
+main.funnel { max-width: 480px; margin: 0 auto; padding: 16px 16px 60px; }
+
+.section {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 24px;
+  margin-bottom: 14px;
+  display: none;
+  animation: rise 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: var(--shadow-sm);
+}
+.section.visible { display: block; }
+@keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+.section-head {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px; font-weight: 600;
+  color: var(--ink); margin-bottom: 4px;
+  line-height: 1.2;
+}
+.section-sub {
+  font-size: 13px; color: var(--muted);
+  margin-bottom: 20px; line-height: 1.5;
+}
+
+label {
+  font-size: 11px; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--muted);
+  display: block; margin-bottom: 8px; margin-top: 18px;
+}
+label:first-of-type { margin-top: 0; }
+
+input[type="text"], input[type="email"], input[type="tel"],
+input[type="date"], select, textarea {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px; color: var(--ink);
+  background: var(--warm-white);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  appearance: none; -webkit-appearance: none;
+}
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a7d6e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(212,160,23,0.12);
+}
+textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+
+/* ── SERVICE CARDS ──────────────────────────────────── */
+.service-list { display: grid; gap: 10px; margin-top: 6px; }
+.service-item {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  cursor: pointer;
+  display: flex; align-items: center;
+  gap: 14px;
+  background: var(--warm-white);
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.service-item:hover { border-color: var(--gold); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.service-item.selected {
+  border-color: var(--gold);
+  background: var(--gold-light);
+  box-shadow: 0 0 0 3px rgba(212,160,23,0.12);
+}
+.service-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.service-info { flex: 1; min-width: 0; }
+.s-name { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+.s-meta { font-size: 11px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
+.s-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--muted-soft); }
+.s-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; color: var(--gold);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.service-icon.icon-hair { background: linear-gradient(135deg, #f5e9c8, #d4a017); }
+.service-icon.icon-nails { background: linear-gradient(135deg, #faeee8, #e3a890); }
+.service-icon.icon-beauty { background: linear-gradient(135deg, #f4e1d7, #c4795a); color: #fff; }
+.service-icon.icon-wellness { background: linear-gradient(135deg, #e8f0e3, #8aa97a); color: #fff; }
+
+/* ── SLOTS ──────────────────────────────────────────── */
+.slots-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 8px; margin-top: 6px;
+  transition: opacity 0.2s;
+}
+.slot {
+  padding: 12px 6px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  text-align: center; cursor: pointer;
+  font-size: 14px; font-weight: 500;
+  color: var(--ink-soft);
+  background: var(--warm-white);
+  transition: all 0.2s;
+}
+.slot:hover { border-color: var(--gold); color: var(--ink); }
+.slot.selected {
+  border-color: var(--gold);
+  background: var(--gold-light);
+  color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(212,160,23,0.12);
+}
+.slot.unavailable {
+  opacity: 0.35;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+/* ── SUMMARY ────────────────────────────────────────── */
+.summary-box {
+  background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  margin-top: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.summary-box::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(400px 200px at 100% 0%, rgba(212,160,23,0.12), transparent);
+  pointer-events: none;
+}
+.summary-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px; font-style: italic;
+  color: #d4c4a8;
+  margin-bottom: 12px;
+  position: relative;
+}
+.summary-row {
+  display: flex; justify-content: space-between;
+  font-size: 13px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+}
+.summary-row:last-child { border-bottom: none; font-weight: 600; padding-top: 10px; }
+.summary-row .sl { color: #b5a995; }
+.summary-row .sv { color: #fff; }
+.summary-row .sv.gold { color: var(--gold-mid); font-family: 'Cormorant Garamond', serif; font-size: 18px; }
+
+/* ── BUTTONS ────────────────────────────────────────── */
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px; font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  margin-top: 14px;
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px;
+  box-shadow: 0 8px 20px rgba(26,18,9,0.18);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(26,18,9,0.24); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; transform: none; box-shadow: none; }
+
+.btn-outline {
+  width: 100%;
+  padding: 13px;
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px; font-weight: 500;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all 0.2s;
+}
+.btn-outline:hover { border-color: var(--ink); background: var(--warm-white); }
+
+/* ── ERRORS ─────────────────────────────────────────── */
+.err {
+  font-size: 12px; color: #a04020;
+  background: var(--rose-light);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  margin-top: 10px;
+  display: none;
+  border: 1px solid #f0c4b0;
+}
+.err.show { display: block; }
+
+/* ── CONFIRMATION ───────────────────────────────────── */
+#confirm-screen { display: none; }
+#confirm-screen.visible { display: block; }
+.confirm-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  animation: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  margin-bottom: 14px;
+  box-shadow: var(--shadow-md);
+}
+.confirm-header {
+  background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
+  padding: 28px 20px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.confirm-header::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(500px 250px at 50% 0%, rgba(212,160,23,0.18), transparent);
+}
+.confirm-icon {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-mid), var(--gold));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  margin: 0 auto 14px;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(212,160,23,0.3);
+}
+.confirm-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px; color: #fff;
+  margin-bottom: 4px;
+  position: relative;
+}
+.confirm-header p {
+  font-size: 12px; color: #b5a995;
+  position: relative;
+}
+.booking-ref {
+  text-align: center;
+  padding: 18px;
+  background: linear-gradient(180deg, var(--gold-light), #faf2dc);
+  border-bottom: 1px solid var(--border);
+}
+.ref-label {
+  font-size: 10px; color: var(--gold);
+  text-transform: uppercase; letter-spacing: 0.12em;
+  font-weight: 600;
+}
+.ref-code {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px; font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 4px;
+  margin-top: 4px;
+}
+.ref-hint { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.confirm-body { padding: 20px; }
+.conf-row {
+  display: flex; justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  gap: 12px;
+}
+.conf-row:last-child { border-bottom: none; }
+.c-label {
+  color: var(--muted);
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  flex-shrink: 0;
+}
+.c-val { font-weight: 500; text-align: right; color: var(--ink); }
+.c-val.gold { color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 18px; }
+
+.whatsapp-btn {
+  width: 100%;
+  padding: 15px;
+  background: #25D366;
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px; font-weight: 600;
+  cursor: pointer;
+  margin-top: 4px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+  box-shadow: 0 8px 20px rgba(37,211,102,0.28);
+}
+.whatsapp-btn:hover { background: #1ebe5c; transform: translateY(-2px); }
+
+/* ── PAYMENT ────────────────────────────────────────── */
+.pay-step {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 24px;
+  margin-bottom: 14px;
+  display: none;
+  animation: rise 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: var(--shadow-sm);
+}
+.pay-step.visible { display: block; }
+.pay-method {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  margin: 8px 0;
+  cursor: pointer;
+  display: flex; align-items: center;
+  gap: 14px;
+  background: var(--warm-white);
+  transition: all 0.2s;
+}
+.pay-method:hover { border-color: var(--gold); transform: translateY(-1px); }
+.pay-method.selected {
+  border-color: var(--gold);
+  background: var(--gold-light);
+  box-shadow: 0 0 0 3px rgba(212,160,23,0.12);
+}
+.pay-method-icon { font-size: 26px; flex-shrink: 0; }
+.pay-method-info { flex: 1; }
+.pay-method-name { font-size: 14px; font-weight: 600; color: var(--ink); }
+.pay-method-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.pay-instructions {
+  background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  margin-top: 14px;
+  display: none;
+  position: relative;
+  overflow: hidden;
+}
+.pay-instructions::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(400px 200px at 100% 0%, rgba(212,160,23,0.1), transparent);
+}
+.pay-instructions.show { display: block; }
+.pay-inst-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px; font-style: italic;
+  color: #d4c4a8;
+  margin-bottom: 12px;
+  position: relative;
+}
+.pay-inst-row {
+  display: flex; justify-content: space-between;
+  font-size: 13px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+}
+.pay-inst-row:last-child { border-bottom: none; }
+.pay-inst-label { color: #b5a995; }
+.pay-inst-val { color: #fff; font-weight: 500; }
+.pay-inst-val.gold { color: var(--gold-mid); }
+.pay-ref-box {
+  background: rgba(212,160,23,0.15);
+  border: 1px dashed var(--gold);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-top: 12px;
+  text-align: center;
+  position: relative;
+}
+.pay-ref-label {
+  font-size: 10px; color: var(--gold-mid);
+  text-transform: uppercase; letter-spacing: 0.12em;
+  font-weight: 600;
+}
+.pay-ref-val {
+  font-size: 24px; font-weight: 500;
+  color: #fff;
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 3px;
+  margin-top: 4px;
+}
+.pay-ref-hint { font-size: 11px; color: #b5a995; margin-top: 4px; }
+.pay-confirm-check {
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-top: 14px;
+  padding: 14px;
+  background: #fff8e6;
+  border: 1px solid #f0c040;
+  border-radius: var(--radius-sm);
+}
+.pay-confirm-check input[type="checkbox"] {
+  width: 18px; height: 18px; flex-shrink: 0;
+  margin-top: 1px;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+.pay-confirm-text { font-size: 12px; line-height: 1.5; color: var(--ink); }
+
+/* ── FOOTER ─────────────────────────────────────────── */
+footer {
+  background: var(--ink);
+  color: #d4c4a8;
+  padding: 40px 24px 24px;
+  margin-top: 40px;
+  text-align: center;
+}
+.footer-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; color: #fff;
+  margin-bottom: 6px;
+}
+.footer-tagline { font-size: 12px; color: #a89880; margin-bottom: 24px; font-style: italic; font-family: 'Cormorant Garamond', serif; }
+.footer-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 480px; margin: 0 auto 24px;
+  font-size: 11px;
+}
+.footer-grid h4 {
+  color: var(--gold-mid);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.footer-grid p { line-height: 1.6; color: #a89880; }
+.footer-bottom {
+  font-size: 10px; color: #6a5d4e;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ── RESPONSIVE ─────────────────────────────────────── */
+@media (min-width: 640px) {
+  .hero-name { font-size: 64px; }
+  .stylists-grid { grid-template-columns: repeat(4, 1fr); }
+}
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <div class="hero-eyebrow">Book an appointment</div>
-  <div class="hero-name">Glam Studio</div>
-  <div class="hero-tagline">Hair · Nails · Beauty · Wellness</div>
+<!-- ═══ HERO ═══════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-badge">Open today · 8am – 6pm</div>
+  <h1 class="hero-name">Glam Studio</h1>
+  <p class="hero-tagline">Hair · Nails · Beauty · Wellness</p>
+  <div class="hero-rating">
+    <span class="stars">★★★★★</span>
+    <span class="rating-text"><strong>4.9</strong> · 1,200+ bookings · Harare CBD</span>
+  </div>
+  <br>
+  <a href="#book" class="hero-cta">
+    Book your appointment
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+  </a>
   <div class="hero-meta">
-    <span>Harare CBD</span>
     <span>Mon – Sat, 8am – 6pm</span>
     <span>+263 77 896 1269</span>
   </div>
-</div>
+</section>
 
-<div style="background:#fff;border-bottom:1px solid var(--border);padding:16px 0 4px">
-  <div class="steps">
-    <div class="step-item"><div class="step-dot active" id="sd1">1</div><div class="step-label">Service</div></div>
-    <div class="step-line" id="sl1"></div>
-    <div class="step-item"><div class="step-dot" id="sd2">2</div><div class="step-label">Date & Time</div></div>
-    <div class="step-line" id="sl2"></div>
-    <div class="step-item"><div class="step-dot" id="sd3">3</div><div class="step-label">Details</div></div>
-    <div class="step-line" id="sl3"></div>
-    <div class="step-item"><div class="step-dot" id="sd4">4</div><div class="step-label">Payment</div></div>
-    <div class="step-line" id="sl4"></div>
-    <div class="step-item"><div class="step-dot" id="sd5">5</div><div class="step-label">Confirm</div></div>
+<!-- ═══ TRUST STRIP ════════════════════════════════════ -->
+<div class="trust-strip">
+  <div class="trust-grid">
+    <div class="trust-item">
+      <div class="ti-num">4.9<span class="accent">★</span></div>
+      <div class="ti-label">Customer rating</div>
+    </div>
+    <div class="trust-item">
+      <div class="ti-num">1.2k<span class="accent">+</span></div>
+      <div class="ti-label">Happy bookings</div>
+    </div>
+    <div class="trust-item">
+      <div class="ti-num">&lt; 5<span class="accent">m</span></div>
+      <div class="ti-label">Avg reply time</div>
+    </div>
   </div>
 </div>
 
-<main>
+<!-- ═══ REVIEWS ════════════════════════════════════════ -->
+<div class="shell section-block">
+  <div class="section-eyebrow">Testimonials</div>
+  <h2 class="section-title">What our clients say</h2>
+  <p class="section-lede">Real reviews from real bookings.</p>
+</div>
+<div class="reviews-scroller">
+  <div class="review-card">
+    <div class="review-stars">★★★★★</div>
+    <p class="review-body">"Rumbi did my knotless braids and they came out perfect. Booking online took two minutes and she was ready when I arrived."</p>
+    <div class="review-foot">
+      <div class="review-avatar" style="background:linear-gradient(135deg,#d4a017,#b8860b)">T</div>
+      <div class="review-meta">
+        <div class="review-name">Tatenda M.</div>
+        <div class="review-detail">Knotless braids · 2 weeks ago</div>
+      </div>
+    </div>
+  </div>
+  <div class="review-card">
+    <div class="review-stars">★★★★★</div>
+    <p class="review-body">"The facial was incredible. My skin felt brand new and the studio is so calm. I'm coming back monthly."</p>
+    <div class="review-foot">
+      <div class="review-avatar" style="background:linear-gradient(135deg,#c4795a,#a06040)">N</div>
+      <div class="review-meta">
+        <div class="review-name">Nyasha K.</div>
+        <div class="review-detail">Facial · 1 month ago</div>
+      </div>
+    </div>
+  </div>
+  <div class="review-card">
+    <div class="review-stars">★★★★★</div>
+    <p class="review-body">"Got my makeup done for a wedding — flawless and lasted all day. Would trust them with any event."</p>
+    <div class="review-foot">
+      <div class="review-avatar" style="background:linear-gradient(135deg,#8aa97a,#5e7a52)">C</div>
+      <div class="review-meta">
+        <div class="review-name">Chiedza R.</div>
+        <div class="review-detail">Full makeup · 3 weeks ago</div>
+      </div>
+    </div>
+  </div>
+  <div class="review-card">
+    <div class="review-stars">★★★★★</div>
+    <p class="review-body">"Easy to find, easy to pay with EcoCash, and the quality is on another level. Best mani-pedi I've had in Harare."</p>
+    <div class="review-foot">
+      <div class="review-avatar" style="background:linear-gradient(135deg,#e3a890,#c4795a)">F</div>
+      <div class="review-meta">
+        <div class="review-name">Farai S.</div>
+        <div class="review-detail">Mani-pedi · 1 week ago</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ STYLISTS ═══════════════════════════════════════ -->
+<div class="shell section-block">
+  <div class="section-eyebrow">Our team</div>
+  <h2 class="section-title">Meet the stylists</h2>
+  <p class="section-lede">Every member of our team is certified and brings years of experience.</p>
+  <div class="stylists-grid">
+    <div class="stylist-card">
+      <div class="stylist-avatar" style="background:linear-gradient(135deg,#d4a017,#b8860b)">R</div>
+      <div class="stylist-name">Rumbi</div>
+      <div class="stylist-tag">Braiding · Natural hair</div>
+      <div class="stylist-rating">★ 4.9 · 142 reviews</div>
+    </div>
+    <div class="stylist-card">
+      <div class="stylist-avatar" style="background:linear-gradient(135deg,#c4795a,#a06040)">T</div>
+      <div class="stylist-name">Tendai</div>
+      <div class="stylist-tag">Color · Cuts · Relaxer</div>
+      <div class="stylist-rating">★ 4.9 · 98 reviews</div>
+    </div>
+    <div class="stylist-card">
+      <div class="stylist-avatar" style="background:linear-gradient(135deg,#8aa97a,#5e7a52)">M</div>
+      <div class="stylist-name">Mercy</div>
+      <div class="stylist-tag">Nails · Manicure</div>
+      <div class="stylist-rating">★ 5.0 · 76 reviews</div>
+    </div>
+    <div class="stylist-card">
+      <div class="stylist-avatar" style="background:linear-gradient(135deg,#e3a890,#c4795a)">P</div>
+      <div class="stylist-name">Precious</div>
+      <div class="stylist-tag">Facials · Makeup · Brows</div>
+      <div class="stylist-rating">★ 4.8 · 124 reviews</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BOOKING FUNNEL ═════════════════════════════════ -->
+<div id="book" class="book-anchor"></div>
+<div style="background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:20px 0 6px;margin-top:24px">
+  <div class="shell section-block" style="padding-top:0;padding-bottom:0;text-align:center">
+    <div class="section-eyebrow">Book in 60 seconds</div>
+    <h2 class="section-title">Reserve your spot</h2>
+  </div>
+  <div class="steps">
+    <div class="step-item"><div class="step-dot active" id="sd1">1</div><div class="step-label">Service</div></div>
+    <div class="step-line" id="sl1"></div>
+    <div class="step-item"><div class="step-dot" id="sd2">2</div><div class="step-label">Date</div></div>
+    <div class="step-line" id="sl2"></div>
+    <div class="step-item"><div class="step-dot" id="sd3">3</div><div class="step-label">Details</div></div>
+    <div class="step-line" id="sl3"></div>
+    <div class="step-item"><div class="step-dot" id="sd4">4</div><div class="step-label">Pay</div></div>
+    <div class="step-line" id="sl4"></div>
+    <div class="step-item"><div class="step-dot" id="sd5">5</div><div class="step-label">Done</div></div>
+  </div>
+</div>
+
+<main class="funnel">
   <!-- STEP 1 -->
   <div class="section visible" id="step1">
     <div class="section-head">Choose your service</div>
     <div class="section-sub">Select one service to book. Need multiple? Book separately.</div>
     <div class="service-list">
-      <div class="service-item" onclick="selectService(this,'Hair Relaxer',45,90)">
-        <div><div class="s-name">Hair Relaxer</div><div class="s-duration">90 mins</div></div>
+      <div class="service-item" data-service="Hair Relaxer" data-price="45" data-duration="90">
+        <div class="service-icon icon-hair">✂</div>
+        <div class="service-info">
+          <div class="s-name">Hair Relaxer</div>
+          <div class="s-meta">90 mins<span class="dot"></span>Hair</div>
+        </div>
         <div class="s-price">$45</div>
       </div>
-      <div class="service-item" onclick="selectService(this,'Hair Braiding',30,120)">
-        <div><div class="s-name">Hair Braiding</div><div class="s-duration">120 mins</div></div>
+      <div class="service-item" data-service="Hair Braiding" data-price="30" data-duration="120">
+        <div class="service-icon icon-hair">✂</div>
+        <div class="service-info">
+          <div class="s-name">Hair Braiding</div>
+          <div class="s-meta">120 mins<span class="dot"></span>Hair</div>
+        </div>
         <div class="s-price">$30</div>
       </div>
-      <div class="service-item" onclick="selectService(this,'Manicure & Pedicure',25,60)">
-        <div><div class="s-name">Manicure & Pedicure</div><div class="s-duration">60 mins</div></div>
+      <div class="service-item" data-service="Manicure & Pedicure" data-price="25" data-duration="60">
+        <div class="service-icon icon-nails">💅</div>
+        <div class="service-info">
+          <div class="s-name">Manicure & Pedicure</div>
+          <div class="s-meta">60 mins<span class="dot"></span>Nails</div>
+        </div>
         <div class="s-price">$25</div>
       </div>
-      <div class="service-item" onclick="selectService(this,'Facial Treatment',35,75)">
-        <div><div class="s-name">Facial Treatment</div><div class="s-duration">75 mins</div></div>
+      <div class="service-item" data-service="Facial Treatment" data-price="35" data-duration="75">
+        <div class="service-icon icon-beauty">✨</div>
+        <div class="service-info">
+          <div class="s-name">Facial Treatment</div>
+          <div class="s-meta">75 mins<span class="dot"></span>Beauty</div>
+        </div>
         <div class="s-price">$35</div>
       </div>
-      <div class="service-item" onclick="selectService(this,'Full Makeup',50,60)">
-        <div><div class="s-name">Full Makeup</div><div class="s-duration">60 mins</div></div>
+      <div class="service-item" data-service="Full Makeup" data-price="50" data-duration="60">
+        <div class="service-icon icon-beauty">💄</div>
+        <div class="service-info">
+          <div class="s-name">Full Makeup</div>
+          <div class="s-meta">60 mins<span class="dot"></span>Beauty</div>
+        </div>
         <div class="s-price">$50</div>
       </div>
-      <div class="service-item" onclick="selectService(this,'Eyebrows & Lashes',20,45)">
-        <div><div class="s-name">Eyebrows & Lashes</div><div class="s-duration">45 mins</div></div>
+      <div class="service-item" data-service="Eyebrows & Lashes" data-price="20" data-duration="45">
+        <div class="service-icon icon-beauty">👁</div>
+        <div class="service-info">
+          <div class="s-name">Eyebrows & Lashes</div>
+          <div class="s-meta">45 mins<span class="dot"></span>Beauty</div>
+        </div>
         <div class="s-price">$20</div>
       </div>
     </div>
     <div class="err" id="err1">Please select a service to continue.</div>
-    <button class="btn-primary" onclick="goStep(2)">Continue →</button>
+    <button class="btn-primary" data-action="next:2">Continue →</button>
   </div>
 
   <!-- STEP 2 -->
@@ -200,22 +978,22 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
     <div class="section-head">Pick a date & time</div>
     <div class="section-sub">We're open Monday to Saturday, 8am – 6pm.</div>
     <label>Preferred date</label>
-    <input type="date" id="book-date" oninput="updateSlots()">
+    <input type="date" id="book-date">
     <label>Available time slots</label>
     <div class="slots-grid" id="slots-grid">
-      <div class="slot" onclick="selectSlot(this)">08:00</div>
-      <div class="slot" onclick="selectSlot(this)">09:00</div>
-      <div class="slot" onclick="selectSlot(this)">10:00</div>
-      <div class="slot" onclick="selectSlot(this)">11:00</div>
-      <div class="slot" onclick="selectSlot(this)">12:00</div>
-      <div class="slot" onclick="selectSlot(this)">13:00</div>
-      <div class="slot" onclick="selectSlot(this)">14:00</div>
-      <div class="slot" onclick="selectSlot(this)">15:00</div>
-      <div class="slot" onclick="selectSlot(this)">16:00</div>
+      <div class="slot">08:00</div>
+      <div class="slot">09:00</div>
+      <div class="slot">10:00</div>
+      <div class="slot">11:00</div>
+      <div class="slot">12:00</div>
+      <div class="slot">13:00</div>
+      <div class="slot">14:00</div>
+      <div class="slot">15:00</div>
+      <div class="slot">16:00</div>
     </div>
     <div class="err" id="err2">Please select a date and time slot.</div>
-    <button class="btn-primary" onclick="goStep(3)">Continue →</button>
-    <button class="btn-outline" onclick="goStep(1)">← Back</button>
+    <button class="btn-primary" data-action="next:3">Continue →</button>
+    <button class="btn-outline" data-action="next:1">← Back</button>
   </div>
 
   <!-- STEP 3 -->
@@ -238,8 +1016,8 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
       <div class="summary-row"><span class="sl">Total</span><span class="sv gold" id="sum-price">—</span></div>
     </div>
     <div class="err" id="err3">Please enter your name and a valid Zimbabwean phone number (e.g. 0771234567).</div>
-    <button class="btn-primary" id="confirm-btn" onclick="goStep(4)">Continue to payment →</button>
-    <button class="btn-outline" onclick="goStep(2)">← Back</button>
+    <button class="btn-primary" data-action="next:4">Continue to payment →</button>
+    <button class="btn-outline" data-action="next:2">← Back</button>
   </div>
 
   <!-- STEP 4: PAYMENT -->
@@ -247,21 +1025,21 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
     <div class="section-head">Payment</div>
     <div class="section-sub">Choose how you'd like to pay. Send payment then confirm below.</div>
 
-    <div class="pay-method" onclick="selectPayMethod(this,'ecocash')">
+    <div class="pay-method" data-method="ecocash">
       <div class="pay-method-icon">📱</div>
       <div class="pay-method-info">
         <div class="pay-method-name">EcoCash</div>
         <div class="pay-method-desc">Send to 0778961269</div>
       </div>
     </div>
-    <div class="pay-method" onclick="selectPayMethod(this,'innbucks')">
+    <div class="pay-method" data-method="innbucks">
       <div class="pay-method-icon">💚</div>
       <div class="pay-method-info">
         <div class="pay-method-name">InnBucks</div>
         <div class="pay-method-desc">Send to 0778961269</div>
       </div>
     </div>
-    <div class="pay-method" onclick="selectPayMethod(this,'visa')">
+    <div class="pay-method" data-method="visa">
       <div class="pay-method-icon">💳</div>
       <div class="pay-method-info">
         <div class="pay-method-name">Visa / Bank Card</div>
@@ -272,7 +1050,7 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
     <div class="pay-instructions" id="pay-instructions">
       <div class="pay-inst-title">Payment instructions</div>
       <div class="pay-inst-row"><span class="pay-inst-label">Send to</span><span class="pay-inst-val" id="pi-number">—</span></div>
-      <div class="pay-inst-row"><span class="pay-inst-label">Amount</span><span class="pay-inst-val" style="color:var(--gold-mid)" id="pi-amount">—</span></div>
+      <div class="pay-inst-row"><span class="pay-inst-label">Amount</span><span class="pay-inst-val gold" id="pi-amount">—</span></div>
       <div class="pay-inst-row"><span class="pay-inst-label">Reference</span><span class="pay-inst-val" id="pi-ref">—</span></div>
       <div class="pay-ref-box">
         <div class="pay-ref-label">Use this exact reference</div>
@@ -287,14 +1065,14 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
     </div>
 
     <div class="err" id="err4">Please select a payment method and confirm you have paid.</div>
-    <button class="btn-primary" id="submit-btn" onclick="submitBooking()">Confirm booking →</button>
-    <button class="btn-outline" onclick="goStep(3)">← Back</button>
+    <button class="btn-primary" id="submit-btn" data-action="submit">Confirm booking →</button>
+    <button class="btn-outline" data-action="next:3">← Back</button>
   </div>
 </main>
 
-<!-- CONFIRMATION -->
+<!-- ═══ CONFIRMATION ═══════════════════════════════════ -->
 <div id="confirm-screen">
-  <main>
+  <main class="funnel">
     <div class="confirm-card">
       <div class="confirm-header">
         <div class="confirm-icon">✦</div>
@@ -320,13 +1098,35 @@ textarea { resize:vertical; min-height:80px; line-height:1.6; }
       <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       Send booking to WhatsApp
     </button>
-    <button class="btn-outline" onclick="resetApp()" style="margin-top:8px">Book another appointment</button>
+    <button class="btn-outline" data-action="reset" style="margin-top:8px">Book another appointment</button>
   </main>
 </div>
 
+<!-- ═══ FOOTER ═════════════════════════════════════════ -->
+<footer>
+  <div class="footer-name">Glam Studio</div>
+  <div class="footer-tagline">Where your glow begins.</div>
+  <div class="footer-grid">
+    <div>
+      <h4>Visit</h4>
+      <p>Harare CBD<br>Zimbabwe</p>
+    </div>
+    <div>
+      <h4>Hours</h4>
+      <p>Mon–Sat<br>8am – 6pm</p>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <p>+263 77 896 1269<br>WhatsApp</p>
+    </div>
+  </div>
+  <div class="footer-bottom">© Glam Studio · All rights reserved</div>
+</footer>
+
 <script type="module">
-import { initializeApp }                              from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 /* ── FIREBASE ── */
 const fbApp = initializeApp({
@@ -339,31 +1139,26 @@ const fbApp = initializeApp({
 });
 const db = getFirestore(fbApp);
 
-/* ── PAYNOW CONFIG ──────────────────────────────────────────
-   Fill these in when your Paynow merchant account is approved.
-   Get credentials at: https://developers.paynow.co.zw
-   ─────────────────────────────────────────────────────────── */
+/* ── PAYNOW CONFIG ── */
 const PAYNOW_CONFIG = {
-  integrationId:  'YOUR_INTEGRATION_ID',   // From Paynow dashboard
-  integrationKey: 'YOUR_INTEGRATION_KEY',  // From Paynow dashboard
-  resultUrl:      'https://your-vercel-url.vercel.app/payment-result', // Your live URL
-  returnUrl:      'https://your-vercel-url.vercel.app',
-  enabled: false  // ← Set to TRUE once credentials are filled in above
+  integrationId:  'YOUR_INTEGRATION_ID',
+  integrationKey: 'YOUR_INTEGRATION_KEY',
+  resultUrl:      'https://saloon-booking-ten.vercel.app/api/paynow-result',
+  returnUrl:      'https://saloon-booking-ten.vercel.app',
+  enabled: false
 };
 
-/* ── PAYMENT CONFIG (manual fallback while Paynow pending) ── */
+/* ── PAYMENT CONFIG ── */
 const PAYMENT_CONFIG = {
   ecocash:  { name: 'EcoCash',     number: '0778961269' },
   innbucks: { name: 'InnBucks',    number: '0778961269' },
   visa:     { name: 'Visa / Card', number: 'Pay at studio' }
 };
 
-/* ── PAYNOW PAYMENT INITIATOR ── */
+/* ── PAYNOW INITIATOR ── */
 async function initiatePaynow(amount, email, phone, ref, method) {
   if (!PAYNOW_CONFIG.enabled) return null;
   try {
-    // Paynow requires a server-side hash — this calls your Cloud Function
-    // Deploy the Cloud Function from: https://github.com/paynow/Paynow-NodeJS-SDK
     const res = await fetch('/api/paynow-initiate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -373,32 +1168,25 @@ async function initiatePaynow(amount, email, phone, ref, method) {
         resultUrl:      PAYNOW_CONFIG.resultUrl,
         returnUrl:      PAYNOW_CONFIG.returnUrl,
         reference:      ref,
-        amount:         amount,
-        email:          email,
-        phone:          phone,
+        amount, email, phone,
         method:         method === 'ecocash' ? 'ecocash' : 'innbucks',
         items:          [{ name: 'Glam Studio Booking', amount }]
       })
     });
     const data = await res.json();
-    if (data.redirectUrl) {
-      window.location.href = data.redirectUrl; // Redirect to Paynow payment page
-      return 'redirecting';
-    }
-    if (data.pollUrl) return data.pollUrl; // Mobile money — poll for confirmation
+    if (data.redirectUrl) { window.location.href = data.redirectUrl; return 'redirecting'; }
+    if (data.pollUrl) return data.pollUrl;
     return null;
-  } catch(e) {
-    console.error('Paynow error:', e);
-    return null;
-  }
+  } catch(e) { console.error('Paynow error:', e); return null; }
 }
 
 /* ── STATE ── */
 let selService = '', selPrice = 0, selDuration = 0, selDate = '', selSlot = '';
 let selPayMethod = '', payRef = '';
 const today = new Date().toISOString().split('T')[0];
-document.getElementById('book-date').min   = today;
-document.getElementById('book-date').value = today;
+const dateInput = document.getElementById('book-date');
+dateInput.min = today;
+dateInput.value = today;
 
 /* ── HELPERS ── */
 function genRef() {
@@ -410,32 +1198,31 @@ function genPayRef() {
   const bytes = crypto.getRandomValues(new Uint8Array(3));
   return 'GS' + Array.from(bytes).map(b => String(b).padStart(3,'0')).join('').slice(0,5);
 }
-function showErr(id, show) { document.getElementById(id).classList.toggle('show', show); }
+const showErr = (id, show) => document.getElementById(id).classList.toggle('show', show);
 
 /* ── SERVICE / SLOT ── */
-function selectService(el, name, price, duration) {
+function selectService(el) {
   document.querySelectorAll('.service-item').forEach(i => i.classList.remove('selected'));
   el.classList.add('selected');
-  selService = name; selPrice = price; selDuration = duration;
+  selService  = el.dataset.service;
+  selPrice    = +el.dataset.price;
+  selDuration = +el.dataset.duration;
 }
 function selectSlot(el) {
   if (el.classList.contains('unavailable')) return;
   document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
-  el.classList.add('selected'); selSlot = el.textContent;
+  el.classList.add('selected');
+  selSlot = el.textContent.trim();
 }
+
 async function updateSlots() {
-  selDate = document.getElementById('book-date').value;
+  selDate = dateInput.value;
   selSlot = '';
   const grid = document.getElementById('slots-grid');
   const day = new Date(selDate + 'T00:00:00').getDay();
 
   document.querySelectorAll('.slot').forEach(s => s.classList.remove('unavailable', 'selected'));
-
-  if (day === 0) {
-    document.querySelectorAll('.slot').forEach(s => s.classList.add('unavailable'));
-    return;
-  }
-
+  if (day === 0) { document.querySelectorAll('.slot').forEach(s => s.classList.add('unavailable')); return; }
   if (!selDate) return;
 
   grid.style.opacity = '0.5';
@@ -451,17 +1238,16 @@ async function updateSlots() {
     document.querySelectorAll('.slot').forEach(s => {
       if (booked.has(s.textContent.trim())) s.classList.add('unavailable');
     });
-  } catch (e) {
-    console.warn('Could not load slot availability:', e);
-  } finally {
-    grid.style.opacity = '1';
-    grid.style.pointerEvents = '';
-  }
+  } catch (e) { console.warn('Could not load slot availability:', e); }
+  finally { grid.style.opacity = '1'; grid.style.pointerEvents = ''; }
 }
 
 /* ── SUMMARY ── */
 function updateSummary() {
-  const ds = selDate ? new Date(selDate + 'T00:00:00').toLocaleDateString('en-ZW', { weekday:'short', day:'numeric', month:'short', year:'numeric' }) : '—';
+  const ds = selDate
+    ? new Date(selDate + 'T00:00:00').toLocaleDateString('en-ZW',
+        { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })
+    : '—';
   document.getElementById('sum-service').textContent  = selService || '—';
   document.getElementById('sum-datetime').textContent = (selDate && selSlot) ? ds + ' at ' + selSlot : '—';
   document.getElementById('sum-duration').textContent = selDuration ? selDuration + ' mins' : '—';
@@ -477,21 +1263,18 @@ function selectPayMethod(el, method) {
   payRef = genPayRef();
 
   if (PAYNOW_CONFIG.enabled && method !== 'visa') {
-    // Paynow active — show phone prompt instruction
     document.getElementById('pi-number').textContent  = 'Payment via Paynow';
     document.getElementById('pi-amount').textContent  = '$' + selPrice;
     document.getElementById('pi-ref').textContent     = payRef;
     document.getElementById('pi-ref-big').textContent = payRef;
     document.getElementById('pay-confirm-check').style.display = 'none';
-    // Change button text to reflect Paynow redirect
     document.getElementById('submit-btn').textContent = 'Pay now →';
   } else {
-    // Manual fallback
     document.getElementById('pi-number').textContent  = cfg.number;
     document.getElementById('pi-amount').textContent  = '$' + selPrice;
     document.getElementById('pi-ref').textContent     = payRef;
     document.getElementById('pi-ref-big').textContent = payRef;
-    document.getElementById('submit-btn').innerHTML   = 'Confirm booking →';
+    document.getElementById('submit-btn').textContent = 'Confirm booking →';
     document.getElementById('pay-confirm-check').style.display = method === 'visa' ? 'none' : 'flex';
   }
   document.getElementById('pay-instructions').classList.add('show');
@@ -504,7 +1287,7 @@ function goStep(step) {
     showErr('err1', false);
   }
   if (step === 3) {
-    selDate = document.getElementById('book-date').value;
+    selDate = dateInput.value;
     if (!selDate || !selSlot) { showErr('err2', true); return; }
     showErr('err2', false);
     updateSummary();
@@ -513,7 +1296,7 @@ function goStep(step) {
     const name  = document.getElementById('cust-name').value.trim();
     const phone = document.getElementById('cust-phone').value.trim();
     const phoneRegex = /^(\+?263|0)[7][1-9]\d{7}$/;
-  if (!name || !phoneRegex.test(phone.replace(/\s/g,''))) { showErr('err3', true); return; }
+    if (!name || !phoneRegex.test(phone.replace(/\s/g,''))) { showErr('err3', true); return; }
     showErr('err3', false);
   }
   ['step1','step2','step3'].forEach((id, i) =>
@@ -525,7 +1308,7 @@ function goStep(step) {
     document.getElementById('sd' + i).classList.toggle('done',   i < step);
   }
   for (let i = 1; i <= 4; i++) document.getElementById('sl' + i).classList.toggle('done', i < step);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.getElementById('book').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 /* ── FIREBASE SAVE ── */
@@ -557,11 +1340,8 @@ async function submitBooking() {
   if (selPayMethod !== 'visa' && !check.checked) { showErr('err4', true); return; }
   showErr('err4', false);
 
-  // Price locked at service selection — re-validated here
   const lockedPrice = selPrice;
-  if (!lockedPrice || lockedPrice <= 0) {
-    alert('Invalid booking — please start again.'); return;
-  }
+  if (!lockedPrice || lockedPrice <= 0) { alert('Invalid booking — please start again.'); return; }
 
   const btn = document.getElementById('submit-btn');
   btn.disabled = true;
@@ -572,27 +1352,25 @@ async function submitBooking() {
   const email   = document.getElementById('cust-email').value.trim();
   const notes   = document.getElementById('cust-notes').value.trim();
   const ref     = genRef();
-  const dateStr = new Date(selDate + 'T00:00:00').toLocaleDateString('en-ZW', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-  const now     = new Date().toLocaleString('en-ZW', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  const dateStr = new Date(selDate + 'T00:00:00').toLocaleDateString('en-ZW',
+    { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  const now     = new Date().toLocaleString('en-ZW',
+    { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 
   try {
-    // ── PAYNOW FLOW (when enabled) ──────────────────────────
     if (PAYNOW_CONFIG.enabled && selPayMethod !== 'visa') {
       const pollUrl = await initiatePaynow(
-        lockedPrice,
-        email || 'noemail@glamstudio.co.zw',
+        lockedPrice, email || 'noemail@glamstudio.co.zw',
         phone, payRef, selPayMethod
       );
-      if (pollUrl === 'redirecting') return; // Page redirects to Paynow
+      if (pollUrl === 'redirecting') return;
       if (!pollUrl) {
         alert('Payment initiation failed. Please try manual payment.');
-        btn.disabled = false;
-        btn.innerHTML = 'Confirm booking →';
+        btn.disabled = false; btn.innerHTML = 'Confirm booking →';
         return;
       }
     }
 
-    // ── MANUAL / VISA FLOW ──────────────────────────────────
     await saveBooking({
       ref, service: selService, price: lockedPrice,
       duration: selDuration, date: selDate, slot: selSlot,
@@ -606,7 +1384,6 @@ async function submitBooking() {
                           : 'manual_pending_verification'
     });
 
-    // Send email notifications via Resend
     fetch('/api/send-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -615,7 +1392,7 @@ async function submitBooking() {
         data: {
           ref, service: selService, price: lockedPrice,
           duration: selDuration,
-          datetime: new Date(selDate + 'T00:00:00').toLocaleDateString('en-ZW',{weekday:'long',day:'numeric',month:'long',year:'numeric'}) + ' at ' + selSlot,
+          datetime: dateStr + ' at ' + selSlot,
           name, phone, email, notes: notes || 'None',
           paymentMethod: PAYMENT_CONFIG[selPayMethod].name,
           paymentRef: payRef,
@@ -652,7 +1429,7 @@ async function submitBooking() {
     ['step1','step2','step3'].forEach(id => document.getElementById(id).classList.remove('visible'));
     document.getElementById('step4').classList.remove('visible');
     document.getElementById('confirm-screen').classList.add('visible');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('book').scrollIntoView({ behavior: 'smooth' });
 
   } catch(e) {
     console.error('❌ Booking error:', e);
@@ -668,7 +1445,7 @@ function resetApp() {
   selService = ''; selPrice = 0; selDuration = 0; selDate = ''; selSlot = '';
   selPayMethod = ''; payRef = '';
   ['cust-name','cust-phone','cust-email','cust-notes'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('book-date').value = today;
+  dateInput.value = today;
   document.getElementById('pay-done-check').checked = false;
   document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('selected'));
   document.getElementById('pay-instructions').classList.remove('show');
@@ -689,8 +1466,26 @@ function resetApp() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* ── EXPOSE ── */
-Object.assign(window, { selectService, selectSlot, updateSlots, goStep, selectPayMethod, submitBooking, resetApp });
+/* ── EVENT BINDINGS (no inline handlers) ── */
+document.querySelectorAll('.service-item').forEach(el =>
+  el.addEventListener('click', () => selectService(el)));
+
+document.querySelectorAll('.slot').forEach(el =>
+  el.addEventListener('click', () => selectSlot(el)));
+
+document.querySelectorAll('.pay-method').forEach(el =>
+  el.addEventListener('click', () => selectPayMethod(el, el.dataset.method)));
+
+dateInput.addEventListener('input', updateSlots);
+
+document.body.addEventListener('click', (e) => {
+  const action = e.target.closest('[data-action]')?.dataset.action;
+  if (!action) return;
+  if (action === 'submit') return submitBooking();
+  if (action === 'reset')  return resetApp();
+  const m = action.match(/^next:(\d)$/);
+  if (m) goStep(+m[1]);
+});
 
 updateSlots();
 </script>

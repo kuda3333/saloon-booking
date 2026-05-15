@@ -92,7 +92,7 @@ module.exports = async function handler(req, res) {
           <p style="margin-top:20px;font-size:11px;color:#aaa">Glam Studio · Harare CBD · Appointments required</p>
         </div>`;
 
-      operatorEmail = 'kdzvairo4@outlook.com';
+      operatorEmail = process.env.OPERATOR_EMAIL || 'kdzvairo4@outlook.com';
       customerEmail = data.email || null;
 
     } else if (type === 'print_job') {
@@ -159,7 +159,7 @@ module.exports = async function handler(req, res) {
           <p style="margin-top:16px;font-size:11px;color:#aaa;font-family:monospace">CampusPrint · Campus kiosk printing</p>
         </div>`;
 
-      operatorEmail = 'kdzvairo4@outlook.com';
+      operatorEmail = process.env.OPERATOR_EMAIL || 'kdzvairo4@outlook.com';
       customerEmail = data.email || null;
     } else {
       return res.status(400).json({ error: 'Unknown email type' });
@@ -173,7 +173,7 @@ module.exports = async function handler(req, res) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'onboarding@resend.dev',
+        from: process.env.RESEND_FROM || 'Glam Studio <onboarding@resend.dev>',
         to: [operatorEmail],
         subject: operatorSubject,
         html: operatorBody
@@ -189,7 +189,7 @@ module.exports = async function handler(req, res) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          from: 'onboarding@resend.dev',
+          from: process.env.RESEND_FROM || 'Glam Studio <onboarding@resend.dev>',
           to: [customerEmail],
           subject: customerSubject,
           html: customerBody

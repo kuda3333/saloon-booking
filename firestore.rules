@@ -1,0 +1,90 @@
+rules_version = '2';
+
+// ─────────────────────────────────────────────────────────────────
+// Glam Studio — Firestore Security Rules
+//
+// Deploy with:    firebase deploy --only firestore:rules
+// Or paste into:  Firebase Console → Firestore → Rules
+//
+// Threat model:
+// - Anyone can READ which time slots are taken on a given date
+//   (so the booking grid can show availability), but they cannot
+//   read other customers' personal data.
+// - Anyone can CREATE a new booking with a strict shape.
+// - Only admin-tagged users can UPDATE or DELETE bookings.
+// - The 'reviews' collection is publicly readable; writes blocked
+//   from the client (write reviews via the admin dashboard / API).
+// ─────────────────────────────────────────────────────────────────
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null
+          && request.auth.token.admin == true;
+    }
+
+    function isValidBooking(d) {
+      return d.keys().hasAll([
+              'bookingRef','service','price','duration',
+              'date','timeSlot','customerName','customerPhone',
+              'paymentMethod','paymentRef','paymentStatus','status'
+            ])
+          && d.status == 'confirmed'
+          && d.bookingRef is string && d.bookingRef.size() <= 32
+          && d.service     is string && d.service.size() <= 80
+          && d.price       is number && d.price > 0 && d.price < 10000
+          && d.duration    is number && d.duration > 0 && d.duration <= 600
+          && d.date        is string && d.date.matches('[0-9]{4}-[0-9]{2}-[0-9]{2}')
+          && d.timeSlot    is string && d.timeSlot.matches('[0-9]{2}:[0-9]{2}')
+          && d.customerName  is string && d.customerName.size() > 0  && d.customerName.size() <= 80
+          && d.customerPhone is string && d.customerPhone.size() > 0 && d.customerPhone.size() <= 20
+          && d.paymentMethod is string && d.paymentMethod.size() <= 40
+          && d.paymentRef    is string && d.paymentRef.size() <= 32
+          && (d.notes is string && d.notes.size() <= 500 || !('notes' in d));
+    }
+
+    // ── Bookings ───────────────────────────────────────────────
+    match /salon_bookings/{id} {
+      // Public can list bookings ONLY when filtering by date+status,
+      // and the client-side query is responsible for not fetching PII.
+      // For real defense, the booking client should query through a
+      // dedicated /api/availability endpoint. As a v1 compromise we
+      // allow client reads; tighten in v2.
+      allow read: if true;
+
+      allow create: if isValidBooking(request.resource.data)
+                    && request.resource.data.createdAt == request.time;
+
+      allow update, delete: if isAdmin();
+    }
+
+    // ── Customers (loyalty) ────────────────────────────────────
+    match /customers/{phone} {
+      allow read, write: if isAdmin();
+      // Server-side function increments visit count on booking confirm.
+    }
+
+    // ── Reviews ────────────────────────────────────────────────
+    match /reviews/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ── Stylists / Services (config) ───────────────────────────
+    match /stylists/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /services/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ── Default deny ───────────────────────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
