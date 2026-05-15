@@ -505,8 +505,10 @@ if (POSTHOG_KEY) {
   (function(p,o,s,t,h,o2,g){p[t]=p[t]||[];o2=o.createElement(s);o2.async=1;o2.src=h;
     g=o.getElementsByTagName(s)[0];g.parentNode.insertBefore(o2,g)})
     (window,document,'script','posthog',POSTHOG_HOST+'/static/array.js');
-  posthog.init(POSTHOG_KEY, { api_host: POSTHOG_HOST, capture_pageview: true });
-  window.track = (event, props) => posthog.capture(event, props);
+  try {
+    posthog.init(POSTHOG_KEY, { api_host: POSTHOG_HOST, capture_pageview: true });
+    window.track = (event, props) => posthog.capture(event, props);
+  } catch(e) { console.warn('PostHog init:', e); }
 }
 
 /* ── PWA: service worker ──────────────────────────────── */
