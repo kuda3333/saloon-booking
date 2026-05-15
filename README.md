@@ -76,7 +76,29 @@ saloon-booking/
 
 The cron runs every hour (`0 * * * *`). It looks 24 hours ahead, sends an SMS, and marks each booking `reminderSent: true` so it won't double-fire.
 
-### 4. Paynow (optional — Zimbabwe card / mobile money)
+### 4. PostHog (optional — funnel analytics)
+
+1. Sign up at [posthog.com](https://posthog.com) (EU cloud is fastest for ZW).
+2. Project Settings → Project API Key.
+3. Open `index.html`, find `POSTHOG_KEY` and paste the key.
+4. Funnel events fired automatically: `service_selected`, `variation_selected`,
+   `stylist_selected`, `booking_confirmed`. Build a funnel in PostHog from these.
+
+### 5. WhatsApp Business API (optional — auto-confirmations)
+
+1. In Meta Business Suite → WhatsApp → API Setup, get a **Phone Number ID** and a permanent **Access Token** (via System User).
+2. Templates → create one named `booking_confirmation` with 5 body parameters: name, ref, service, datetime, stylist. Submit for review (usually approved within an hour).
+3. In Vercel env vars:
+   ```
+   WHATSAPP_PHONE_NUMBER_ID = ...
+   WHATSAPP_ACCESS_TOKEN    = ...
+   WHATSAPP_TEMPLATE_NAME   = booking_confirmation
+   WHATSAPP_LOCALE          = en
+   ```
+
+If unset, the front-end `wa.me` deep link still works as a manual fallback.
+
+### 6. Paynow (optional — Zimbabwe card / mobile money)
 
 Once your merchant account is approved at [developers.paynow.co.zw](https://developers.paynow.co.zw):
 
@@ -154,14 +176,14 @@ In Vercel: Project → Settings → Deployment Protection → enable Password Pr
 | 1 | Production Firestore rules | ✅ |
 | 1 | SMS reminders (Twilio + cron) | ✅ |
 | 1 | Resend domain config | ✅ |
-| 2 | Stylist selection step | planned |
-| 2 | Service variations (sub-services) | planned |
-| 2 | Deposit-only payment option | planned |
-| 2 | Operator dashboard at `/admin` | planned |
-| 3 | PWA + offline support | planned |
-| 3 | Loyalty / repeat-customer rewards | planned |
-| 3 | PostHog funnel analytics | planned |
-| 3 | WhatsApp Business API auto-confirm | planned |
+| 2 | Stylist selection step | ✅ |
+| 2 | Service variations (sub-services) | ✅ |
+| 2 | Deposit-only payment option | ✅ |
+| 2 | Operator dashboard at `/admin` | ✅ |
+| 3 | PWA + offline support | ✅ |
+| 3 | Loyalty / repeat-customer rewards | ✅ |
+| 3 | PostHog funnel analytics | ✅ |
+| 3 | WhatsApp Business API auto-confirm | ✅ |
 
 ---
 

@@ -1,0 +1,19 @@
+{
+  "name": "Glam Studio — Salon Booking",
+  "short_name": "Glam Studio",
+  "description": "Hair · Nails · Beauty · Wellness — Harare CBD. Book your appointment in 60 seconds.",
+  "start_url": "/?utm_source=pwa",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fdfaf6",
+  "theme_color": "#1a1209",
+  "categories": ["lifestyle", "beauty", "shopping"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -8,7 +8,10 @@
 <meta property="og:title" content="Glam Studio — Book your appointment">
 <meta property="og:description" content="Hair · Nails · Beauty · Wellness — Harare CBD.">
 <meta property="og:type" content="website">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; connect-src https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com; img-src 'self' data:;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://fonts.googleapis.com https://*.posthog.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; font-src https://fonts.gstatic.com; connect-src https://*.firebaseio.com https://*.googleapis.com https://firestore.googleapis.com https://*.posthog.com; img-src 'self' data:;">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/icon.svg">
 <title>Glam Studio — Book an Appointment</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -489,8 +492,74 @@ footer { background: var(--ink); color: #d4c4a8; padding: 40px 24px 24px; margin
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs }
+import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs,
+         doc, setDoc, increment }
   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+/* ── ANALYTICS (PostHog — env-driven) ─────────────────── */
+// Uncomment and fill in to enable. Falls back to a no-op shim when disabled.
+const POSTHOG_KEY  = '';   // e.g. 'phc_xxxxxxxxxxxxxx'
+const POSTHOG_HOST = 'https://eu.i.posthog.com';
+window.track = (event, props = {}) => console.debug('[track]', event, props);
+if (POSTHOG_KEY) {
+  (function(p,o,s,t,h,o2,g){p[t]=p[t]||[];o2=o.createElement(s);o2.async=1;o2.src=h;
+    g=o.getElementsByTagName(s)[0];g.parentNode.insertBefore(o2,g)})
+    (window,document,'script','posthog',POSTHOG_HOST+'/static/array.js');
+  posthog.init(POSTHOG_KEY, { api_host: POSTHOG_HOST, capture_pageview: true });
+  window.track = (event, props) => posthog.capture(event, props);
+}
+
+/* ── PWA: service worker ──────────────────────────────── */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(e => console.warn('SW reg:', e));
+  });
+}
+
+/* ── PWA: install prompt ──────────────────────────────── */
+let deferredInstall = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstall = e;
+  showInstallChip();
+});
+function showInstallChip() {
+  if (sessionStorage.getItem('install-dismissed')) return;
+  const chip = document.createElement('div');
+  chip.id = 'install-chip';
+  chip.innerHTML = `
+    <span>📱 Install Glam Studio for one-tap booking</span>
+    <button data-act="install">Install</button>
+    <button data-act="dismiss" aria-label="Dismiss">×</button>`;
+  Object.assign(chip.style, {
+    position:'fixed', bottom:'16px', left:'50%', transform:'translateX(-50%)',
+    background:'#1a1209', color:'#fff', padding:'10px 14px', borderRadius:'100px',
+    boxShadow:'0 12px 32px rgba(0,0,0,0.3)', zIndex:'1000',
+    display:'flex', alignItems:'center', gap:'10px', fontSize:'12px',
+    fontFamily:"'Inter',sans-serif", maxWidth:'90vw',
+  });
+  chip.querySelectorAll('button').forEach(b => Object.assign(b.style, {
+    background:'#d4a017', color:'#1a1209', border:'none', padding:'6px 10px',
+    borderRadius:'100px', fontSize:'11px', fontWeight:'600', cursor:'pointer',
+  }));
+  chip.querySelector('[data-act="dismiss"]').style.background = 'transparent';
+  chip.querySelector('[data-act="dismiss"]').style.color = '#d4c4a8';
+  chip.querySelector('[data-act="dismiss"]').style.fontSize = '18px';
+  chip.querySelector('[data-act="dismiss"]').style.padding = '0 6px';
+  chip.addEventListener('click', async (ev) => {
+    const act = ev.target.closest('[data-act]')?.dataset.act;
+    if (act === 'install' && deferredInstall) {
+      deferredInstall.prompt();
+      await deferredInstall.userChoice;
+      deferredInstall = null;
+      chip.remove();
+    } else if (act === 'dismiss') {
+      sessionStorage.setItem('install-dismissed', '1');
+      chip.remove();
+    }
+  });
+  document.body.appendChild(chip);
+}
 
 /* ── FIREBASE ── */
 const fbApp = initializeApp({
@@ -736,6 +805,28 @@ function goStep(step) {
   $('book').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+/* ── LOYALTY ─────────────────────────────────────────── */
+// Track lifetime visits per phone number; redeemable as a free service every 5.
+const LOYALTY_THRESHOLD = 5;
+async function bumpLoyalty(phone, name, price) {
+  try {
+    const id = phone.replace(/\D/g, '');
+    if (!id) return null;
+    const ref = doc(db, 'customers', id);
+    await setDoc(ref, {
+      name, phone,
+      visitCount:    increment(1),
+      lifetimeSpend: increment(Number(price) || 0),
+      lastBookingAt: serverTimestamp(),
+    }, { merge: true });
+    // Read back to compute "X visits till free"
+    const snap = await getDocs(query(collection(db, 'customers'), where('phone', '==', phone)));
+    const visits = snap.docs[0]?.data()?.visitCount ?? 1;
+    const remaining = LOYALTY_THRESHOLD - (visits % LOYALTY_THRESHOLD);
+    return { visits, remaining: remaining === LOYALTY_THRESHOLD ? 0 : remaining };
+  } catch (e) { console.warn('Loyalty:', e); return null; }
+}
+
 /* ── SAVE ──────────────────────────────────────────────── */
 async function saveBooking(data) {
   const docRef = await addDoc(collection(db, 'salon_bookings'), {
@@ -808,6 +899,30 @@ async function submitBooking() {
       paymentRef:    state.payRef,
       paymentStatus,
     });
+
+    track('booking_confirmed', { service: state.service.name, variation: state.variation.name, stylist: state.stylist.name, price: lockedPrice, payMode: state.payMode, payMethod: state.payMethod });
+
+    const loyalty = await bumpLoyalty(phone, name, lockedPrice);
+    if (loyalty) {
+      const banner = document.createElement('div');
+      banner.style.cssText = 'background:linear-gradient(135deg,#f5e9c8,#d4a017);color:#1a1209;padding:14px 16px;border-radius:12px;margin:14px 0;font-size:13px;text-align:center;font-weight:500';
+      banner.innerHTML = loyalty.remaining === 0
+        ? `🎉 Visit #${loyalty.visits} — your <strong>next service is on us</strong>! Mention it when you arrive.`
+        : `✦ Visit #${loyalty.visits} · <strong>${loyalty.remaining} more</strong> until your free service`;
+      document.querySelector('#confirm-screen .confirm-card').after(banner);
+    }
+
+    // WhatsApp Business auto-confirm (silent no-op when not configured server-side).
+    fetch('/api/whatsapp-confirm', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        phone, name, ref,
+        service: `${state.service.name} — ${state.variation.name}`,
+        datetime: dateStr + ' at ' + state.slot,
+        stylist: state.stylist.name,
+      })
+    }).catch(() => {});
 
     fetch('/api/send-email', {
       method: 'POST',
@@ -890,6 +1005,7 @@ document.body.addEventListener('click', (e) => {
     sEl.classList.add('selected');
     state.service = SERVICES.find(s => s.id === sEl.dataset.serviceId);
     state.variation = null;
+    track('service_selected', { service: state.service.name });
     return;
   }
   // Variation pick
@@ -898,6 +1014,7 @@ document.body.addEventListener('click', (e) => {
     document.querySelectorAll('.variation-item').forEach(i => i.classList.remove('selected'));
     vEl.classList.add('selected');
     state.variation = state.service.variations[+vEl.dataset.variationIdx];
+    track('variation_selected', { service: state.service.name, variation: state.variation.name, price: state.variation.price });
     return;
   }
   // Stylist pick
@@ -907,6 +1024,7 @@ document.body.addEventListener('click', (e) => {
     stEl.classList.add('selected');
     if (stEl.dataset.stylistId === 'any') state.stylist = { id: 'any', name: 'Any available' };
     else state.stylist = STYLISTS.find(s => s.id === stEl.dataset.stylistId);
+    track('stylist_selected', { stylist: state.stylist.name });
     return;
   }
   // Slot pick
