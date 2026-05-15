@@ -498,7 +498,7 @@ import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDoc
 
 /* ── ANALYTICS (PostHog — env-driven) ─────────────────── */
 // Uncomment and fill in to enable. Falls back to a no-op shim when disabled.
-const POSTHOG_KEY  = '';   // e.g. 'phc_xxxxxxxxxxxxxx'
+const POSTHOG_KEY  = 'phc_oUFHdutxE47dSE3QFMSgWoiVDBhksfroPBsQmSMApnhz';   // e.g. 'phc_xxxxxxxxxxxxxx'
 const POSTHOG_HOST = 'https://eu.i.posthog.com';
 window.track = (event, props = {}) => console.debug('[track]', event, props);
 if (POSTHOG_KEY) {

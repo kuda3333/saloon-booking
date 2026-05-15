@@ -10,6 +10,8 @@
 // To enable templates, register them in Meta Business Suite → WhatsApp → Message Templates.
 // Templates must be APPROVED before they can be sent.
 
+const { createClient } = require('./lib/posthog');
+
 function normalizeZwPhone(raw) {
   const digits = String(raw).replace(/\D/g, '');
   if (digits.startsWith('263')) return digits;
@@ -71,6 +73,13 @@ module.exports = async function handler(req, res) {
       console.error('WhatsApp API error:', data);
       return res.status(502).json({ error: data.error?.message || 'WhatsApp send failed' });
     }
+    const posthog = createClient();
+    posthog.capture({
+      distinctId: phone,
+      event: 'whatsapp_confirmation_sent',
+      properties: { booking_ref: ref, service },
+    });
+    await posthog.shutdown();
     return res.status(200).json({ ok: true, id: data.messages?.[0]?.id });
   } catch (e) {
     console.error('WhatsApp error:', e);

@@ -8,7 +8,8 @@
     "deploy": "vercel --prod"
   },
   "dependencies": {
-    "firebase-admin": "^12.6.0"
+    "firebase-admin": "^12.6.0",
+    "posthog-node": "^5.34.1"
   },
   "engines": {
     "node": ">=18"

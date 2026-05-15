@@ -1,6 +1,8 @@
 // Vercel Serverless Function — /api/send-email.js
 // CommonJS format for Vercel compatibility
 
+const { createClient } = require('./lib/posthog');
+
 function escapeHtml(str) {
   return String(str ?? '')
     .replace(/&/g, '&amp;')
@@ -198,6 +200,36 @@ module.exports = async function handler(req, res) {
     }
 
     const result = await operatorRes.json();
+
+    const posthog = createClient();
+    if (type === 'salon_booking') {
+      posthog.capture({
+        distinctId: data.phone || data.email || 'anonymous',
+        event: 'booking_confirmed',
+        properties: {
+          booking_ref: data.ref,
+          service: data.service,
+          datetime: data.datetime,
+          payment_method: data.paymentMethod,
+          payment_status: data.paymentStatus,
+          price: data.price,
+        },
+      });
+    } else if (type === 'print_job') {
+      posthog.capture({
+        distinctId: data.phone || data.email || 'anonymous',
+        event: 'print_job_confirmed',
+        properties: {
+          job_num: data.jobNum,
+          location: data.location,
+          copies: data.copies,
+          payment: data.payment,
+          amount: data.amount,
+        },
+      });
+    }
+    await posthog.shutdown();
+
     return res.status(200).json({ success: true, id: result.id });
 
   } catch (e) {

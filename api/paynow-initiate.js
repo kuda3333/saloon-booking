@@ -3,6 +3,7 @@
 // Docs: https://developers.paynow.co.zw/docs/initiating_transactions.html
 
 const crypto = require('crypto');
+const { createClient } = require('./lib/posthog');
 
 function paynowHash(values, integrationKey) {
   const str = Object.values(values).join('') + integrationKey;
@@ -91,12 +92,26 @@ module.exports = async function handler(req, res) {
       const mobileParams = Object.fromEntries(new URLSearchParams(mobileText));
 
       if (mobileParams.status?.toLowerCase() === 'ok') {
+        const posthog = createClient();
+        posthog.capture({
+          distinctId: phone || email || 'anonymous',
+          event: 'payment_initiated',
+          properties: { reference, amount: Number(amount), method },
+        });
+        await posthog.shutdown();
         return res.status(200).json({ pollUrl: mobileParams.pollurl });
       }
       return res.status(502).json({ error: mobileParams.error || 'Mobile initiation failed' });
     }
 
     // Web redirect (card / other)
+    const posthog = createClient();
+    posthog.capture({
+      distinctId: email || phone || 'anonymous',
+      event: 'payment_initiated',
+      properties: { reference, amount: Number(amount), method: method || 'web' },
+    });
+    await posthog.shutdown();
     return res.status(200).json({ redirectUrl: params.browserurl });
   } catch (e) {
     console.error('Paynow error:', e);
