@@ -2,7 +2,7 @@
 // Network-first for HTML & API (always-fresh bookings),
 // cache-first for static assets (icons, manifest, fonts).
 
-const VERSION       = 'v1';
+const VERSION       = 'v2';
 const STATIC_CACHE  = `glam-static-${VERSION}`;
 const RUNTIME_CACHE = `glam-runtime-${VERSION}`;
 
@@ -11,6 +11,7 @@ const PRECACHE = [
   '/index.html',
   '/manifest.webmanifest',
   '/icon.svg',
+  '/images/salon/01-reception.jpg',
 ];
 
 self.addEventListener('install', (event) => {

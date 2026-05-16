@@ -246,9 +246,38 @@ footer { background: var(--ink); color: #d4c4a8; padding: 40px 24px 24px; margin
 .footer-grid p { line-height: 1.6; color: #a89880; }
 .footer-bottom { font-size: 10px; color: #6a5d4e; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); }
 
+/* ── Salon carousel ────────────────────────────────────── */
+.carousel-wrap { max-width: 1200px; margin: 40px auto 0; padding: 0 16px; }
+.carousel-head { text-align: center; margin-bottom: 20px; }
+.carousel-eyebrow { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.18em; color: var(--gold-mid); text-transform: uppercase; margin-bottom: 8px; }
+.carousel-title { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+.carousel { position: relative; border-radius: 20px; overflow: hidden; background: #1a1209; box-shadow: 0 24px 60px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.04); aspect-ratio: 16/10; }
+.carousel-track { position: absolute; inset: 0; }
+.carousel-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease; pointer-events: none; }
+.carousel-slide.active { opacity: 1; pointer-events: auto; }
+.carousel-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.carousel-slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 45%); pointer-events: none; }
+.carousel-caption { position: absolute; left: 24px; bottom: 22px; right: 24px; color: #fff; z-index: 2; }
+.carousel-caption .cap-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; color: var(--gold); text-transform: uppercase; margin-bottom: 4px; }
+.carousel-caption .cap-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 500; line-height: 1.1; }
+.carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.16); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.18); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s, transform 0.2s; z-index: 3; }
+.carousel-btn:hover { background: rgba(255,255,255,0.28); transform: translateY(-50%) scale(1.05); }
+.carousel-btn.prev { left: 14px; }
+.carousel-btn.next { right: 14px; }
+.carousel-dots { position: absolute; left: 0; right: 0; bottom: 12px; display: flex; justify-content: center; gap: 6px; z-index: 3; }
+.carousel-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.35); border: none; cursor: pointer; padding: 0; transition: all 0.3s; }
+.carousel-dot.active { width: 22px; border-radius: 4px; background: var(--gold); }
+
 @media (min-width: 640px) {
   .hero-name { font-size: 64px; }
   .stylists-grid { grid-template-columns: repeat(4, 1fr); }
+  .carousel-title { font-size: 42px; }
+  .carousel-caption .cap-title { font-size: 30px; }
+  .carousel-caption { left: 36px; bottom: 32px; }
+}
+@media (max-width: 540px) {
+  .carousel { aspect-ratio: 4/5; }
+  .carousel-btn { width: 38px; height: 38px; }
 }
 </style>
 </head>
@@ -278,6 +307,29 @@ footer { background: var(--ink); color: #d4c4a8; padding: 40px 24px 24px; margin
     <div class="trust-item"><div class="ti-num">4.9<span class="accent">★</span></div><div class="ti-label">Customer rating</div></div>
     <div class="trust-item"><div class="ti-num">1.2k<span class="accent">+</span></div><div class="ti-label">Happy bookings</div></div>
     <div class="trust-item"><div class="ti-num">&lt; 5<span class="accent">m</span></div><div class="ti-label">Avg reply time</div></div>
+  </div>
+</div>
+
+<!-- ── Salon carousel ─────────────────────────────────────── -->
+<div class="carousel-wrap">
+  <div class="carousel-head">
+    <div class="carousel-eyebrow">Step inside</div>
+    <h2 class="carousel-title">Where you'll be pampered</h2>
+  </div>
+  <div class="carousel" id="salon-carousel" aria-roledescription="carousel" aria-label="Glam Studio interior">
+    <div class="carousel-track" id="carousel-track">
+      <div class="carousel-slide active"><img src="/images/salon/01-reception.jpg" alt="Glam Studio reception desk" loading="eager" decoding="async"><div class="carousel-caption"><div class="cap-eyebrow">Reception</div><div class="cap-title">A warm welcome</div></div></div>
+      <div class="carousel-slide"><img src="/images/salon/02-wash-station.jpg" alt="Hair wash station with reclining chairs" loading="lazy" decoding="async"><div class="carousel-caption"><div class="cap-eyebrow">Wash bar</div><div class="cap-title">Relax & unwind</div></div></div>
+      <div class="carousel-slide"><img src="/images/salon/03-manicure-bar.jpg" alt="Manicure bar with stylists" loading="lazy" decoding="async"><div class="carousel-caption"><div class="cap-eyebrow">Nail bar</div><div class="cap-title">Hands & feet, perfected</div></div></div>
+      <div class="carousel-slide"><img src="/images/salon/06-barber-chair.jpg" alt="Barber chair with mirror and grooming tools" loading="lazy" decoding="async"><div class="carousel-caption"><div class="cap-eyebrow">Barber chair</div><div class="cap-title">Sharp cuts, classic feel</div></div></div>
+      <div class="carousel-slide"><img src="/images/salon/07-hood-dryers.jpg" alt="Professional hood dryers" loading="lazy" decoding="async"><div class="carousel-caption"><div class="cap-eyebrow">Styling lounge</div><div class="cap-title">Pro equipment, pro results</div></div></div>
+      <div class="carousel-slide"><img src="/images/salon/04-product-shelf.jpg" alt="Premium hair care product shelves" loading="lazy" decoding="async"><div class="carousel-caption"><div class="cap-eyebrow">Retail wall</div><div class="cap-title">Take the magic home</div></div></div>
+      <div class="carousel-slide"><img src="/images/salon/05-retail-lounge.jpg" alt="Retail lounge with velvet sofa" loading="lazy" decoding="async"><div class="carousel-caption"><div class="cap-eyebrow">Retail collective</div><div class="cap-title">Curated essentials</div></div></div>
+      <div class="carousel-slide"><img src="/images/salon/08-welcome-lounge.jpg" alt="Welcome lounge with seating" loading="lazy" decoding="async"><div class="carousel-caption"><div class="cap-eyebrow">Family lounge</div><div class="cap-title">Bring the whole family</div></div></div>
+    </div>
+    <button class="carousel-btn prev" id="carousel-prev" aria-label="Previous image"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <button class="carousel-btn next" id="carousel-next" aria-label="Next image"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></button>
+    <div class="carousel-dots" id="carousel-dots"></div>
   </div>
 </div>
 
@@ -1054,6 +1106,64 @@ document.body.addEventListener('click', (e) => {
 
 dateInput.addEventListener('input', updateSlots);
 updateSlots();
+
+// ── Salon image carousel ────────────────────────────────
+(function initCarousel() {
+  const root  = document.getElementById('salon-carousel');
+  if (!root) return;
+  const slides = Array.from(root.querySelectorAll('.carousel-slide'));
+  const dotsBox = document.getElementById('carousel-dots');
+  const prevBtn = document.getElementById('carousel-prev');
+  const nextBtn = document.getElementById('carousel-next');
+  let idx = 0, timer = null;
+  const INTERVAL = 5000;
+
+  slides.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', `Slide ${i + 1}`);
+    d.addEventListener('click', () => go(i, true));
+    dotsBox.appendChild(d);
+  });
+  const dots = Array.from(dotsBox.children);
+
+  function go(n, manual) {
+    idx = (n + slides.length) % slides.length;
+    slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+    dots.forEach((d, i)   => d.classList.toggle('active', i === idx));
+    if (manual) restart();
+  }
+  function next() { go(idx + 1); }
+  function prev() { go(idx - 1); }
+  function start() { stop(); timer = setInterval(next, INTERVAL); }
+  function stop()  { if (timer) clearInterval(timer); timer = null; }
+  function restart() { stop(); start(); }
+
+  nextBtn.addEventListener('click', () => { next(); restart(); });
+  prevBtn.addEventListener('click', () => { prev(); restart(); });
+  root.addEventListener('mouseenter', stop);
+  root.addEventListener('mouseleave', start);
+
+  // Pause when off-screen
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => e.isIntersecting ? start() : stop(), { threshold: 0.25 }).observe(root);
+  } else start();
+
+  // Touch swipe
+  let tx = 0;
+  root.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+  root.addEventListener('touchend',   e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 40) { dx < 0 ? next() : prev(); restart(); }
+  });
+
+  // Keyboard
+  root.tabIndex = 0;
+  root.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') { next(); restart(); }
+    if (e.key === 'ArrowLeft')  { prev(); restart(); }
+  });
+})();
 </script>
 </body>
 </html>
